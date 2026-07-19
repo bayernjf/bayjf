@@ -157,8 +157,11 @@ CLOUDFLARE_ACCOUNT_ID
 - Hono API：Vercel 项目 `bayjf`，正式地址 `https://bayjf.vercel.app/api`。
 - React 前端：Cloudflare Pages 项目 `bayjf`，正式地址
   `https://bayjf.pages.dev`。
-- GitHub Environment：`production-vercel-api`、
-  `production-cloudflare-pages`。
+- GitHub Environment：`production-vercel-api`、`preview-vercel-api`、
+  `production-cloudflare-pages`、`preview-cloudflare-pages`。
+- PR 到 `dev`/`main`：只运行验证和构建，不部署。
+- 合并到 `dev`：部署 Vercel API Preview 和 Cloudflare Pages dev Preview。
+- 合并到 `main`：部署 Vercel API 和 Cloudflare Pages Production。
 - 完整发布顺序和变量说明见 `DEPLOYMENT.md`。
 
 修改部署配置时必须同步检查：
