@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,300..800;1,6..72,300..800&family=Work+Sans:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", "Work Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Newsreader", "Montserrat", Georgia, serif;
+}
+
+/* Scroll reveal and custom smooth interactive cursors */
+html {
+  scroll-behavior: smooth;
+  cursor: none;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.6s infinite;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+a, button, input, textarea {
+  cursor: none !important;
+}
