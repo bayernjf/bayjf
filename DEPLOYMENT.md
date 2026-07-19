@@ -25,7 +25,7 @@ verify `https://YOUR_API_PROJECT.vercel.app/api/health`.
 
 ## Cloudflare Pages frontend
 
-Create a Pages project named `bayjf-portfolio`. Create the GitHub environment
+Use the Pages project named `bayjf`. Create the GitHub environment
 `production-cloudflare-pages` with secrets:
 
 - `CLOUDFLARE_API_TOKEN`: scoped for Cloudflare Pages edit access.
