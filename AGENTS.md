@@ -71,6 +71,10 @@ npm run lint && npm test && npm run build
 
 涉及交互或页面流程时，还应运行 `npm run test:e2e`。
 
+验证应与改动范围匹配：文档改动至少执行 `git diff --check`；配置和源码改动
+必须执行类型检查、单测和构建；浏览器交互、路由或表单流程改动还必须执行
+Playwright。任一必需检查失败时停止提交或部署并报告错误，不得把失败描述为通过。
+
 ## 前端约定
 
 - 当前应用使用内部 `ScreenType` 状态切换页面，不使用 React Router。
@@ -171,6 +175,36 @@ CLOUDFLARE_ACCOUNT_ID
 - 保留用户已有的未提交改动，不得使用破坏性 reset 或 checkout。
 - `.env.local`、`.vercel/`、`.wrangler/`、测试报告和构建产物不得提交。
 
+### 用户指令语义
+
+当用户使用以下指令时，按固定含义执行：
+
+#### “提交代码”或“搞好后直接推送”
+
+1. 检查工作区，区分本次改动与用户已有改动。
+2. 按改动范围完成必要验证；失败则停止并报告。
+3. 根据原子规则拆分 commit，不使用笼统的单一提交。
+4. 执行 `git pull --rebase origin <当前分支>`。
+5. 只推送当前分支，不创建 PR，不合并其他分支。
+
+#### “创建 PR”
+
+1. 完成验证、原子提交和当前分支推送。
+2. 收集目标分支尚未包含的 commits，生成简洁的 PR 标题和说明。
+3. 使用 `gh pr create` 创建 PR 后停止，等待 review；除非用户另外明确授权，
+   不在本地或远程执行合并。
+
+#### “提交并合并”
+
+这是独立授权，不能从“提交代码”推断。执行合并前必须明确目标分支，并先进行
+冲突预检。`main` 仍要求通过 PR 和人工 review，不得直接推送。
+
+### 冲突处理
+
+- 不自动解决 rebase、merge 或 cherry-pick 冲突。
+- 出现冲突时停止操作，列出冲突文件和当前 Git 状态，等待用户决定。
+- 不得为了消除冲突使用 `git reset --hard`、覆盖用户文件或丢弃未提交改动。
+
 提交必须遵循 `.trae/rules/git-commit-message.md`：
 
 - 使用英文 Conventional Commits。
@@ -188,3 +222,35 @@ CLOUDFLARE_ACCOUNT_ID
 - Vite 生产构建无大包警告。
 - 前端 Cloudflare Pages 和后端 Vercel 配置保持独立。
 - Supabase service-role key 永不进入客户端或 Git。
+
+## 关键文件索引
+
+| 文件 | 用途 |
+|------|------|
+| `src/App.tsx` | 页面切换、懒加载和全局页面访问埋点 |
+| `src/context/LanguageContext.tsx` | 中英文内容、项目数据与全局搜索状态 |
+| `src/components/ContactScreen.tsx` | 联系表单 UI、校验和提交状态 |
+| `src/api/contact.ts` | 浏览器端联系 API client |
+| `src/utils/analytics.ts` | GA4 与 Clarity 初始化和事件上报 |
+| `server/app.ts` | Hono 中间件、CORS 和 API 路由 |
+| `server/contact.ts` | 联系表单服务端校验 |
+| `server/supabase.ts` | Supabase REST repository |
+| `api/index.ts` | Vercel Edge Function 适配入口 |
+| `supabase/migrations/` | 已部署数据库 schema 的增量迁移 |
+| `vite.config.ts` | 本地 API proxy 与生产拆包配置 |
+| `vercel.json` | Vercel `/api/*` rewrite |
+| `wrangler.toml` | Cloudflare Pages 项目配置 |
+| `.github/workflows/` | CI 和双平台部署流程 |
+
+## 不要做的事
+
+- 不要使用 pnpm、Yarn 或 Bun；只使用 npm 和 `package-lock.json`。
+- 不要提交 `.env`、`.env.local`、平台临时目录或任何真实凭证。
+- 不要把 `SUPABASE_SERVICE_ROLE_KEY` 放入 `VITE_*` 变量或浏览器代码。
+- 不要让客户端绕过 Hono 直接写入受保护的 Supabase 表。
+- 不要修改已经上线的 migration；通过新 migration 演进 schema。
+- 不要在埋点属性中发送姓名、邮箱、留言正文或其他个人信息。
+- 不要创建文本伪装的图片、空壳资源或无法使用的占位文件。
+- 不要移除页面懒加载或把大型 vendor 重新合并进主 bundle。
+- 不要在没有明确授权时创建 PR、合并分支、直接推送 `main`/`dev` 或执行部署。
+- 不要自动解决 Git 冲突，也不要通过破坏性命令隐藏冲突。
