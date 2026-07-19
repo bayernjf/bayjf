@@ -7,5 +7,6 @@ coverage/
 .env*
 !.env.example
 .wrangler/
+.vercel/
 playwright-report/
 test-results/
