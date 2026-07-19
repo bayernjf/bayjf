@@ -1,7 +1,11 @@
 # AGENTS.md — Bayjf Portfolio 项目指令
 
 本文档供在本仓库工作的 AI coding agents 使用。修改代码前应先阅读本文件，
-并同时遵循 `.trae/rules/` 下的提交规则。
+并同时遵循 `.trae/rules/` 下的提交规则和 `PULL_REQUEST_WORKFLOW.md`。
+
+`PULL_REQUEST_WORKFLOW.md` 是提交、PR、Actions 等待、Preview/Production
+发布、失败修复、临时分支清理和长期分支回同步的强制流程。不得只完成其中一段
+就报告整个任务完成。
 
 ## 项目概览
 
@@ -40,6 +44,7 @@ bayjf/
 │   └── main.tsx
 ├── supabase/migrations/     # 数据库迁移
 ├── DEPLOYMENT.md            # 发布配置说明
+├── PULL_REQUEST_WORKFLOW.md # PR、Actions 和分支同步强制流程
 ├── playwright.config.ts
 ├── vercel.json
 ├── vite.config.ts
@@ -210,6 +215,18 @@ CLOUDFLARE_ACCOUNT_ID
 - 出现冲突时停止操作，列出冲突文件和当前 Git 状态，等待用户决定。
 - 不得为了消除冲突使用 `git reset --hard`、覆盖用户文件或丢弃未提交改动。
 
+### 发布流程硬门槛
+
+- 完整流程必须依次经过 `feature/20260719 → dev → main` 两个真实 PR。
+- PR 阶段只运行检验和 Build，不部署；Actions 全绿后才允许合并。
+- dev 合并后必须等待 CI、Vercel Preview、Cloudflare Preview 全绿。
+- main 合并后必须等待 CI、Vercel Production、Cloudflare Production 全绿。
+- Actions 失败必须修复到成功，不能跳过、忽略或提前进入下一阶段。
+- 临时 `fix/*`、`chore/sync-*` 分支在修复闭环后必须删除。
+- dev 修复后同步回 feature；main 修复后按 `main → dev → feature` 回同步。
+- 最终只保留 `feature/20260719`、`dev`、`main` 三个长期分支。
+- 详细步骤以 `PULL_REQUEST_WORKFLOW.md` 为准。
+
 提交必须遵循 `.trae/rules/git-commit-message.md`：
 
 - 使用英文 Conventional Commits。
@@ -246,6 +263,7 @@ CLOUDFLARE_ACCOUNT_ID
 | `vercel.json` | Vercel `/api/*` rewrite |
 | `wrangler.toml` | Cloudflare Pages 项目配置 |
 | `.github/workflows/` | CI 和双平台部署流程 |
+| `PULL_REQUEST_WORKFLOW.md` | 两阶段 PR、Actions 门禁、修复和分支回同步流程 |
 
 ## 不要做的事
 
