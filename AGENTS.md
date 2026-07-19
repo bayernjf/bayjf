@@ -185,6 +185,16 @@ CLOUDFLARE_ACCOUNT_ID
 - 保留用户已有的未提交改动，不得使用破坏性 reset 或 checkout。
 - `.env.local`、`.vercel/`、`.wrangler/`、测试报告和构建产物不得提交。
 
+### 语言约定
+
+- 向用户汇报、解释、提问和交付总结默认使用中文，除非用户明确要求其他语言。
+- 项目内面向中文维护者的 Markdown 文档可以使用中文，不要求统一翻译成英文。
+- 写入 GitHub 协作界面的元数据使用英文，包括 branch 名、commit message、PR
+  标题与正文、PR 评论、review、release 标题与说明，以及 Actions workflow/job/step
+  的显示名称。
+- 源码标识符遵循项目既有英文命名；用户可见内容继续同时维护中英文翻译。
+- “GitHub 内容使用英文”不适用于项目内中文文档，也不改变向用户使用中文汇报的约定。
+
 ### 用户指令语义
 
 当用户使用以下指令时，按固定含义执行：
