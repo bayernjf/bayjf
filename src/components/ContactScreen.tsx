@@ -8,6 +8,8 @@ import { motion } from 'motion/react';
 import { Mail, Link, Code, Palette, ArrowRight, Copy } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useToast } from '../context/ToastContext';
+import { submitContactMessage } from '../api/contact';
+import { trackEvent } from '../utils/analytics';
 
 export default function ContactScreen() {
   const { t, language } = useLanguage();
@@ -125,7 +127,7 @@ export default function ContactScreen() {
     }
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!validate()) {
       showToast(
@@ -136,30 +138,27 @@ export default function ContactScreen() {
     }
 
     setIsSubmitting(true);
-    // Simulate API request
-    setTimeout(() => {
+    try {
+      await submitContactMessage(formData);
       setIsSubmitting(false);
-      
-      // Allow testing failure if the name or subject contains 'fail'
-      const shouldFail = formData.name.toLowerCase().includes('fail') || formData.subject.toLowerCase().includes('fail');
-      
-      if (shouldFail) {
-        setIsSuccess(false);
-        showToast(
-          language === 'en' ? 'Failed to send message. Please try again.' : '发送留言失败，请稍后重试。',
-          'error'
-        );
-      } else {
-        setIsSuccess(true);
-        showToast(
-          language === 'en' ? 'Message sent successfully!' : '留言发送成功！',
-          'success'
-        );
-        setFormData({ name: '', email: '', subject: '', message: '' });
-        setErrors({});
-        setTimeout(() => setIsSuccess(false), 5000);
-      }
-    }, 1200);
+      setIsSuccess(true);
+      trackEvent('contact_form_submit', { status: 'success' });
+      showToast(
+        language === 'en' ? 'Message sent successfully!' : '留言发送成功！',
+        'success'
+      );
+      setFormData({ name: '', email: '', subject: '', message: '' });
+      setErrors({});
+      setTimeout(() => setIsSuccess(false), 5000);
+    } catch {
+      setIsSubmitting(false);
+      setIsSuccess(false);
+      trackEvent('contact_form_submit', { status: 'error' });
+      showToast(
+        language === 'en' ? 'Failed to send message. Please try again.' : '发送留言失败，请稍后重试。',
+        'error'
+      );
+    }
   };
 
   return (

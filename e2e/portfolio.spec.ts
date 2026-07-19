@@ -1,0 +1,49 @@
+import { expect, test } from '@playwright/test';
+
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.clear();
+    localStorage.setItem('portfolio_sound', 'false');
+  });
+  await page.goto('/');
+});
+
+test('navigates between the primary portfolio screens', async ({ page, isMobile }) => {
+  if (isMobile) {
+    await page.locator('#mobile-menu-btn').click();
+    await page.locator('#nav-mobile-portfolio').click();
+  } else {
+    await page.locator('#nav-portfolio').click();
+  }
+
+  await expect(page.getByRole('heading', { name: 'Selected Projects' })).toBeVisible();
+
+  await page.keyboard.press('e');
+  await expect(page.getByRole('heading', { name: 'Experience', exact: true })).toBeVisible();
+});
+
+test('searches projects and can switch to Chinese', async ({ page, isMobile }) => {
+  if (isMobile) {
+    await page.locator('#mobile-menu-btn').click();
+    await page.locator('#header-search-input-mobile').fill('Aura');
+  } else {
+    await page.locator('#header-search-input').fill('Aura');
+  }
+
+  await expect(page.getByText('Aura Analytics', { exact: true })).toBeVisible();
+  await expect(page.getByText('Lumina Pay', { exact: true })).toHaveCount(0);
+
+  await page.locator(isMobile ? '#lang-btn-mobile-zh' : '#lang-btn-zh').click();
+  await expect(page.getByRole('heading', { name: '精选项目' })).toBeVisible();
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('portfolio_lang'))).toBe('zh');
+});
+
+test('persists a selected light theme after reload', async ({ page }) => {
+  await page.locator('#theme-toggle-btn').click();
+  await expect(page.locator('html')).not.toHaveClass(/dark/);
+
+  await page.reload();
+
+  await expect(page.locator('html')).not.toHaveClass(/dark/);
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('portfolio_theme'))).toBe('light');
+});
