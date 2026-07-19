@@ -30,6 +30,10 @@ git pull --rebase origin <branch>
 
 不得基于过期的本地分支创建修复分支、提交、PR 或部署。
 
+GitHub 协作元数据使用英文，包括 branch、commit、PR 标题与正文、评论、review、
+release 和 Actions 显示名称。向用户汇报以及项目内中文 Markdown 文档不受该限制，
+没有特别要求时继续使用中文。
+
 提交前按改动范围完成验证。源码或配置至少运行：
 
 ```bash
