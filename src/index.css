@@ -11,7 +11,6 @@
 /* Scroll reveal and custom smooth interactive cursors */
 html {
   scroll-behavior: smooth;
-  cursor: none;
 }
 
 @keyframes shimmer {
@@ -32,6 +31,23 @@ body {
   padding: 0;
 }
 
-a, button, input, textarea {
-  cursor: none !important;
+.custom-cursor {
+  display: none;
+  contain: strict;
+}
+
+@media (pointer: fine) and (min-width: 768px) {
+  html,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  [role="button"] {
+    cursor: none !important;
+  }
+
+  .custom-cursor {
+    display: block;
+  }
 }
