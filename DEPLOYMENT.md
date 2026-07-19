@@ -31,6 +31,11 @@ Vercel Preview values for `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and
 `ALLOWED_ORIGINS=https://dev.bayjf.pages.dev`. Preview deployments receive the
 stable alias `https://bayjf-dev.vercel.app`.
 
+Vercel Deployment Protection/SSO must be disabled for this API-only project so
+the Cloudflare-hosted browser app can call both Preview and Production without
+a Vercel login cookie. The deployment workflow verifies the public `/api/health`
+endpoint and fails before promotion when access is protected.
+
 Requests under `/api/*` are rewritten to the Hono function. After deployment,
 verify `https://YOUR_API_PROJECT.vercel.app/api/health`.
 
