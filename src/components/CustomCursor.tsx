@@ -3,71 +3,88 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+const INTERACTIVE_SELECTOR =
+  'a, button, input, textarea, select, [role="button"], .interactive';
 
 export default function CustomCursor() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const frameRef = useRef<number | null>(null);
+  const pointerRef = useRef({ x: -100, y: -100 });
+  const visibleRef = useRef(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-      if (!isVisible) setIsVisible(true);
+    const finePointer = window.matchMedia('(pointer: fine) and (min-width: 768px)');
+    if (!finePointer.matches) return;
+
+    const renderPosition = () => {
+      const cursor = cursorRef.current;
+      if (cursor) {
+        const { x, y } = pointerRef.current;
+        cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      }
+      frameRef.current = null;
     };
 
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (
-        target.tagName === 'A' ||
-        target.tagName === 'BUTTON' ||
-        target.tagName === 'INPUT' ||
-        target.tagName === 'TEXTAREA' ||
-        target.closest('.interactive') ||
-        target.closest('a') ||
-        target.closest('button')
-      ) {
-        setIsHovered(true);
-      } else {
-        setIsHovered(false);
+    const handlePointerMove = (event: PointerEvent) => {
+      pointerRef.current = { x: event.clientX, y: event.clientY };
+      if (!visibleRef.current) {
+        visibleRef.current = true;
+        setIsVisible(true);
+      }
+      if (frameRef.current === null) {
+        frameRef.current = window.requestAnimationFrame(renderPosition);
       }
     };
 
-    const handleMouseLeaveWindow = () => {
-      setIsVisible(false);
+    const handlePointerOver = (event: PointerEvent) => {
+      const target = event.target;
+      const hovered = target instanceof Element && Boolean(target.closest(INTERACTIVE_SELECTOR));
+      setIsHovered((current) => current === hovered ? current : hovered);
     };
 
-    const handleMouseEnterWindow = () => {
+    const handleMouseLeave = () => {
+      visibleRef.current = false;
+      setIsVisible(false);
+    };
+    const handleMouseEnter = () => {
+      visibleRef.current = true;
       setIsVisible(true);
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseover', handleMouseOver);
-    document.addEventListener('mouseleave', handleMouseLeaveWindow);
-    document.addEventListener('mouseenter', handleMouseEnterWindow);
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    window.addEventListener('pointerover', handlePointerOver, { passive: true });
+    document.addEventListener('mouseleave', handleMouseLeave);
+    document.addEventListener('mouseenter', handleMouseEnter);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseover', handleMouseOver);
-      document.removeEventListener('mouseleave', handleMouseLeaveWindow);
-      document.removeEventListener('mouseenter', handleMouseEnterWindow);
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerover', handlePointerOver);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener('mouseenter', handleMouseEnter);
+      if (frameRef.current !== null) window.cancelAnimationFrame(frameRef.current);
     };
-  }, [isVisible]);
-
-  if (!isVisible) return null;
+  }, []);
 
   return (
     <div
+      ref={cursorRef}
       id="custom-cursor"
-      className={`hidden md:block fixed top-0 left-0 rounded-full pointer-events-none z-[9999] mix-blend-difference transition-all duration-200 -translate-x-1/2 -translate-y-1/2 ${
-        isHovered
-          ? 'w-10 h-10 bg-transparent border border-[#d7e6dd]'
-          : 'w-3 h-3 bg-[#54615b] dark:bg-[#bbcac2]'
+      aria-hidden="true"
+      className={`custom-cursor fixed top-0 left-0 pointer-events-none z-[9999] will-change-transform transition-opacity duration-100 ${
+        isVisible ? 'opacity-100' : 'opacity-0'
       }`}
-      style={{
-        left: `${position.x}px`,
-        top: `${position.y}px`,
-      }}
-    />
+    >
+      <div
+        className={`-translate-x-1/2 -translate-y-1/2 rounded-full transition-[width,height,background-color,border-color] duration-150 ${
+          isHovered
+            ? 'w-10 h-10 bg-transparent border border-[#54615b] dark:border-[#d7e6dd]'
+            : 'w-3 h-3 border border-transparent bg-[#54615b] dark:bg-[#bbcac2]'
+        }`}
+      />
+    </div>
   );
 }
