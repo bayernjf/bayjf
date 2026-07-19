@@ -1,11 +1,12 @@
 import { expect, test } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
-  await page.addInitScript(() => {
+  await page.goto('/');
+  await page.evaluate(() => {
     localStorage.clear();
     localStorage.setItem('portfolio_sound', 'false');
   });
-  await page.goto('/');
+  await page.reload();
 });
 
 test('navigates between the primary portfolio screens', async ({ page, isMobile }) => {
