@@ -3,14 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { lazy, Suspense, useState, useEffect, useCallback } from 'react';
 import { ScreenType } from './types';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import HomeScreen from './components/HomeScreen';
-import PortfolioScreen from './components/PortfolioScreen';
-import ExperienceScreen from './components/ExperienceScreen';
-import ContactScreen from './components/ContactScreen';
 import CustomCursor from './components/CustomCursor';
 import ScrollProgress from './components/ScrollProgress';
 import SEOManager from './components/SEOManager';
@@ -18,6 +14,12 @@ import BackToTop from './components/BackToTop';
 import { AnimatePresence, motion } from 'motion/react';
 import { useLanguage } from './context/LanguageContext';
 import { playThemeToggleSound } from './utils/sound';
+import { trackPageView } from './utils/analytics';
+
+const HomeScreen = lazy(() => import('./components/HomeScreen'));
+const PortfolioScreen = lazy(() => import('./components/PortfolioScreen'));
+const ExperienceScreen = lazy(() => import('./components/ExperienceScreen'));
+const ContactScreen = lazy(() => import('./components/ContactScreen'));
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>('home');
@@ -107,6 +109,7 @@ export default function App() {
   // Scroll back to top on screen change
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as any });
+    trackPageView(currentScreen);
   }, [currentScreen]);
 
   // Sync screen with URL if a project link is detected
@@ -206,7 +209,15 @@ export default function App() {
             exit="exit"
             className="w-full"
           >
-            {renderScreen()}
+            <Suspense
+              fallback={
+                <div className="min-h-screen grid place-items-center" role="status" aria-live="polite">
+                  <span className="text-sm text-[#444748] dark:text-[#c4c7c7]">Loading…</span>
+                </div>
+              }
+            >
+              {renderScreen()}
+            </Suspense>
           </motion.div>
         </AnimatePresence>
       </main>
