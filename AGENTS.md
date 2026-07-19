@@ -69,11 +69,13 @@ npm run deploy:frontend    # 发布 dist 到 Cloudflare Pages
 npm run lint && npm test && npm run build
 ```
 
-涉及交互或页面流程时，还应运行 `npm run test:e2e`。
+涉及交互或页面流程时，本地还应运行 `npm run test:e2e`。GitHub E2E 工作流
+仅允许手动触发，不作为 PR 自动检查。
 
 验证应与改动范围匹配：文档改动至少执行 `git diff --check`；配置和源码改动
 必须执行类型检查、单测和构建；浏览器交互、路由或表单流程改动还必须执行
-Playwright。任一必需检查失败时停止提交或部署并报告错误，不得把失败描述为通过。
+Playwright（或说明当前环境无法执行的原因）。任一必需检查失败时停止提交或部署
+并报告错误，不得把失败描述为通过。
 
 ## 前端约定
 
