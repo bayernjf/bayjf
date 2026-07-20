@@ -34,6 +34,12 @@ body {
 .custom-cursor {
   display: none;
   contain: strict;
+  opacity: 0;
+  transition: opacity 100ms;
+}
+
+.custom-cursor.is-visible {
+  opacity: 1;
 }
 
 @media (pointer: fine) and (min-width: 768px) {
