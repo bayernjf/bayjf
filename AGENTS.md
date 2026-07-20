@@ -4,7 +4,7 @@
 并同时遵循 `.trae/rules/` 下的提交规则和 `PULL_REQUEST_WORKFLOW.md`。
 
 `PULL_REQUEST_WORKFLOW.md` 是提交、PR、Actions 等待、Preview/Production
-发布、失败修复、临时分支清理和长期分支回同步的强制流程。不得只完成其中一段
+发布、失败修复、临时分支清理和必要的长期分支回同步的强制流程。不得只完成其中一段
 就报告整个任务完成。
 
 ## 项目概览
@@ -232,8 +232,11 @@ CLOUDFLARE_ACCOUNT_ID
 - dev 合并后必须等待 CI、Vercel Preview、Cloudflare Preview 全绿。
 - main 合并后必须等待 CI、Vercel Production、Cloudflare Production 全绿。
 - Actions 失败必须修复到成功，不能跳过、忽略或提前进入下一阶段。
+- 正常 `feature → dev → main` 发布后不创建 `main → dev` 回同步 PR；各长期分支
+  只需 pull 自己的远程分支。
+- 仅当 dev 或 main 产生子分支不包含的修复时，才向下同步修复：dev 修复同步到
+  feature；main 专属修复按 `main → dev → feature` 同步。
 - 临时 `fix/*`、`chore/sync-*` 分支在修复闭环后必须删除。
-- dev 修复后同步回 feature；main 修复后按 `main → dev → feature` 回同步。
 - 最终只保留 `feature/20260719`、`dev`、`main` 三个长期分支。
 - 详细步骤以 `PULL_REQUEST_WORKFLOW.md` 为准。
 
