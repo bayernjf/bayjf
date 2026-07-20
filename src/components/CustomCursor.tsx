@@ -20,11 +20,18 @@ export default function CustomCursor() {
     const finePointer = window.matchMedia('(pointer: fine) and (min-width: 768px)');
     if (!finePointer.matches) return;
 
+    const deactivateCustomCursor = () => {
+      document.documentElement.classList.remove('custom-cursor-active');
+      visibleRef.current = false;
+      setIsVisible(false);
+    };
+
     const renderPosition = () => {
       const cursor = cursorRef.current;
       if (cursor) {
         const { x, y } = pointerRef.current;
         cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+        document.documentElement.classList.add('custom-cursor-active');
       }
       frameRef.current = null;
     };
@@ -46,26 +53,16 @@ export default function CustomCursor() {
       setIsHovered((current) => current === hovered ? current : hovered);
     };
 
-    const handleMouseLeave = () => {
-      visibleRef.current = false;
-      setIsVisible(false);
-    };
-    const handleMouseEnter = () => {
-      visibleRef.current = true;
-      setIsVisible(true);
-    };
-
     window.addEventListener('pointermove', handlePointerMove, { passive: true });
     window.addEventListener('pointerover', handlePointerOver, { passive: true });
-    document.addEventListener('mouseleave', handleMouseLeave);
-    document.addEventListener('mouseenter', handleMouseEnter);
+    document.addEventListener('mouseleave', deactivateCustomCursor);
 
     return () => {
       window.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('pointerover', handlePointerOver);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      document.removeEventListener('mouseenter', handleMouseEnter);
+      document.removeEventListener('mouseleave', deactivateCustomCursor);
       if (frameRef.current !== null) window.cancelAnimationFrame(frameRef.current);
+      deactivateCustomCursor();
     };
   }, []);
 
