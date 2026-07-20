@@ -82,6 +82,10 @@ npm run build
 8. 检查生产页面、API 健康状态和关键用户流程。
 9. 生产 Actions 与线上验证全部成功后才可报告完成。
 
+正常发布不创建 `main → dev` 回同步 PR：main 的变更来自已验证的 dev，因此 dev
+已经包含同样的业务内容。此时仅将本地 `main`、`dev` 与 `feature/20260719` pull 到
+各自对应的远程最新提交。
+
 ## Actions 失败处理
 
 ### PR 合并前失败
@@ -111,8 +115,9 @@ npm run build
 5. 等待 PR Actions 成功后合并。
 6. 等待 main CI 和双平台 Production 成功。
 7. 删除远程和本地 fix 分支。
-8. 按 `main → dev → feature/20260719` 的顺序回同步修复。
-9. 受保护分支之间的回同步使用临时 `chore/sync-*` 分支和 PR；成功后删除。
+8. 仅当该 main 修复不在 dev 中时，按 `main → dev → feature/20260719` 的顺序
+   向下同步修复。
+9. 受保护分支之间的必要回同步使用临时 `chore/sync-*` 分支和 PR；成功后删除。
 
 ## 临时分支清理
 
@@ -149,7 +154,7 @@ dev CI、Vercel Preview、Cloudflare Preview 成功
 dev → main PR checks 成功并完成合并
 main CI、Vercel Production、Cloudflare Production 成功
 线上页面和 API 验证成功
-临时修复/同步分支已清理
-main → dev → feature 回同步完成
+临时修复/必要同步分支已清理
+本地长期分支已 pull 到各自远程最新提交
 最终只保留 feature、dev、main 三个长期分支
 ```
