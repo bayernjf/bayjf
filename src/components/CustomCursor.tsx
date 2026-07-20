@@ -71,8 +71,8 @@ export default function CustomCursor() {
       ref={cursorRef}
       id="custom-cursor"
       aria-hidden="true"
-      className={`custom-cursor fixed top-0 left-0 pointer-events-none z-[9999] will-change-transform transition-opacity duration-100 ${
-        isVisible ? 'opacity-100' : 'opacity-0'
+      className={`custom-cursor fixed top-0 left-0 pointer-events-none z-[9999] will-change-transform ${
+        isVisible ? 'is-visible' : ''
       }`}
     >
       <div

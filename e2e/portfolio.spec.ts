@@ -58,13 +58,14 @@ test('keeps a native cursor until the custom cursor is ready', async ({ page }) 
   await page.evaluate(() => document.documentElement.classList.remove('custom-cursor-active'));
   await expect(html).not.toHaveClass(/custom-cursor-active/);
   await expect(html).not.toHaveCSS('cursor', 'none');
+  await expect(page.locator('#custom-cursor')).toHaveCSS('opacity', '0');
 
   await page.mouse.move(120, 80);
 
   if (hasFinePointer) {
     await expect(html).toHaveClass(/custom-cursor-active/);
     await expect(html).toHaveCSS('cursor', 'none');
-    await expect(page.locator('#custom-cursor')).toHaveClass(/opacity-100/);
+    await expect(page.locator('#custom-cursor')).toHaveCSS('opacity', '1');
   } else {
     await expect(html).not.toHaveClass(/custom-cursor-active/);
     await expect(html).not.toHaveCSS('cursor', 'none');
