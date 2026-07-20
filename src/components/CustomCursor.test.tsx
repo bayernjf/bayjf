@@ -37,14 +37,14 @@ describe('CustomCursor', () => {
     expect(document.documentElement).not.toHaveClass('custom-cursor-active');
     frames.shift()?.(performance.now());
     expect(cursor.style.transform).toBe('translate3d(120px, 80px, 0)');
-    expect(cursor).toHaveClass('opacity-100');
+    expect(cursor).toHaveClass('is-visible');
     expect(document.documentElement).toHaveClass('custom-cursor-active');
 
     fireEvent.pointerOver(container.querySelector('button')!);
     expect(cursor.firstElementChild).toHaveClass('w-10', 'h-10');
 
     fireEvent.mouseLeave(document);
-    expect(cursor).toHaveClass('opacity-0');
+    expect(cursor).not.toHaveClass('is-visible');
     expect(document.documentElement).not.toHaveClass('custom-cursor-active');
 
     cleanup();
