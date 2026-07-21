@@ -24,7 +24,7 @@ import { useLanguage, Language } from '../context/LanguageContext';
 import { Project } from '../types';
 import ProjectDetailModal from './ProjectDetailModal';
 
-export default function PortfolioScreen() {
+export default function BayjfScreen() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedTagGroup, setSelectedTagGroup] = useState<string>('All');
   const [activeProject, setActiveProject] = useState<Project | null>(null);
@@ -82,29 +82,27 @@ export default function PortfolioScreen() {
   };
 
   // Categories
-  const categories = ['All', 'UI/UX', 'SaaS', 'Product Design', 'Creative Tech'];
+  const categories = ['All', 'AI Agent', 'Full-Stack', 'Browser Tools'];
 
   const categoryLabels: Record<Language, Record<string, string>> = {
     en: {
       'All': 'All Categories',
-      'UI/UX': 'UI/UX',
-      'SaaS': 'SaaS',
-      'Product Design': 'Product Design',
-      'Creative Tech': 'Creative Tech'
+      'AI Agent': 'AI Agent',
+      'Full-Stack': 'Full-Stack',
+      'Browser Tools': 'Browser Tools'
     },
     zh: {
       'All': '所有类别',
-      'UI/UX': 'UI/UX 界面设计',
-      'SaaS': 'SaaS 软件开发',
-      'Product Design': '产品设计',
-      'Creative Tech': '创意科技'
+      'AI Agent': 'AI Agent',
+      'Full-Stack': '全栈开发',
+      'Browser Tools': '浏览器工具'
     }
   };
 
   // Internal Translations for enhanced features
   const localTxt = {
     en: {
-      summaryTitle: 'Portfolio Overview',
+      summaryTitle: 'BayJF Overview',
       totalProjects: 'Total Projects',
       categoriesCount: 'Active Categories',
       latestYear: 'Latest Work',
@@ -126,7 +124,7 @@ export default function PortfolioScreen() {
       filterTags: 'Filter by Tag Group'
     },
     zh: {
-      summaryTitle: '作品集概览',
+      summaryTitle: 'BayJF 概览',
       totalProjects: '项目总数',
       categoriesCount: '活跃类别',
       latestYear: '最新作品',
@@ -182,7 +180,9 @@ export default function PortfolioScreen() {
     ) {
       return 'Product Design';
     }
-    return 'UI/UX'; // Fallback / default
+    if (tags.some(tag => tag.includes('chrome') || tag.includes('manifest'))) return 'Browser Tools';
+    if (tags.some(tag => tag.includes('spring') || tag.includes('supabase') || tag.includes('react'))) return 'Full-Stack';
+    return 'AI Agent';
   };
 
   // Map projects to custom tag groups
@@ -352,13 +352,13 @@ export default function PortfolioScreen() {
           className="max-w-2xl"
         >
           <span className="font-sans text-xs uppercase tracking-widest text-[#54615b] dark:text-[#bbcac2] font-bold flex items-center gap-2">
-            <Layers size={14} /> {t('portfolio.headerTag')}
+            <Layers size={14} /> {t('bayjf.headerTag')}
           </span>
           <h1 className="font-serif text-5xl md:text-7xl font-bold text-[#1b1c1b] dark:text-[#fbf9f7] mt-3 tracking-tight">
-            {t('portfolio.title')}
+            {t('bayjf.title')}
           </h1>
           <p className="font-sans text-base md:text-lg text-[#444748] dark:text-[#c4c7c7] mt-4 leading-relaxed">
-            {t('portfolio.desc')}
+            {t('bayjf.desc')}
           </p>
           <div className="w-24 h-1 bg-[#54615b] dark:bg-[#bbcac2] mt-6 animate-pulse" />
         </motion.div>
@@ -473,7 +473,7 @@ export default function PortfolioScreen() {
                 {localTxt.coreFocus}
               </span>
               <span className="font-sans text-xs font-bold text-[#54615b] dark:text-[#bbcac2] block mt-1 uppercase tracking-widest leading-none">
-                {language === 'en' ? 'SaaS & UI/UX' : 'SaaS y UI/UX'}
+                {language === 'en' ? 'AI Agent & Full-Stack' : 'AI Agent 与全栈开发'}
               </span>
             </div>
           </div>
@@ -558,7 +558,7 @@ export default function PortfolioScreen() {
         className="flex flex-wrap items-center gap-3 mb-6 border-b border-[#e4e2e0]/40 dark:border-white/5 pb-6"
       >
         <span className="font-sans text-xs uppercase tracking-wider text-[#444748]/60 dark:text-[#c4c7c7]/60 mr-2 flex items-center gap-1.5 font-semibold">
-          <SlidersHorizontal size={12} /> {t('portfolio.filter')}
+          <SlidersHorizontal size={12} /> {t('bayjf.filter')}
         </span>
         {categories.map((category) => {
           const isActive = selectedCategory === category;
@@ -667,8 +667,8 @@ export default function PortfolioScreen() {
           </p>
           <p className="font-sans text-sm text-[#444748]/50 dark:text-[#c4c7c7]/50 mt-2 max-w-md mx-auto">
             {language === 'en' 
-              ? 'Try resetting the tag filters or searching for other skills like "UI/UX", "SaaS", "Glassmorphism", or "Web App".'
-              : 'Intenta restablecer los filtros de tags o buscar otras habilidades como "UI/UX", "SaaS", "Minimalismo" o "Web App".'}
+              ? 'Try resetting the filters or searching for AI Agent, Full-Stack, Chrome Extension, or Supabase.'
+              : '可以重置筛选，或搜索 AI Agent、全栈开发、Chrome 扩展、Supabase 等标签。'}
           </p>
         </motion.div>
       ) : displayMode === 'grid' ? (
@@ -747,7 +747,7 @@ export default function PortfolioScreen() {
                     ))}
                     {project.tags.length > 3 && (
                       <span className="font-sans text-[10px] text-[#444748]/50 dark:text-[#c4c7c7]/50 self-center pl-1 font-semibold">
-                        +{project.tags.length - 3} {t('portfolio.more')}
+                        +{project.tags.length - 3} {t('bayjf.more')}
                       </span>
                     )}
                   </div>
@@ -762,7 +762,7 @@ export default function PortfolioScreen() {
                       }}
                       className="interactive inline-flex items-center gap-2 text-xs font-bold tracking-widest text-[#1b1c1b] dark:text-[#fbf9f7] hover:text-[#54615b] dark:hover:text-[#bbcac2] transition-colors group/link focus:outline-none"
                     >
-                      {t('portfolio.viewCaseStudy')}
+                      {t('bayjf.viewCaseStudy')}
                       <ArrowRight 
                         size={14} 
                         className="transform group-hover/link:translate-x-1.5 transition-transform duration-300" 

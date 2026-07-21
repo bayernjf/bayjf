@@ -1,6 +1,6 @@
-# Bayjf Portfolio
+# BayJF
 
-React 19 + Vite portfolio frontend with a Hono API on Vercel and
+React 19 + Vite BayJF frontend with a Hono API on Vercel and
 Supabase persistence for contact messages.
 
 ## Architecture

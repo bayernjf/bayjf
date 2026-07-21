@@ -5,7 +5,7 @@ import type { ContactRepository, Env } from './types';
 const env: Env = {
   SUPABASE_URL: 'https://example.supabase.co',
   SUPABASE_SERVICE_ROLE_KEY: 'test-key',
-  ALLOWED_ORIGINS: 'https://portfolio.example.com',
+  ALLOWED_ORIGINS: 'https://bayjf.example.com',
 };
 
 describe('contact API', () => {
@@ -14,7 +14,7 @@ describe('contact API', () => {
     const app = createApp(() => ({ create }));
     const response = await app.request('/api/contact', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Origin: 'https://portfolio.example.com' },
+      headers: { 'Content-Type': 'application/json', Origin: 'https://bayjf.example.com' },
       body: JSON.stringify({
         name: 'Ada', email: 'ada@example.com', subject: 'Hello', message: 'A new project',
       }),
@@ -23,7 +23,7 @@ describe('contact API', () => {
     expect(response.status).toBe(201);
     expect(await response.json()).toEqual({ ok: true });
     expect(create).toHaveBeenCalledWith(expect.objectContaining({ email: 'ada@example.com' }));
-    expect(response.headers.get('Access-Control-Allow-Origin')).toBe('https://portfolio.example.com');
+    expect(response.headers.get('Access-Control-Allow-Origin')).toBe('https://bayjf.example.com');
   });
 
   it('returns field errors for invalid submissions', async () => {

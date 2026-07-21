@@ -46,7 +46,7 @@ export default function ScrollProgress({ currentScreen }: ScrollProgressProps) {
     };
   }, [currentScreen]);
 
-  const targetScreens = ['portfolio', 'experience'];
+  const targetScreens = ['bayjf', 'experience'];
   if (!targetScreens.includes(currentScreen) || !isVisible) {
     return null;
   }

@@ -1,6 +1,6 @@
 {
-  "name": "Digital Craftsmanship Portfolio",
-  "description": "A professional portfolio website showcasing digital craftsmanship and product design, featuring home, portfolio, experience, and contact screens.",
+  "name": "BayJF",
+  "description": "A professional BayJF website showcasing digital craftsmanship and product design, featuring home, bayjf, experience, and contact screens.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
