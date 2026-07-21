@@ -41,7 +41,7 @@ export default function BackToTop({ currentScreen }: BackToTopProps) {
   };
 
   // Only render on content-heavy screens where scrolling actually happens
-  const scrollableScreens = ['portfolio', 'experience', 'contact', 'home'];
+  const scrollableScreens = ['bayjf', 'experience', 'contact', 'home'];
   if (!scrollableScreens.includes(currentScreen)) {
     return null;
   }

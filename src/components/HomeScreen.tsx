@@ -44,7 +44,7 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
               href="#"
               onClick={(e) => {
                 e.preventDefault();
-                onNavigate('portfolio', 'push');
+                onNavigate('bayjf', 'push');
               }}
               className="interactive inline-flex items-center justify-center bg-[#1b1c1b] dark:bg-[#fbf9f7] text-[#fbf9f7] dark:text-[#1b1c1b] hover:bg-[#54615b] dark:hover:bg-[#bbcac2] hover:scale-105 hover:shadow-lg transition-all duration-300 px-8 py-4 rounded-full font-sans font-semibold text-sm tracking-wider"
             >
@@ -82,7 +82,7 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
               <div className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden shadow-xl border border-white/10 p-2 bg-white/5 backdrop-blur-md">
                 <div className="w-full h-full rounded-xl overflow-hidden relative group">
                   <img
-                    alt="Designer Portrait"
+                    alt="SoftDesk project preview"
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-out scale-105 group-hover:scale-100"
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUIjKKY_IpX50adzUr3oXUApDyO8LctnMjCdCxK9AhK8N09oSThogr7WniXGq0w7SZbtiohJBMd_vR2QSklU_hEnGE4yM4XFkk4G46iwP5xfThx_I59NDHsJxWvc4rhhRZKREmkCyQYKo6zwKTfC3z29NVrVzhWwFjgQnsynm5qOD5YksuInkxUv6J55QR3KnSN9BGzUAnEEHTLSEt_GoUuIDMpNVYn9jYHN8r707kApTo70dOlM8r3fr0XkJwKW2B1fUEEKdqkCFD"
                   />
@@ -108,11 +108,11 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
               {/* Stats Grid */}
               <div className="mt-12 grid grid-cols-2 gap-8 border-t border-[#e4e2e0] dark:border-white/10 pt-8">
                 <div>
-                  <span className="block font-serif text-4xl md:text-5xl font-bold text-[#54615b] dark:text-[#bbcac2] mb-2">10+</span>
+                  <span className="block font-serif text-4xl md:text-5xl font-bold text-[#54615b] dark:text-[#bbcac2] mb-2">AI</span>
                   <span className="font-sans text-xs uppercase tracking-widest text-[#444748] dark:text-[#c4c7c7] font-semibold">{t('home.philosophy.yearsExp')}</span>
                 </div>
                 <div>
-                  <span className="block font-serif text-4xl md:text-5xl font-bold text-[#54615b] dark:text-[#bbcac2] mb-2">50+</span>
+                  <span className="block font-serif text-4xl md:text-5xl font-bold text-[#54615b] dark:text-[#bbcac2] mb-2">3</span>
                   <span className="font-sans text-xs uppercase tracking-widest text-[#444748] dark:text-[#c4c7c7] font-semibold">{t('home.philosophy.projectsShipped')}</span>
                 </div>
               </div>

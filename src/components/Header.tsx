@@ -28,7 +28,7 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme }
 
   const navItems: { label: string; screen: ScreenType; shortcut: string; isUppercaseClass?: boolean }[] = [
     { label: t('nav.home'), screen: 'home', shortcut: 'H' },
-    { label: t('nav.portfolio'), screen: 'portfolio', shortcut: 'P', isUppercaseClass: true },
+    { label: t('nav.bayjf'), screen: 'bayjf', shortcut: 'P', isUppercaseClass: true },
     { label: t('nav.experience'), screen: 'experience', shortcut: 'E' },
     { label: t('nav.contact'), screen: 'contact', shortcut: 'C' },
   ];
@@ -36,14 +36,14 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme }
   return (
     <nav className="fixed top-0 w-full z-50 bg-[#fbf9f7]/80 dark:bg-[#121212]/80 backdrop-blur-md border-b border-[#e4e2e0]/30 dark:border-white/5 transition-colors duration-500">
       <div className="flex justify-between items-center max-w-7xl mx-auto px-6 md:px-16 py-4 h-20">
-        {/* Logo containing "Portfolio." text */}
+        {/* Logo containing "BayJF" text */}
         <a
           id="nav-logo"
           className="font-serif text-2xl font-bold text-[#1b1c1b] dark:text-[#fbf9f7] hover:scale-105 transition-all duration-300 tracking-tight"
           href="#"
           onClick={handleLogoClick}
         >
-          Portfolio.
+          BayJF
         </a>
 
         {/* Desktop Navigation */}
@@ -85,8 +85,8 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme }
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
-                if (currentScreen !== 'portfolio' && e.target.value.trim() !== '') {
-                  onNavigate('portfolio', 'none');
+                if (currentScreen !== 'bayjf' && e.target.value.trim() !== '') {
+                  onNavigate('bayjf', 'none');
                 }
               }}
               className="pl-9 pr-4 py-1.5 w-36 lg:w-44 text-xs font-sans rounded-full bg-[#e4e2e0]/30 dark:bg-white/5 text-[#1b1c1b] dark:text-[#fbf9f7] placeholder-[#444748]/50 dark:placeholder-[#c4c7c7]/40 border border-[#e4e2e0]/50 dark:border-white/5 focus:outline-none focus:border-[#54615b] dark:focus:border-[#bbcac2] focus:w-48 lg:focus:w-56 transition-all duration-300"
@@ -167,8 +167,8 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme }
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
-                  if (currentScreen !== 'portfolio' && e.target.value.trim() !== '') {
-                    onNavigate('portfolio', 'none');
+                  if (currentScreen !== 'bayjf' && e.target.value.trim() !== '') {
+                    onNavigate('bayjf', 'none');
                   }
                 }}
                 className="pl-9 pr-4 py-2 w-full text-xs font-sans rounded-full bg-[#e4e2e0]/30 dark:bg-white/5 text-[#1b1c1b] dark:text-[#fbf9f7] placeholder-[#444748]/50 dark:placeholder-[#c4c7c7]/40 border border-[#e4e2e0]/50 dark:border-white/5 focus:outline-none focus:border-[#54615b] dark:focus:border-[#bbcac2] transition-colors duration-300"
