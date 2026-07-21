@@ -1,4 +1,4 @@
-# AGENTS.md — Bayjf Portfolio 项目指令
+# AGENTS.md — BayJF 项目指令
 
 本文档供在本仓库工作的 AI coding agents 使用。修改代码前应先阅读本文件，
 并同时遵循 `.trae/rules/` 下的提交规则和 `PULL_REQUEST_WORKFLOW.md`。
@@ -9,7 +9,7 @@
 
 ## 项目概览
 
-Bayjf Portfolio 是一个双语个人作品集网站，包含作品展示、职业经历、技能和
+BayJF 是一个双语个人作品集网站，包含作品展示、职业经历、技能和
 联系表单。前后端独立部署：
 
 - 前端：React 19、TypeScript、Vite 6、Tailwind CSS 4
