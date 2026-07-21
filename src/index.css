@@ -43,16 +43,6 @@ body {
 }
 
 @media (pointer: fine) and (min-width: 768px) {
-  html.custom-cursor-active,
-  html.custom-cursor-active a,
-  html.custom-cursor-active button,
-  html.custom-cursor-active input,
-  html.custom-cursor-active textarea,
-  html.custom-cursor-active select,
-  html.custom-cursor-active [role="button"] {
-    cursor: none !important;
-  }
-
   .custom-cursor {
     display: block;
   }
