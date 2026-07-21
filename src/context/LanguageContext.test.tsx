@@ -12,7 +12,8 @@ describe('LanguageProvider', () => {
     const { result } = renderHook(() => useLanguage(), { wrapper });
 
     expect(result.current.language).toBe('en');
-    expect(result.current.projects).toHaveLength(6);
+    expect(result.current.projects).toHaveLength(3);
+    expect(result.current.projects[0].title).toBe('SoftDesk');
     expect(result.current.t('footer.copyright', { year: 2026 })).toContain('2026');
     expect(result.current.t('unknown.translation')).toBe('unknown.translation');
   });
@@ -27,16 +28,16 @@ describe('LanguageProvider', () => {
     });
 
     expect(result.current.language).toBe('zh');
-    expect(result.current.t('nav.portfolio')).toBe('作品集');
-    expect(result.current.projects[0].category).toBe('金融科技平台');
+    expect(result.current.t('nav.bayjf')).toBe('案例');
+    expect(result.current.projects[0].category).toBe('桌面软件管理工具');
     expect(result.current.searchQuery).toBe('dashboard');
-    expect(localStorage.getItem('portfolio_lang')).toBe('zh');
-    expect(localStorage.getItem('portfolio_sound')).toBe('false');
+    expect(localStorage.getItem('bayjf_lang')).toBe('zh');
+    expect(localStorage.getItem('bayjf_sound')).toBe('false');
   });
 
   it('restores language and sound settings from storage', () => {
-    localStorage.setItem('portfolio_lang', 'zh');
-    localStorage.setItem('portfolio_sound', 'false');
+    localStorage.setItem('bayjf_lang', 'zh');
+    localStorage.setItem('bayjf_sound', 'false');
 
     const { result } = renderHook(() => useLanguage(), { wrapper });
 
