@@ -60,9 +60,9 @@ export default function ContactScreen() {
 
   const status = getAvailabilityStatus();
   
-  const handleCopyEmail = (e: MouseEvent) => {
+  const handleCopyEmail = (email: string) => (e: MouseEvent) => {
     e.preventDefault();
-    navigator.clipboard.writeText('hello@digitalcraft.com')
+    navigator.clipboard.writeText(email)
       .then(() => {
         showToast(
           language === 'en' ? 'Email copied to clipboard!' : '邮箱已复制到剪贴板！',
@@ -235,33 +235,35 @@ export default function ContactScreen() {
             className="flex flex-col gap-6"
           >
             {/* Email link with Mail icon */}
-            <div className="flex items-center gap-2">
-              <a
-                id="contact-email-link"
-                href="mailto:hello@digitalcraft.com"
-                className="interactive inline-flex items-center gap-4 text-xl md:text-2xl font-serif text-[#1b1c1b] dark:text-[#fbf9f7] hover:text-[#54615b] dark:hover:text-[#bbcac2] transition-colors group"
-              >
-                <span className="p-3 bg-[#e4e2e0]/50 dark:bg-white/5 rounded-full text-[#54615b] dark:text-[#bbcac2] group-hover:scale-110 transition-transform duration-300">
-                  <Mail size={22} />
-                </span>
-                hello@digitalcraft.com
-              </a>
-              <button
-                id="contact-email-copy-btn"
-                onClick={handleCopyEmail}
-                className="interactive p-2.5 bg-[#e4e2e0]/40 dark:bg-white/5 text-[#444748] dark:text-[#c4c7c7] hover:text-[#54615b] dark:hover:text-[#bbcac2] hover:bg-[#e4e2e0] dark:hover:bg-white/10 rounded-full transition-all duration-300 ml-2 shadow-sm hover:scale-110"
-                title={language === 'en' ? 'Copy Email' : '复制邮箱'}
-                aria-label="Copy email address"
-              >
-                <Copy size={16} />
-              </button>
-            </div>
+            {['bayernjf@163.com', 'b4yernjf@gmail.com'].map((email, index) => (
+              <div key={email} className="flex items-center gap-2">
+                <a
+                  id={`contact-email-link-${index}`}
+                  href={`mailto:${email}`}
+                  className="interactive inline-flex items-center gap-4 text-xl md:text-2xl font-serif text-[#1b1c1b] dark:text-[#fbf9f7] hover:text-[#54615b] dark:hover:text-[#bbcac2] transition-colors group"
+                >
+                  <span className="p-3 bg-[#e4e2e0]/50 dark:bg-white/5 rounded-full text-[#54615b] dark:text-[#bbcac2] group-hover:scale-110 transition-transform duration-300">
+                    <Mail size={22} />
+                  </span>
+                  {email}
+                </a>
+                <button
+                  id={`contact-email-copy-btn-${index}`}
+                  onClick={handleCopyEmail(email)}
+                  className="interactive p-2.5 bg-[#e4e2e0]/40 dark:bg-white/5 text-[#444748] dark:text-[#c4c7c7] hover:text-[#54615b] dark:hover:text-[#bbcac2] hover:bg-[#e4e2e0] dark:hover:bg-white/10 rounded-full transition-all duration-300 ml-2 shadow-sm hover:scale-110"
+                  title={language === 'en' ? `Copy ${email}` : `复制 ${email}`}
+                  aria-label={language === 'en' ? `Copy ${email}` : `复制 ${email}`}
+                >
+                  <Copy size={16} />
+                </button>
+              </div>
+            ))}
 
             {/* Social icons */}
             <div className="flex gap-4 mt-8">
               <a
                 id="social-link-web"
-                href="https://digitalcraft.com"
+                href="https://github.com/bayernjf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-3 bg-[#e4e2e0]/40 dark:bg-white/5 text-[#444748] dark:text-[#c4c7c7] hover:text-[#54615b] dark:hover:text-[#bbcac2] hover:bg-[#e4e2e0] dark:hover:bg-white/10 rounded-full transition-all duration-300 scale-100 hover:scale-110"

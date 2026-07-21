@@ -23,6 +23,18 @@ interface CustomCaseStudy {
 
 const CUSTOM_CASE_STUDIES: Record<Language, Record<string, CustomCaseStudy>> = {
   en: {
+    'soft-desk': {
+      challenge: 'Software tools and personal workflows are easy to scatter across folders, bookmarks, and disconnected notes.',
+      solution: 'SoftDesk brings software discovery, favorites, workflows, sharing, feedback, and usage views into a desktop application with a companion web interface.'
+    },
+    'word-base': {
+      challenge: 'Vocabulary capture and deliberate practice often happen in separate tools and lose the original reading context.',
+      solution: 'WordBase connects word books, contextual practice, cloud sync, and AI-assisted learning across web, desktop, and mobile; WordPicker captures words and source context directly in the browser.'
+    },
+    'tab-garden': {
+      challenge: 'Large tab collections become difficult to navigate, while automatic organization must not overwrite intentional user grouping.',
+      solution: 'The extension groups eligible tabs by normalized hostname, preserves native and custom groups, and provides controls for pausing, thresholds, and manual organization.'
+    },
     'lumina-pay': {
       challenge: 'The primary challenge was designing a billing system that handles multi-currency invoicing without cluttering the screen or confusing freelance creators who need rapid payments.',
       solution: 'We developed a clean, single-screen dashboard using glassmorphism components, enabling instant conversion and invoice creation under 3 taps with deep visual feedback.'
@@ -49,6 +61,18 @@ const CUSTOM_CASE_STUDIES: Record<Language, Record<string, CustomCaseStudy>> = {
     }
   },
   zh: {
+    'soft-desk': {
+      challenge: '软件工具和个人工作流很容易分散在文件夹、书签与彼此脱节的笔记中。',
+      solution: 'SoftDesk 将软件发现、收藏、工作流、分享、反馈与使用统计整合进桌面应用，并提供配套 Web 界面。'
+    },
+    'word-base': {
+      challenge: '词汇采集与刻意练习常发生在不同工具中，原始阅读语境也容易丢失。',
+      solution: 'WordBase 在 Web、桌面端和移动端连接单词本、语境练习、云同步与 AI 辅助学习；WordPicker 则直接在浏览器中采集单词及来源语境。'
+    },
+    'tab-garden': {
+      challenge: '标签页数量增多后难以浏览，而自动整理又不能覆盖用户主动创建的分组。',
+      solution: '该扩展按标准化 hostname 为符合条件的标签页分组，保留原生与自定义分组，并提供暂停、阈值和手动整理控制。'
+    },
     'lumina-pay': {
       challenge: '主要挑战是设计一个多货币发票结算系统，既不能使屏幕显得凌乱，也不能让急需快速结算的自由职业者感到困惑。',
       solution: '我们使用拟玻璃化（Glassmorphism）组件开发了一个干净的单屏仪表盘，用户只需点击 3 次以内即可完成即时兑换和发票创建，并获得深度的视觉反馈。'
@@ -126,7 +150,7 @@ export default function ProjectDetailModal({ project, onClose }: ProjectDetailMo
   const caseStudy = CUSTOM_CASE_STUDIES[language][project.id] || {
     challenge: language === 'en' 
       ? 'The goal was to create a modern and accessible digital tool satisfying highest quality standards and usability metrics.'
-      : 'El objetivo era crear una herramienta digital moderna y accesible que cumpliera con los más altos estándares de calidad y métricas de usabilidad.',
+      : '目标是打造一款现代、易用且符合高质量标准的数字工具。',
     solution: language === 'en'
       ? 'Implemented lightweight and modular visual structures centered around core system-driven paradigms.'
       : 'Se implementaron estructuras visuales ligeras y modulares centradas en paradigmas impulsados por el sistema principal.'
@@ -158,7 +182,7 @@ export default function ProjectDetailModal({ project, onClose }: ProjectDetailMo
           id="close-modal-btn-top"
           onClick={onClose}
           className="interactive absolute right-6 top-6 z-20 flex items-center justify-center w-10 h-10 rounded-full bg-black/10 hover:bg-black/20 dark:bg-white/5 dark:hover:bg-white/10 text-white md:text-[#1b1c1b] md:dark:text-[#fbf9f7] md:bg-transparent md:dark:bg-transparent transition-all duration-300"
-          aria-label={t('portfolio.close')}
+          aria-label={t('bayjf.close')}
         >
           <X size={18} />
         </button>
@@ -193,7 +217,7 @@ export default function ProjectDetailModal({ project, onClose }: ProjectDetailMo
             <div className="md:col-span-2 space-y-6">
               <div>
                 <h4 className="font-sans text-[11px] font-bold tracking-widest text-[#54615b] dark:text-[#bbcac2] uppercase mb-2 flex items-center gap-1.5">
-                  <ShieldCheck size={14} /> {t('portfolio.overview')}
+                  <ShieldCheck size={14} /> {t('bayjf.overview')}
                 </h4>
                 <p className="font-sans text-sm md:text-base leading-relaxed text-[#444748] dark:text-[#c4c7c7]">
                   {project.description}
@@ -225,7 +249,7 @@ export default function ProjectDetailModal({ project, onClose }: ProjectDetailMo
             <div className="space-y-6 bg-[#e4e2e0]/20 dark:bg-white/[0.02] border border-[#e4e2e0]/40 dark:border-white/5 p-6 rounded-2xl h-fit">
               <div>
                 <h4 className="font-sans text-[10px] font-bold tracking-widest text-[#444748]/60 dark:text-[#c4c7c7]/50 uppercase mb-3">
-                  {t('portfolio.techUsed')}
+                  {t('bayjf.techUsed')}
                 </h4>
                 <div className="flex flex-wrap gap-1.5">
                   {project.tags.map((tag) => (
@@ -246,7 +270,7 @@ export default function ProjectDetailModal({ project, onClose }: ProjectDetailMo
                     href={project.link}
                     className="interactive flex items-center justify-center gap-2 py-2.5 px-4 w-full rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white font-sans text-xs font-bold tracking-wider transition-all duration-300 shadow-md"
                   >
-                    <span>{t('portfolio.launchDemo')}</span>
+                    <span>{t('bayjf.launchDemo')}</span>
                     <ExternalLink size={13} />
                   </a>
                 )}
@@ -270,7 +294,7 @@ export default function ProjectDetailModal({ project, onClose }: ProjectDetailMo
               onClick={onClose}
               className="interactive px-5 py-2 font-sans text-xs uppercase tracking-widest font-semibold text-[#444748] dark:text-[#c4c7c7] bg-[#e4e2e0]/30 dark:bg-white/5 hover:bg-[#e4e2e0]/70 dark:hover:bg-white/10 rounded-full transition-all duration-300"
             >
-              {t('portfolio.close')}
+              {t('bayjf.close')}
             </button>
           </div>
 

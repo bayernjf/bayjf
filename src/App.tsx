@@ -17,7 +17,7 @@ import { playThemeToggleSound } from './utils/sound';
 import { trackPageView } from './utils/analytics';
 
 const HomeScreen = lazy(() => import('./components/HomeScreen'));
-const PortfolioScreen = lazy(() => import('./components/PortfolioScreen'));
+const BayjfScreen = lazy(() => import('./components/BayjfScreen'));
 const ExperienceScreen = lazy(() => import('./components/ExperienceScreen'));
 const ContactScreen = lazy(() => import('./components/ContactScreen'));
 
@@ -25,7 +25,7 @@ export default function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>('home');
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     try {
-      const saved = localStorage.getItem('portfolio_theme');
+      const saved = localStorage.getItem('bayjf_theme');
       if (saved === 'light' || saved === 'dark') {
         return saved;
       }
@@ -40,7 +40,7 @@ export default function App() {
     const nextTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(nextTheme);
     try {
-      localStorage.setItem('portfolio_theme', nextTheme);
+      localStorage.setItem('bayjf_theme', nextTheme);
     } catch (e) {}
     if (soundEnabled) {
       playThemeToggleSound(nextTheme);
@@ -63,7 +63,7 @@ export default function App() {
     setCurrentScreen(screen);
   }, []);
 
-  // Global keyboard shortcuts for navigation (H, P, E, C)
+  // Global keyboard shortcuts for navigation (H, B, E, C)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Ignore shortcuts if the user is typing in an input, textarea, select, or editable element
@@ -90,7 +90,7 @@ export default function App() {
         handleNavigate('home', 'push');
       } else if (key === 'p') {
         e.preventDefault();
-        handleNavigate('portfolio', 'push');
+        handleNavigate('bayjf', 'push');
       } else if (key === 'e') {
         e.preventDefault();
         handleNavigate('experience', 'push');
@@ -121,7 +121,7 @@ export default function App() {
       const projectFromHash = hash.startsWith('#project-') ? hash.substring(9) : null;
       
       if (projectFromQuery || projectFromHash) {
-        setCurrentScreen('portfolio');
+        setCurrentScreen('bayjf');
       }
     };
     
@@ -137,8 +137,8 @@ export default function App() {
     switch (currentScreen) {
       case 'home':
         return <HomeScreen onNavigate={handleNavigate} />;
-      case 'portfolio':
-        return <PortfolioScreen />;
+      case 'bayjf':
+        return <BayjfScreen />;
       case 'experience':
         return <ExperienceScreen />;
       case 'contact':

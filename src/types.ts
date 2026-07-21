@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export type ScreenType = 'home' | 'portfolio' | 'experience' | 'contact';
+export type ScreenType = 'home' | 'bayjf' | 'experience' | 'contact';
 
 export interface Project {
   id: string;
