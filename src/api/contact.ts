@@ -11,7 +11,7 @@ interface ApiErrorBody {
   message?: string;
 }
 
-const API_URL = (import.meta.env.VITE_API_URL || '/api').replace(/\/$/, '');
+const API_URL = '/api';
 const CONTACT_REQUEST_TIMEOUT_MS = 15_000;
 
 export async function submitContactMessage(
