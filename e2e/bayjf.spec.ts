@@ -71,3 +71,27 @@ test('keeps a native cursor until the custom cursor is ready', async ({ page }) 
     await expect(html).not.toHaveCSS('cursor', 'none');
   }
 });
+
+test('sends contact API requests through the same-origin path', async ({ page }) => {
+  let interceptedUrl = '';
+  await page.route('**/api/contact', async (route) => {
+    interceptedUrl = route.request().url();
+    await route.fulfill({
+      status: 201,
+      contentType: 'application/json',
+      body: '{"ok":true}',
+    });
+  });
+
+  const status = await page.evaluate(async () => {
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    });
+    return response.status;
+  });
+
+  expect(status).toBe(201);
+  expect(interceptedUrl).toMatch(/^http:\/\/127\.0\.0\.1:4173\/api\/contact$/);
+});
