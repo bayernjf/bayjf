@@ -6,7 +6,12 @@ const env: Env = {
   SUPABASE_URL: 'https://example.supabase.co',
   SUPABASE_SERVICE_ROLE_KEY: 'test-key',
   ALLOWED_ORIGINS: 'https://bayjf.example.com',
+  TURNSTILE_SECRET_KEY: 'test-secret',
 };
+
+vi.stubGlobal('fetch', vi.fn().mockImplementation(() => Promise.resolve(
+  new Response(JSON.stringify({ success: true }), { status: 200 }),
+)));
 
 describe('contact API', () => {
   it('persists a valid submission', async () => {
@@ -16,7 +21,7 @@ describe('contact API', () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Origin: 'https://bayjf.example.com' },
       body: JSON.stringify({
-        name: 'Ada', email: 'ada@example.com', subject: 'Hello', message: 'A new project',
+        name: 'Ada', email: 'ada@example.com', subject: 'Hello', message: 'A new project', turnstileToken: 'test-token',
       }),
     }, env);
 
@@ -42,7 +47,7 @@ describe('contact API', () => {
     const response = await app.request('/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: 'Ada', email: 'ada@example.com', subject: 'Hi', message: 'Hello' }),
+      body: JSON.stringify({ name: 'Ada', email: 'ada@example.com', subject: 'Hi', message: 'Hello', turnstileToken: 'test-token' }),
     }, env);
     expect(response.status).toBe(500);
     expect(await response.text()).not.toContain('database detail');

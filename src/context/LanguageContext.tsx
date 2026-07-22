@@ -20,24 +20,31 @@ interface LanguageContextProps {
   setSoundEnabled: (enabled: boolean) => void;
 }
 
+// Project dates follow the dates supplied from the corresponding GitHub feature branches.
+const SOFT_DESK_RELEASE_DATE = '2026-06-22';
+const WORD_BASE_RELEASE_DATE = '2026-06-02';
+const TAB_GARDEN_RELEASE_DATE = '2026-07-19';
+
 const PROJECTS_EN: Project[] = [
   {
     id: 'soft-desk',
     title: 'SoftDesk',
     category: 'DESKTOP SOFTWARE TOOL',
     description: 'An Electron desktop application for organizing software, workflows, favorites, shares, and usage insights, with a companion web experience.',
-    image: 'https://opengraph.githubassets.com/1/bayernjf/soft-desk',
+    image: 'https://soft-desk-landing.pages.dev/preview.png',
     tags: ['Electron', 'React', 'TypeScript', 'SQLite', 'Supabase'],
-    link: 'https://soft-desk-landing.pages.dev/'
+    link: 'https://soft-desk-landing.pages.dev/',
+    date: SOFT_DESK_RELEASE_DATE
   },
   {
     id: 'word-base',
     title: 'WordBase Ecosystem',
     category: 'LANGUAGE LEARNING PLATFORM',
     description: 'A contextual vocabulary-learning workspace spanning web, desktop, and mobile, paired with WordPicker for browser-based lookup and word collection.',
-    image: 'https://opengraph.githubassets.com/1/bayernjf/word-base',
+    image: 'https://word-base.pages.dev/preview.png',
     tags: ['Next.js', 'React Native', 'Tauri', 'Hono', 'Supabase'],
-    link: 'https://word-base.pages.dev/'
+    link: 'https://word-base.pages.dev/',
+    date: WORD_BASE_RELEASE_DATE
   },
   {
     id: 'tab-garden',
@@ -46,7 +53,8 @@ const PROJECTS_EN: Project[] = [
     description: 'A Chrome and Edge Manifest V3 extension that groups tabs by hostname, preserves user-created groups, and syncs grouping preferences after sign-in.',
     image: 'https://opengraph.githubassets.com/1/bayernjf/tab-manager',
     tags: ['Chrome Extension', 'TypeScript', 'Manifest V3', 'Supabase'],
-    link: 'https://github.com/bayernjf/tab-manager'
+    link: 'https://github.com/bayernjf/tab-manager',
+    date: TAB_GARDEN_RELEASE_DATE
   }
 ];
 
@@ -56,18 +64,20 @@ const PROJECTS_ZH: Project[] = [
     title: 'SoftDesk',
     category: '桌面软件管理工具',
     description: '基于 Electron 的桌面应用，用于管理软件、工作流、收藏、分享与使用统计，并配有对应的 Web 体验。',
-    image: 'https://opengraph.githubassets.com/1/bayernjf/soft-desk',
+    image: 'https://soft-desk-landing.pages.dev/preview.png',
     tags: ['Electron', 'React', 'TypeScript', 'SQLite', 'Supabase'],
-    link: 'https://soft-desk-landing.pages.dev/'
+    link: 'https://soft-desk-landing.pages.dev/',
+    date: SOFT_DESK_RELEASE_DATE
   },
   {
     id: 'word-base',
     title: 'WordBase 生态',
     category: '语言学习平台',
     description: '覆盖 Web、桌面端与移动端的语境化词汇学习工作台；搭配 WordPicker 浏览器扩展，完成浏览器查词与单词沉淀。',
-    image: 'https://opengraph.githubassets.com/1/bayernjf/word-base',
+    image: 'https://word-base.pages.dev/preview.png',
     tags: ['Next.js', 'React Native', 'Tauri', 'Hono', 'Supabase'],
-    link: 'https://word-base.pages.dev/'
+    link: 'https://word-base.pages.dev/',
+    date: WORD_BASE_RELEASE_DATE
   },
   {
     id: 'tab-garden',
@@ -76,7 +86,8 @@ const PROJECTS_ZH: Project[] = [
     description: '面向 Chrome 与 Edge 的 Manifest V3 扩展，按站点自动分组标签页、保留用户自定义分组，并在登录后同步分组偏好。',
     image: 'https://opengraph.githubassets.com/1/bayernjf/tab-manager',
     tags: ['Chrome 扩展', 'TypeScript', 'Manifest V3', 'Supabase'],
-    link: 'https://github.com/bayernjf/tab-manager'
+    link: 'https://github.com/bayernjf/tab-manager',
+    date: TAB_GARDEN_RELEASE_DATE
   }
 ];
 
@@ -86,8 +97,8 @@ const EXPERIENCE_EN: ExperienceItem[] = [
     role: 'AI Native Full-stack Developer',
     company: 'Independent Practice',
     companyDescription: 'Helping teams and individuals turn AI Agent ideas into practical products, workflows, and efficiency gains.',
-    location: 'Shenzhen · Remote / Global',
-    period: 'Current',
+    location: 'Shanghai / Shenzhen · Remote / Global',
+    period: '2026.01 - Present',
     bullets: [
       'Design and deliver AI Agent solutions for business and personal productivity.',
       'Take projects from product definition to full-stack implementation.',
@@ -95,18 +106,18 @@ const EXPERIENCE_EN: ExperienceItem[] = [
     ]
   }
   ,{
-    id: 'soft-power', role: 'Java Engineer', company: 'Shenzhen Soft Power Technology',
-    companyDescription: 'Enterprise software development and DevOps platform delivery.', location: 'Shenzhen', period: '2025 - Present',
+    id: 'soft-power', role: 'Java Engineer / AI Developer', company: 'Shenzhen Soft Power Technology',
+    companyDescription: 'Enterprise software development and DevOps platform delivery.', location: 'Shenzhen', period: '2025.01 - 2025.12',
     bullets: ['Developed and optimized internal DevOps platform modules, including AI summaries and analysis workflows.', 'Designed APIs, implemented features, and collaborated on testing and documentation.']
   },
   {
     id: 'hengge', role: 'Java Engineer', company: 'Shanghai Hengge Information Technology',
-    companyDescription: 'Enterprise system development for insurance and consumer rights workflows.', location: 'Shenzhen', period: '2024 - 2024',
+    companyDescription: 'Enterprise system development for insurance and consumer rights workflows.', location: 'Shenzhen', period: '2024.06 - 2024.12',
     bullets: ['Delivered business modules, dashboards, workflow coordination, permissions, and query optimizations.', 'Supported maintenance, testing, and iterative feature delivery.']
   },
   {
     id: 'changliang', role: 'Java Engineer', company: 'Beijing Changan Hedo Information Technology',
-    companyDescription: 'Budget management system development for a rural commercial bank.', location: 'Remote', period: '2021 - 2022',
+    companyDescription: 'Budget management system development for a rural commercial bank.', location: 'Remote', period: '2021.03 - 2022.08',
     bullets: ['Contributed to budget planning, reporting, permissions, data processing, and system maintenance.', 'Supported project acceptance and coordinated delivery with business and engineering teams.']
   }
 ];
@@ -117,8 +128,8 @@ const EXPERIENCE_ZH: ExperienceItem[] = [
     role: 'AI Native 全栈开发者',
     company: '独立实践',
     companyDescription: '帮助企业与个人将 AI Agent 想法落地为可用产品、工作流与效率提升方案。',
-    location: '深圳 · 支持远程与全球协作',
-    period: '当前',
+    location: '上海 / 深圳 · 支持远程与全球协作',
+    period: '2026.01 - 至今',
     bullets: [
       '为企业和个人设计、开发可落地的 AI Agent，提升工作与业务效率。',
       '可从产品定义到全栈实现，交付可持续迭代的应用与自动化工作流。',
@@ -126,15 +137,15 @@ const EXPERIENCE_ZH: ExperienceItem[] = [
     ]
   }
   ,{
-    id: 'soft-power', role: 'Java 工程师', company: '深圳软通动力信息科技有限公司', companyDescription: '企业软件开发与 DevOps 平台交付。', location: '深圳', period: '2025 - 至今',
+    id: 'soft-power', role: 'Java 工程师/AI开发', company: '深圳软通动力信息科技有限公司', companyDescription: '企业软件开发与 DevOps 平台交付。', location: '深圳', period: '2025.01 - 2025.12',
     bullets: ['负责 DevOps 平台模块开发与优化，涉及 AI 总结、AI 分析、通知与流程协作。', '完成需求分析、接口设计、编码自测，并配合测试和文档交付。']
   },
   {
-    id: 'hengge', role: 'Java 工程师', company: '上海恒格信息科技有限公司', companyDescription: '保险与消费者权益业务系统开发。', location: '深圳', period: '2024 - 2024',
+    id: 'hengge', role: 'Java 工程师', company: '上海恒格信息科技有限公司', companyDescription: '保险与消费者权益业务系统开发。', location: '深圳', period: '2024.06 - 2024.12',
     bullets: ['负责业务模块、数据看板、流程协同、权限控制与查询优化。', '参与系统维护、测试和持续功能迭代。']
   },
   {
-    id: 'changliang', role: 'Java 工程师', company: '北京长亮合度信息技术有限公司', companyDescription: '农商行全面预算管理系统开发。', location: '苏州', period: '2021 - 2022',
+    id: 'changliang', role: 'Java 工程师', company: '北京长亮合度信息技术有限公司', companyDescription: '农商行全面预算管理系统开发。', location: '苏州', period: '2021.03 - 2022.08',
     bullets: ['参与预算编制、报表、权限、数据加工和系统维护功能。', '参与项目验收，并协助业务与研发团队完成交付。']
   }
 ];
@@ -142,7 +153,7 @@ const EXPERIENCE_ZH: ExperienceItem[] = [
 const TRANSLATIONS: Record<Language, Record<string, string>> = {
   en: {
     // SEO & Meta
-    'seo.home.title': 'AI Native Developer & AI Agent Builder | 姜峰',
+    'seo.home.title': 'AI Native Developer & AI Agent Builder | BayJF',
     'seo.home.desc': 'AI Native full-stack developer helping businesses and individuals turn AI Agent ideas into practical products and workflows.',
     'seo.bayjf.title': 'Selected Projects | BayJF',
     'seo.bayjf.desc': 'Real products and tools built across AI-enabled workflows, enterprise systems, language learning, and browser productivity.',
@@ -163,13 +174,14 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
     // HomeScreen
     'home.hero.title1': 'AI Native',
     'home.hero.title2': 'AI Agent Delivery',
+    'home.hero.title3': 'Traditional Workflow Optimization & Organizational Efficiency',
     'home.hero.subtitle': 'I help businesses and individuals turn AI Agent ideas into practical products, automated workflows, and measurable efficiency gains — from product definition to full-stack delivery.',
-    'home.hero.btnWork': 'View Work',
+    'home.hero.btnWork': 'Real Cases',
     'home.hero.btnAbout': 'About Me',
     'home.hero.scroll': 'Scroll',
     'home.philosophy.title': 'Build the agent. Improve the work.',
     'home.philosophy.p1': 'I focus on turning complex work into clear, reliable systems. For AI Agent projects, that means understanding the real workflow first, then connecting models, tools, data, and human decisions into a product people can actually use.',
-    'home.philosophy.p2': 'With over a decade of experience bridging the gap between design and engineering, I focus on creating systems that scale gracefully while maintaining a meticulous attention to detail at the micro-level.',
+    'home.philosophy.p2': 'I bring enterprise Java delivery experience into my current AI Native practice, connecting product thinking, models, tools, data, and full-stack engineering.',
     'home.philosophy.yearsExp': 'AI Native Focus',
     'home.philosophy.projectsShipped': 'Real Product Cases',
 
@@ -188,12 +200,12 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'bayjf.launchDemo': 'Launch Demo',
 
     // ExperienceScreen
-    'experience.headerTag': 'My Path',
+    'experience.headerTag': 'Career Experience',
     'experience.title': 'Experience',
-    'experience.desc': 'A chronological journey through my professional career, highlighting key roles, projects, and the impact delivered at each stage.',
+    'experience.desc': 'Below is my professional experience to date; I currently focus on AI Agent delivery and full-stack development.',
     'experience.skillsHeaderTag': 'Skills & Proficiencies',
     'experience.skillsTitle': 'Technical Capabilities',
-    'experience.skillsDesc': 'A practical overview of the engineering and AI Agent capabilities I use to turn ideas into working products.',
+    'experience.skillsDesc': 'The practical AI Agent, Java full-stack, and enterprise delivery capabilities I use to turn ideas into working products.',
     'experience.skillsTech': 'Technologies & Frameworks',
     'experience.years': 'years',
     'experience.year': 'year',
@@ -210,8 +222,8 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
 
     // ContactScreen
     'contact.headerTag': 'Contact',
-    'contact.title': "Let's Connect",
-    'contact.desc': 'Available for AI Agent delivery, full-stack development, enterprise efficiency projects, international collaboration, and remote roles.',
+    'contact.title': 'Contact Me for a Business Consultation',
+    'contact.desc': 'Enterprise AI Agent consulting, full-stack product development and delivery, and AI-led improvements to organizational structure and efficiency.',
     'contact.info.location': 'Based In',
     'contact.info.locationVal': 'Shenzhen · Remote / Global',
     'contact.info.email': 'Direct Email',
@@ -231,14 +243,14 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'contact.form.errMessage': 'Message is required',
 
     // Footer
-    'footer.copyright': '© {year} 姜峰 · AI Native Development. All rights reserved.',
+    'footer.copyright': '© {year} BayJF · AI Native / AI Agent Delivery. All rights reserved.',
   },
   zh: {
     // SEO & Meta
-    'seo.home.title': 'AI Native 开发者与 AI Agent 落地 | 姜峰',
-    'seo.home.desc': '欢迎来到数字化匠心与产品设计作品集。探索直观、优雅和高性能的数字产品与系统设计。',
+    'seo.home.title': 'AI Native 开发者与 AI Agent 落地 | BayJF',
+    'seo.home.desc': 'AI Native 全栈开发者姜峰，帮助企业与个人落地 AI Agent、自动化工作流与效率工具。',
     'seo.bayjf.title': '精选项目 | BayJF',
-    'seo.bayjf.desc': '精心策划的产品、界面和视觉系统展厅，旨在将功能与数字化美学完美融合。',
+    'seo.bayjf.desc': '展示 SoftDesk、WordBase、WordPicker 与 Tab Garden 等真实产品，记录从产品想法到全栈交付的实践。',
     'seo.experience.title': '工作经历与技能 | 作品集',
     'seo.experience.desc': '我的职业生涯成长轨迹，重点展示关键角色、项目和核心技术能力。',
     'seo.contact.title': '取得联系 | BayJF',
@@ -256,8 +268,9 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
     // HomeScreen
     'home.hero.title1': 'AI Native',
     'home.hero.title2': 'AI Agent 落地',
+    'home.hero.title3': '传统工作流优化、组织效率提升',
     'home.hero.subtitle': '帮助企业与个人将 AI Agent 想法变成可用产品、自动化工作流和真实效率提升，从产品定义到全栈交付。',
-    'home.hero.btnWork': '精选作品',
+    'home.hero.btnWork': '真实案例',
     'home.hero.btnAbout': '关于我',
     'home.hero.scroll': '向下滑动',
     'home.philosophy.title': '让 Agent 真正改善工作',
@@ -267,9 +280,9 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'home.philosophy.projectsShipped': '真实产品案例',
 
     // BayjfScreen
-    'bayjf.headerTag': '我的作品集',
+    'bayjf.headerTag': '我的案例',
     'bayjf.title': '精选项目',
-    'bayjf.desc': '精心策划的产品、界面和视觉系统画廊，致力于将核心功能与完美的像素打磨有机融合。',
+    'bayjf.desc': '这里展示我亲自构建的真实产品：桌面效率工具、语言学习工作台与浏览器扩展，记录 AI Native 的产品实践与全栈交付。',
     'bayjf.filter': '筛选:',
     'bayjf.viewCaseStudy': '查看案例研究',
     'bayjf.more': '更多',
@@ -281,12 +294,12 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'bayjf.launchDemo': '启动演示',
 
     // ExperienceScreen
-    'experience.headerTag': '成长轨迹',
+    'experience.headerTag': '职业经历',
     'experience.title': '工作经历',
-    'experience.desc': '我的职业生涯轨迹，重点展示我在各个阶段承担的关键角色、主导项目以及交付的核心价值。',
+    'experience.desc': '以下是过往在职经历，目前聚焦 AI Agent 与全栈开发。',
     'experience.skillsHeaderTag': '专业技能',
     'experience.skillsTitle': '核心技术能力',
-    'experience.skillsDesc': '我对创建数字化匠心产品所熟练掌握的工具、技术及方法论的视觉概览。',
+    'experience.skillsDesc': '我用于落地 AI Agent、Java 全栈系统与企业级交付的核心能力。',
     'experience.skillsTech': '技术与框架',
     'experience.years': '年',
     'experience.year': '年',
@@ -303,8 +316,8 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
 
     // ContactScreen
     'contact.headerTag': '取得联系',
-    'contact.title': '让我们开始沟通',
-    'contact.desc': '我随时乐意与您探讨全新的设计挑战、空间界面体系、协同产品架构或数字化创新的可能。',
+    'contact.title': '随时联系我进行业务咨询',
+    'contact.desc': 'AI Agent 的企业咨询服务、产品全栈开发与交付、AI 落地优化组织架构和效率提升。',
     'contact.info.location': '当前位于',
     'contact.info.locationVal': '深圳 · 远程 / 全球协作',
     'contact.info.email': '直连邮箱',
@@ -324,7 +337,7 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'contact.form.errMessage': '留言内容不能为空',
 
     // Footer
-    'footer.copyright': '© {year} 数字化匠心. 保留所有权利。',
+    'footer.copyright': '© {year} BayJF · AI Native / AI Agent 落地。保留所有权利。',
   }
 };
 

@@ -3,62 +3,22 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, FormEvent, MouseEvent } from 'react';
+import { useState, useCallback, FormEvent, MouseEvent } from 'react';
 import { motion } from 'motion/react';
-import { Mail, Link, Code, Palette, ArrowRight, Copy } from 'lucide-react';
+import { Mail, Link, Code, ArrowRight, Copy, AlertCircle } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useToast } from '../context/ToastContext';
 import { submitContactMessage } from '../api/contact';
 import { trackEvent } from '../utils/analytics';
+import TurnstileWidget from './TurnstileWidget';
 
 export default function ContactScreen() {
   const { t, language } = useLanguage();
   const { showToast } = useToast();
-  const [overrideStatus, setOverrideStatus] = useState<'auto' | 'accepting' | 'unavailable'>('auto');
-
-  // Calculate current auto status
-  const getAvailabilityStatus = () => {
-    if (overrideStatus === 'accepting') {
-      return {
-        available: true,
-        label: language === 'en' ? 'Currently Accepting Projects' : '当前接受项目合作',
-        reason: language === 'en' ? 'Manual Override' : '手动设置'
-      };
-    }
-    if (overrideStatus === 'unavailable') {
-      return {
-        available: false,
-        label: language === 'en' ? 'Currently Unavailable' : '当前暂未开放合作',
-        reason: language === 'en' ? 'Manual Override' : '手动设置'
-      };
-    }
-
-    // Auto logic: Monday - Friday, 9:00 AM to 9:00 PM (9:00 to 21:00)
-    const now = new Date();
-    const day = now.getDay(); // 0 is Sunday, 6 is Saturday
-    const hour = now.getHours();
-    
-    const isWeekend = day === 0 || day === 6;
-    const isWorkingHours = hour >= 9 && hour < 21;
-
-    if (!isWeekend && isWorkingHours) {
-      return {
-        available: true,
-        label: language === 'en' ? 'Currently Accepting Projects' : '当前接受项目合作',
-        reason: language === 'en' ? 'Office Hours (9 AM - 9 PM)' : '工作时间 (9:00 - 21:00)'
-      };
-    } else {
-      return {
-        available: false,
-        label: language === 'en' ? 'Currently Unavailable' : '当前暂未开放合作',
-        reason: isWeekend 
-          ? (language === 'en' ? 'Weekend rest' : '周末休息')
-          : (language === 'en' ? 'Away - Back at 9 AM' : '非工作时间 - 下午9点后/上午9点前')
-      };
-    }
+  const status = {
+    available: true,
+    label: language === 'en' ? 'Currently Accepting Projects' : '当前接受项目合作'
   };
-
-  const status = getAvailabilityStatus();
   
   const handleCopyEmail = (email: string) => (e: MouseEvent) => {
     e.preventDefault();
@@ -91,6 +51,10 @@ export default function ContactScreen() {
   }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+  const handleTurnstileError = useCallback(() => setTurnstileToken(''), []);
 
   const validate = (): boolean => {
     const newErrors: typeof errors = {};
@@ -122,6 +86,7 @@ export default function ContactScreen() {
 
   const handleChange = (field: keyof typeof formData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    setSubmitError('');
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
@@ -136,10 +101,18 @@ export default function ContactScreen() {
       );
       return;
     }
+    if (!turnstileToken) {
+      showToast(
+        language === 'en' ? 'Please complete the human verification.' : '请先完成安全验证。',
+        'error'
+      );
+      return;
+    }
 
     setIsSubmitting(true);
+    setSubmitError('');
     try {
-      await submitContactMessage(formData);
+      await submitContactMessage({ ...formData, turnstileToken });
       setIsSubmitting(false);
       setIsSuccess(true);
       trackEvent('contact_form_submit', { status: 'success' });
@@ -148,16 +121,23 @@ export default function ContactScreen() {
         'success'
       );
       setFormData({ name: '', email: '', subject: '', message: '' });
+      setTurnstileToken('');
       setErrors({});
       setTimeout(() => setIsSuccess(false), 5000);
-    } catch {
+    } catch (error) {
       setIsSubmitting(false);
       setIsSuccess(false);
       trackEvent('contact_form_submit', { status: 'error' });
-      showToast(
-        language === 'en' ? 'Failed to send message. Please try again.' : '发送留言失败，请稍后重试。',
-        'error'
-      );
+      const errorName = error instanceof Error ? error.name : '';
+      const errorMessage = error instanceof Error ? error.message : '';
+      const message = errorName === 'TimeoutError' || errorName === 'AbortError'
+        ? (language === 'en' ? 'The request timed out. Please check that the API service is running and try again.' : '请求超时，请确认 API 服务已启动后重试。')
+        : errorMessage === 'Human verification failed.' || errorMessage === 'VERIFICATION_FAILED'
+          ? (language === 'en' ? 'Human verification failed. Please complete it again.' : '安全验证失败，请重新完成验证。')
+          : errorMessage === 'Unable to send message right now.' || errorMessage === 'INTERNAL_ERROR'
+            ? (language === 'en' ? 'The message service is temporarily unavailable. Please try again later.' : '留言服务暂时不可用，请稍后重试。')
+            : (language === 'en' ? 'Unable to connect to the message service. Please start the local API and try again.' : '无法连接留言服务，请启动本地 API 后重试。');
+      setSubmitError(message);
     }
   };
 
@@ -185,38 +165,7 @@ export default function ContactScreen() {
                   <span className="font-semibold text-[#1b1c1b] dark:text-[#fbf9f7] mr-2">
                     {status.label}
                   </span>
-                  {status.reason && (
-                    <span className="text-[#444748]/55 dark:text-[#c4c7c7]/50 text-[10px] border-l border-[#e4e2e0] dark:border-white/10 pl-2">
-                      {status.reason}
-                    </span>
-                  )}
                 </div>
-              </div>
-              
-              {/* Configurable Flag override selectors (Testing Helper) */}
-              <div className="flex items-center gap-1.5 text-[10px] font-sans text-[#444748]/60 dark:text-[#c4c7c7]/50 mt-1 pl-1">
-                <span>{language === 'en' ? 'Availability Mode:' : '合作状态模式：'}</span>
-                <button
-                  id="availability-mode-auto"
-                  onClick={() => setOverrideStatus('auto')}
-                  className={`px-2 py-0.5 rounded transition-all ${overrideStatus === 'auto' ? 'bg-[#54615b]/10 dark:bg-white/10 text-[#54615b] dark:text-[#bbcac2] font-semibold' : 'hover:text-[#1b1c1b] dark:hover:text-[#fbf9f7]'}`}
-                >
-                  {language === 'en' ? 'Auto (Live Time)' : '自动 (实时时间)'}
-                </button>
-                <button
-                  id="availability-mode-accepting"
-                  onClick={() => setOverrideStatus('accepting')}
-                  className={`px-2 py-0.5 rounded transition-all ${overrideStatus === 'accepting' ? 'bg-emerald-100 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 font-semibold' : 'hover:text-[#1b1c1b] dark:hover:text-[#fbf9f7]'}`}
-                >
-                  {language === 'en' ? 'Accepting' : '接案中'}
-                </button>
-                <button
-                  id="availability-mode-unavailable"
-                  onClick={() => setOverrideStatus('unavailable')}
-                  className={`px-2 py-0.5 rounded transition-all ${overrideStatus === 'unavailable' ? 'bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 font-semibold' : 'hover:text-[#1b1c1b] dark:hover:text-[#fbf9f7]'}`}
-                >
-                  {language === 'en' ? 'Away' : '忙碌/离开'}
-                </button>
               </div>
             </div>
 
@@ -279,15 +228,6 @@ export default function ContactScreen() {
               >
                 <Code size={20} />
               </a>
-              <a
-                id="social-link-design"
-                href="https://dribbble.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-3 bg-[#e4e2e0]/40 dark:bg-white/5 text-[#444748] dark:text-[#c4c7c7] hover:text-[#54615b] dark:hover:text-[#bbcac2] hover:bg-[#e4e2e0] dark:hover:bg-white/10 rounded-full transition-all duration-300 scale-100 hover:scale-110"
-              >
-                <Palette size={20} />
-              </a>
             </div>
           </motion.div>
         </div>
@@ -330,7 +270,7 @@ export default function ContactScreen() {
                         placeholder={t('contact.form.namePlaceholder')}
                         value={formData.name}
                         onChange={(e) => handleChange('name', e.target.value)}
-                        className={`w-full bg-transparent border-b py-3 text-sm text-[#1b1c1b] dark:text-[#fbf9f7] placeholder-[#444748]/50 focus:outline-none transition-colors duration-300 ${
+                        className={`contact-field w-full bg-transparent border-b py-3 text-sm text-[#1b1c1b] dark:text-[#fbf9f7] placeholder-[#444748]/60 dark:placeholder-[#c4c7c7]/75 focus:outline-none transition-colors duration-300 ${
                           errors.name
                             ? 'border-rose-500 dark:border-rose-400 focus:border-rose-600 dark:focus:border-rose-400'
                             : 'border-[#e4e2e0] dark:border-white/10 focus:border-[#54615b] dark:focus:border-[#bbcac2]'
@@ -353,7 +293,7 @@ export default function ContactScreen() {
                         placeholder={t('contact.form.emailPlaceholder')}
                         value={formData.email}
                         onChange={(e) => handleChange('email', e.target.value)}
-                        className={`w-full bg-transparent border-b py-3 text-sm text-[#1b1c1b] dark:text-[#fbf9f7] placeholder-[#444748]/50 focus:outline-none transition-colors duration-300 ${
+                        className={`contact-field w-full bg-transparent border-b py-3 text-sm text-[#1b1c1b] dark:text-[#fbf9f7] placeholder-[#444748]/60 dark:placeholder-[#c4c7c7]/75 focus:outline-none transition-colors duration-300 ${
                           errors.email
                             ? 'border-rose-500 dark:border-rose-400 focus:border-rose-600 dark:focus:border-rose-400'
                             : 'border-[#e4e2e0] dark:border-white/10 focus:border-[#54615b] dark:focus:border-[#bbcac2]'
@@ -377,7 +317,7 @@ export default function ContactScreen() {
                       placeholder={t('contact.form.subjectPlaceholder')}
                       value={formData.subject}
                       onChange={(e) => handleChange('subject', e.target.value)}
-                      className={`w-full bg-transparent border-b py-3 text-sm text-[#1b1c1b] dark:text-[#fbf9f7] placeholder-[#444748]/50 focus:outline-none transition-colors duration-300 ${
+                      className={`contact-field w-full bg-transparent border-b py-3 text-sm text-[#1b1c1b] dark:text-[#fbf9f7] placeholder-[#444748]/60 dark:placeholder-[#c4c7c7]/75 focus:outline-none transition-colors duration-300 ${
                         errors.subject
                           ? 'border-rose-500 dark:border-rose-400 focus:border-rose-600 dark:focus:border-rose-400'
                           : 'border-[#e4e2e0] dark:border-white/10 focus:border-[#54615b] dark:focus:border-[#bbcac2]'
@@ -400,7 +340,7 @@ export default function ContactScreen() {
                       placeholder={t('contact.form.messagePlaceholder')}
                       value={formData.message}
                       onChange={(e) => handleChange('message', e.target.value)}
-                      className={`w-full bg-transparent border-b py-3 text-sm text-[#1b1c1b] dark:text-[#fbf9f7] placeholder-[#444748]/50 focus:outline-none transition-colors duration-300 resize-none ${
+                      className={`contact-field w-full bg-transparent border-b py-3 text-sm text-[#1b1c1b] dark:text-[#fbf9f7] placeholder-[#444748]/60 dark:placeholder-[#c4c7c7]/75 focus:outline-none transition-colors duration-300 resize-none ${
                         errors.message
                           ? 'border-rose-500 dark:border-rose-400 focus:border-rose-600 dark:focus:border-rose-400'
                           : 'border-[#e4e2e0] dark:border-white/10 focus:border-[#54615b] dark:focus:border-[#bbcac2]'
@@ -415,6 +355,24 @@ export default function ContactScreen() {
                 </div>
 
                 {/* Submit button */}
+                {submitError && (
+                  <div
+                    role="alert"
+                    className="flex items-start gap-3 rounded-2xl border border-rose-300/60 dark:border-rose-400/30 bg-rose-50/90 dark:bg-rose-950/30 px-4 py-3 text-sm text-rose-800 dark:text-rose-200"
+                  >
+                    <AlertCircle size={18} className="mt-0.5 shrink-0 text-rose-500" />
+                    <span>{submitError}</span>
+                  </div>
+                )}
+                {turnstileSiteKey ? (
+                  <TurnstileWidget
+                    siteKey={turnstileSiteKey}
+                    onToken={setTurnstileToken}
+                    onError={handleTurnstileError}
+                  />
+                ) : (
+                  <p className="text-xs text-rose-500">{language === 'en' ? 'Human verification is not configured.' : '安全验证尚未配置。'}</p>
+                )}
                 <div className="mt-4 flex justify-end">
                   <button
                     id="form-submit-btn"

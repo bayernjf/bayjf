@@ -5,7 +5,7 @@
 
 import { ExperienceItem } from '../types';
 import { motion } from 'motion/react';
-import { Briefcase, Calendar, MapPin, Building, ChevronRight, GraduationCap } from 'lucide-react';
+import { Briefcase, Calendar, MapPin, Building, ChevronRight } from 'lucide-react';
 import SkillsGrid from './SkillsGrid';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -54,7 +54,7 @@ function ExperienceCard({ item, isLeft }: ExperienceCardProps) {
       className={`bg-[#fbf9f7] dark:bg-[#161716] p-6 md:p-8 rounded-2xl border border-[#e4e2e0] dark:border-white/5 shadow-md hover:-translate-y-1.5 hover:shadow-xl hover:border-[#54615b]/20 dark:hover:border-white/10 transition-all duration-500 flex flex-col h-full`}
     >
       {/* Date & Location Header */}
-      <div className={`flex flex-wrap items-center gap-3 text-xs font-semibold text-[#54615b] dark:text-[#bbcac2] mb-3 ${isLeft ? 'md:justify-end' : 'md:justify-start'}`}>
+      <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-[#54615b] dark:text-[#bbcac2] mb-3 justify-start">
         <span className="flex items-center gap-1.5 bg-[#54615b]/10 dark:bg-[#bbcac2]/10 px-2.5 py-1 rounded-full">
           <Calendar size={12} />
           {item.period}
@@ -78,7 +78,7 @@ function ExperienceCard({ item, isLeft }: ExperienceCardProps) {
 
       {/* Company Description */}
       {item.companyDescription && (
-        <p className={`font-sans text-xs italic text-[#444748]/70 dark:text-[#c4c7c7]/70 border-l-2 border-[#54615b]/30 dark:border-[#bbcac2]/30 pl-3 mb-5 leading-relaxed ${isLeft ? 'md:text-right md:border-l-0 md:border-r-2 md:pl-0 md:pr-3' : 'text-left'}`}>
+        <p className="font-sans text-xs italic text-[#444748]/70 dark:text-[#c4c7c7]/70 border-l-2 border-[#54615b]/30 dark:border-[#bbcac2]/30 pl-3 mb-5 leading-relaxed text-left">
           {item.companyDescription}
         </p>
       )}
@@ -89,17 +89,17 @@ function ExperienceCard({ item, isLeft }: ExperienceCardProps) {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        className={`space-y-3 mt-auto ${isLeft ? 'md:space-y-3 md:text-right' : 'text-left'}`}
+        className="space-y-3 mt-auto text-left"
       >
         {item.bullets.map((bullet, i) => (
           <motion.li 
             variants={listItemVariants}
             key={i} 
-            className={`font-sans text-sm text-[#444748] dark:text-[#c4c7c7] flex items-start gap-2 leading-relaxed ${isLeft ? 'md:flex-row-reverse' : ''}`}
+            className="font-sans text-sm text-[#444748] dark:text-[#c4c7c7] flex items-start gap-2 leading-relaxed"
           >
             <ChevronRight 
               size={16} 
-              className={`text-[#54615b] dark:text-[#bbcac2] flex-shrink-0 mt-0.5 ${isLeft ? 'md:rotate-180' : ''}`} 
+              className="text-[#54615b] dark:text-[#bbcac2] flex-shrink-0 mt-0.5"
             />
             <span>{bullet}</span>
           </motion.li>
@@ -122,7 +122,7 @@ export default function ExperienceScreen() {
           transition={{ duration: 0.6 }}
         >
           <span className="font-sans text-xs uppercase tracking-widest text-[#54615b] dark:text-[#bbcac2] font-semibold flex items-center justify-center md:justify-start gap-2">
-            <GraduationCap size={14} /> {t('experience.headerTag')}
+            <Briefcase size={14} /> {t('experience.headerTag')}
           </span>
           <h1 className="font-serif text-5xl md:text-7xl font-bold text-[#1b1c1b] dark:text-[#fbf9f7] mt-3 tracking-tight">
             {t('experience.title')}

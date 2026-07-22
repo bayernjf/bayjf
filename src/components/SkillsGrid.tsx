@@ -10,8 +10,7 @@ import { useLanguage } from '../context/LanguageContext';
 
 interface Skill {
   name: string;
-  level: number; // 0 to 100
-  years: number;
+  evidence: string;
 }
 
 interface SkillCategory {
@@ -26,55 +25,55 @@ interface SkillCategory {
 const SKILL_CATEGORIES: SkillCategory[] = [
   {
     id: 'ui-ux',
-    title: 'UI/UX Design',
-    icon: PenTool,
-    description: 'Creating high-fidelity, polished, and intuitive interface layouts centered around human behaviors.',
+    title: 'AI Agent Engineering',
+    icon: Cpu,
+    description: '从真实业务流程出发，设计可执行、可评估、可持续迭代的 Agent 工作流。',
     skills: [
-      { name: 'Interface Design & Layout', level: 95, years: 6 },
-      { name: 'Design Systems Architecture', level: 90, years: 4 },
-      { name: 'Motion & Spatial UI', level: 85, years: 3 },
-      { name: 'Glassmorphism & Aesthetics', level: 92, years: 4 },
+      { name: 'Agent Workflow Design', evidence: 'Applied' },
+      { name: 'Tool Calling & Context', evidence: 'Applied' },
+      { name: 'RAG & Knowledge Workflows', evidence: 'Applied' },
+      { name: 'Evaluation & Guardrails', evidence: 'Applied' },
     ],
-    tags: ['Figma', 'Interactive Prototyping', 'User Research', 'Wireframing', 'Color Theory', 'Typography']
+    tags: ['LLM APIs', 'Tool Calling', 'RAG', 'Prompt / Context', 'Evaluation']
   },
   {
     id: 'frontend',
-    title: 'Frontend Development',
+    title: 'Java Full-stack Development',
     icon: Code,
-    description: 'Translating design concepts into clean, pixel-perfect, and exceptionally performant web code.',
+    description: '覆盖企业 API、数据层与 Web 界面的全栈交付，连接 Agent 能力与真实业务系统。',
     skills: [
-      { name: 'React / Vite Architecture', level: 90, years: 5 },
-      { name: 'TypeScript Integration', level: 85, years: 4 },
-      { name: 'Tailwind CSS Mastery', level: 95, years: 5 },
-      { name: 'Framer Motion (Animations)', level: 88, years: 3 },
+      { name: 'Java / Spring Boot', evidence: 'Core' },
+      { name: 'REST API & Service Integration', evidence: 'Core' },
+      { name: 'MySQL / Redis / SQL', evidence: 'Core' },
+      { name: 'React / TypeScript Delivery', evidence: 'Applied' },
     ],
-    tags: ['ES6+ JS', 'CSS Grid/Flexbox', 'Responsive Design', 'HTML5 Canvas', 'Linter Config', 'Git']
+    tags: ['Java', 'Spring Boot', 'React', 'TypeScript', 'MySQL', 'Redis']
   },
   {
     id: 'creative-tech',
-    title: 'Creative Technology & Tooling',
-    icon: Cpu,
-    description: 'Leveraging modern frameworks, tooling, and media concepts to enhance digital performance.',
+    title: 'AI Product Delivery',
+    icon: PenTool,
+    description: '把 AI 能力转化为可使用的产品、自动化流程和可感知的效率提升。',
     skills: [
-      { name: 'WebGL & Immersive Canvas', level: 75, years: 2 },
-      { name: 'Performance Optimization', level: 82, years: 3 },
-      { name: 'Audio & Visual Processing', level: 70, years: 2 },
-      { name: 'API Design & Integration', level: 80, years: 4 },
+      { name: 'Workflow Discovery', evidence: 'Applied' },
+      { name: 'Human-in-the-loop UX', evidence: 'Applied' },
+      { name: 'Desktop / Web Productization', evidence: 'Applied' },
+      { name: 'API Design & Integration', evidence: 'Core' },
     ],
-    tags: ['Vite', 'Webpack', 'Three.js', 'Audio Synthesis', 'D3.js', 'SVG Manipulation', 'REST APIs']
+    tags: ['Electron', 'Tauri', 'Supabase', 'Hono', 'Vite', 'Product Discovery']
   },
   {
     id: 'strategy',
-    title: 'Product Strategy & Quality',
+    title: 'Enterprise Systems & Collaboration',
     icon: Award,
-    description: 'Ensuring absolute structural integrity, user accessibility, and design alignment during shipping.',
+    description: '理解企业业务约束，协同团队完成从需求、开发、测试到交付的完整闭环。',
     skills: [
-      { name: 'Accessibility Standards (a11y)', level: 85, years: 4 },
-      { name: 'SEO & Core Web Vitals', level: 80, years: 3 },
-      { name: 'Design-to-Code Handoff', level: 95, years: 5 },
-      { name: 'Iterative Prototyping', level: 90, years: 5 },
+      { name: 'DevOps & CI/CD Collaboration', evidence: 'Applied' },
+      { name: 'Permissions & Business Workflows', evidence: 'Core' },
+      { name: 'Data Processing & Reporting', evidence: 'Core' },
+      { name: 'Testing, Documentation & Delivery', evidence: 'Core' },
     ],
-    tags: ['WCAG Guidelines', 'Lighthouse Optimization', 'Responsive QA', 'Feature Planning', 'Agile Delivery']
+    tags: ['DevOps', 'CI/CD', 'RBAC', 'SQL', 'Git', 'Agile Delivery']
   }
 ];
 
@@ -86,24 +85,24 @@ export default function SkillsGrid() {
 
   const getSkillName = (name: string) => {
     const map: Record<string, string> = {
-      'Interface Design & Layout': language === 'en' ? 'Agent Workflow Design' : 'Agent 工作流设计',
-      'Design Systems Architecture': language === 'en' ? 'Context & Tool Design' : '上下文与工具设计',
-      'Motion & Spatial UI': language === 'en' ? 'Evaluation & Guardrails' : '评估与安全边界',
-      'Glassmorphism & Aesthetics': language === 'en' ? 'Human-in-the-loop UX' : '人机协作体验',
-      'React / Vite Architecture': language === 'en' ? 'Java / Spring Architecture' : 'Java / Spring 架构',
-      'TypeScript Integration': language === 'en' ? 'API & Service Integration' : 'API 与服务集成',
-      'Tailwind CSS Mastery': language === 'en' ? 'Database & Cache Systems' : '数据库与缓存系统',
-      'Framer Motion (Animations)': language === 'en' ? 'Full-stack Delivery' : '全栈交付',
-      'WebGL & Immersive Canvas': language === 'en' ? 'LLM & AI API Integration' : '大模型与 AI API 集成',
-      'Performance Optimization': language === 'en' ? 'Agent Reliability' : 'Agent 可靠性',
-      'Audio & Visual Processing': language === 'en' ? 'RAG & Knowledge Workflows' : 'RAG 与知识工作流',
-      'API Design & Integration': language === 'en' ? 'Enterprise API Design' : '企业级 API 设计',
-      'Accessibility Standards (a11y)': language === 'en' ? 'Accessibility Standards (a11y)' : 'Estándares de Accesibilidad (a11y)',
-      'SEO & Core Web Vitals': language === 'en' ? 'SEO & Core Web Vitals' : 'Métricas SEO y Core Web Vitals',
-      'Design-to-Code Handoff': language === 'en' ? 'Design-to-Code Handoff' : 'Traspaso de Diseño a Código',
-      'Iterative Prototyping': language === 'en' ? 'Iterative Prototyping' : 'Prototipado Iterativo',
+      'Agent Workflow Design': 'Agent 工作流设计',
+      'Tool Calling & Context': '工具调用与上下文',
+      'RAG & Knowledge Workflows': 'RAG 与知识工作流',
+      'Evaluation & Guardrails': '评估与安全边界',
+      'Java / Spring Boot': 'Java / Spring Boot',
+      'REST API & Service Integration': 'REST API 与服务集成',
+      'MySQL / Redis / SQL': 'MySQL / Redis / SQL',
+      'React / TypeScript Delivery': 'React / TypeScript 交付',
+      'Workflow Discovery': '业务工作流梳理',
+      'Human-in-the-loop UX': '人机协作体验',
+      'Desktop / Web Productization': '桌面端 / Web 产品化',
+      'API Design & Integration': 'API 设计与集成',
+      'DevOps & CI/CD Collaboration': 'DevOps 与 CI/CD 协作',
+      'Permissions & Business Workflows': '权限与业务流程',
+      'Data Processing & Reporting': '数据处理与报表',
+      'Testing, Documentation & Delivery': '测试、文档与交付',
     };
-    return map[name] || name;
+    return language === 'zh' ? (map[name] || name) : name;
   };
 
   const containerVariants = {
@@ -177,7 +176,7 @@ export default function SkillsGrid() {
                   {t(`skills.${transId}.desc`)}
                 </p>
 
-                {/* Progress bars */}
+                {/* Evidence-based capability list */}
                 <div className="space-y-4 mb-6">
                   {category.skills.map((skill) => (
                     <div key={skill.name} className="space-y-1.5">
@@ -186,20 +185,11 @@ export default function SkillsGrid() {
                           {getSkillName(skill.name)}
                         </span>
                         <span className="font-mono text-[11px] text-[#444748]/70 dark:text-[#c4c7c7]/70 font-semibold">
-                          {skill.years} {skill.years === 1 ? t('experience.year') : t('experience.years')}
+                          {language === 'en' ? skill.evidence : skill.evidence === 'Core' ? '核心' : '实践'}
                         </span>
                       </div>
                       
-                      {/* Bar container */}
-                      <div className="w-full h-1.5 bg-[#e4e2e0]/60 dark:bg-white/5 rounded-full overflow-hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${skill.level}%` }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-                          className="h-full bg-[#54615b] dark:bg-[#bbcac2] rounded-full shadow-[0_0_8px_rgba(84,97,91,0.2)]"
-                        />
-                      </div>
+                      <div className="w-full h-px bg-[#e4e2e0]/60 dark:bg-white/10" />
                     </div>
                   ))}
                 </div>

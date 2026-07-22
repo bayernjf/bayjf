@@ -118,7 +118,7 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme }
                   : 'text-[#444748] dark:text-[#c4c7c7] hover:opacity-80'
               }`}
             >
-              ZH
+              中
             </button>
           </div>
 
@@ -230,7 +230,7 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme }
                       : 'text-[#444748] dark:text-[#c4c7c7] hover:opacity-80'
                   }`}
                 >
-                  ZH
+                  中
                 </button>
               </div>
             </div>

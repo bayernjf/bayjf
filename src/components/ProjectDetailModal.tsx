@@ -34,30 +34,6 @@ const CUSTOM_CASE_STUDIES: Record<Language, Record<string, CustomCaseStudy>> = {
     'tab-garden': {
       challenge: 'Large tab collections become difficult to navigate, while automatic organization must not overwrite intentional user grouping.',
       solution: 'The extension groups eligible tabs by normalized hostname, preserves native and custom groups, and provides controls for pausing, thresholds, and manual organization.'
-    },
-    'lumina-pay': {
-      challenge: 'The primary challenge was designing a billing system that handles multi-currency invoicing without cluttering the screen or confusing freelance creators who need rapid payments.',
-      solution: 'We developed a clean, single-screen dashboard using glassmorphism components, enabling instant conversion and invoice creation under 3 taps with deep visual feedback.'
-    },
-    'aura-analytics': {
-      challenge: 'Managing heavy real-time data visualisations for environmental monitoring without high latency, visual cognitive load, or battery drain on mobile devices.',
-      solution: 'Leveraged optimized vector-rendering pipelines and designed custom chart palettes using progressive disclosure to keep complex data layers organized.'
-    },
-    'minimal-notes': {
-      challenge: 'Most note-taking applications overload creators with formatting sidebars and deep menus, causing micro-distractions that ruin flow and creative focus.',
-      solution: 'Built a completely plain writing interface with dynamic typographic grids and a contextual popover command menu that appears only on demand.'
-    },
-    'aether-sound': {
-      challenge: 'Sensing and rendering fast audio frequencies as smooth visual graphics while maintaining a consistent 60fps framerate on low-end hardware.',
-      solution: 'Wrote efficient GPU shaders that directly map incoming audio buffers into dynamic, organic noise fields, avoiding costly CPU recalculations.'
-    },
-    'forma-studio': {
-      challenge: '3D drafting tools usually require professional training and nested desktop controls, making rapid spatial design inaccessible to general product teams.',
-      solution: 'Implemented a tactile spatial grid editor using responsive gesture helpers and a single-layer radial action menu for 3D block placements.'
-    },
-    'komorebi-journal': {
-      challenge: 'Journal apps often feel cold and robotic. We wanted to design a digital diary that mirrors the warmth of physical analog paper and adapts to the writer\'s environment.',
-      solution: 'Designed a color-interpolation engine that shifts ambient hue palettes smoothly based on local geolocation daylight hours and emotional journaling markers.'
     }
   },
   zh: {
@@ -72,30 +48,6 @@ const CUSTOM_CASE_STUDIES: Record<Language, Record<string, CustomCaseStudy>> = {
     'tab-garden': {
       challenge: '标签页数量增多后难以浏览，而自动整理又不能覆盖用户主动创建的分组。',
       solution: '该扩展按标准化 hostname 为符合条件的标签页分组，保留原生与自定义分组，并提供暂停、阈值和手动整理控制。'
-    },
-    'lumina-pay': {
-      challenge: '主要挑战是设计一个多货币发票结算系统，既不能使屏幕显得凌乱，也不能让急需快速结算的自由职业者感到困惑。',
-      solution: '我们使用拟玻璃化（Glassmorphism）组件开发了一个干净的单屏仪表盘，用户只需点击 3 次以内即可完成即时兑换和发票创建，并获得深度的视觉反馈。'
-    },
-    'aura-analytics': {
-      challenge: '主要挑战是为环境监测管理繁重的实时数据可视化，同时避免在移动设备上产生高延迟、视觉认知负载或过快消耗电池。',
-      solution: '我们利用了优化的矢量渲染流水线，并采用渐进式披露设计了自定义图表调色盘，以保持复杂数据图层的井然有序。'
-    },
-    'minimal-notes': {
-      challenge: '大多数记事软件都向创作者提供过多复杂的格式排版侧边栏和深层菜单，导致微小干扰并破坏心流状态和创作专注力。',
-      solution: '我们构建了一个完全纯净的写作界面，配有动态排版网格，并提供了仅在需要时才会出现的上下文气泡命令菜单。'
-    },
-    'aether-sound': {
-      challenge: '在低端硬件上保持 60fps 稳定帧率的同时，将高速音频频率感知并渲染为流畅的视觉图形。',
-      solution: 'We wrote efficient GPU shaders that directly map incoming audio buffers into dynamic, organic noise fields, avoiding costly CPU recalculations.'
-    },
-    'forma-studio': {
-      challenge: '3D 建模工具通常需要专业培训和多层嵌套的桌面端控件，这使得普通的项目团队很难进行快速的空间草图绘制。',
-      solution: '我们使用响应式手势辅助器和单层径向操作菜单实现了一个触觉空间网格编辑器，用于 3D 模块的快速放置。'
-    },
-    'komorebi-journal': {
-      challenge: '日记类应用往往显得冰冷和机械化。我们希望能设计一款数字日记，不仅能投射出物理模拟纸张的温度，还能自适应创作者的本地环境。',
-      solution: '我们设计了一个色彩插值引擎，可根据当地地理位置的日光时间和创作者记录的情感日记标记，平滑地转变环境色调板。'
     }
   }
 };

@@ -14,6 +14,7 @@ export interface Project {
   tags: string[];
   link?: string;
   year?: number;
+  date?: string;
 }
 
 export interface ExperienceItem {
