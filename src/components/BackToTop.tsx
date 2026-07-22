@@ -58,7 +58,7 @@ export default function BackToTop({ currentScreen }: BackToTopProps) {
           whileHover={{ scale: 1.1, y: -2 }}
           whileTap={{ scale: 0.95 }}
           aria-label="Back to top"
-          className="interactive fixed bottom-8 right-8 z-[90] flex items-center justify-center w-11 h-11 rounded-full shadow-lg bg-[#1b1c1b] dark:bg-[#fbf9f7] text-[#fbf9f7] dark:text-[#1b1c1b] hover:bg-[#54615b] dark:hover:bg-[#bbcac2] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#54615b] dark:focus:ring-[#bbcac2] focus:ring-offset-2"
+          className="interactive fixed bottom-24 right-8 z-[90] flex items-center justify-center w-11 h-11 rounded-full shadow-lg bg-[#1b1c1b] dark:bg-[#fbf9f7] text-[#fbf9f7] dark:text-[#1b1c1b] hover:bg-[#54615b] dark:hover:bg-[#bbcac2] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#54615b] dark:focus:ring-[#bbcac2] focus:ring-offset-2"
         >
           <ArrowUp size={18} className="animate-pulse" />
         </motion.button>
