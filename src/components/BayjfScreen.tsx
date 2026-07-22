@@ -82,19 +82,19 @@ export default function BayjfScreen() {
   };
 
   // Categories
-  const categories = ['All', 'AI Agent', 'Full-Stack', 'Browser Tools'];
+  const categories = ['All', 'Productivity', 'Learning', 'Browser Tools'];
 
   const categoryLabels: Record<Language, Record<string, string>> = {
     en: {
       'All': 'All Categories',
-      'AI Agent': 'AI Agent',
-      'Full-Stack': 'Full-Stack',
+      'Productivity': 'Productivity',
+      'Learning': 'Learning',
       'Browser Tools': 'Browser Tools'
     },
     zh: {
       'All': '所有类别',
-      'AI Agent': 'AI Agent',
-      'Full-Stack': '全栈开发',
+      'Productivity': '效率工具',
+      'Learning': '学习工具',
       'Browser Tools': '浏览器工具'
     }
   };
@@ -105,9 +105,9 @@ export default function BayjfScreen() {
       summaryTitle: 'BayJF Overview',
       totalProjects: 'Total Projects',
       categoriesCount: 'Active Categories',
-      latestYear: 'Latest Work',
-      coreFocus: 'Primary Domain',
-      techDistribution: 'Skills & Tech Stack',
+      latestYear: 'Current Focus',
+      coreFocus: 'Delivery Scope',
+      techDistribution: 'Project Stack',
       chartToggleTags: 'Technologies',
       chartToggleCats: 'Categories',
       scrollDown: 'Scroll to view projects',
@@ -115,9 +115,9 @@ export default function BayjfScreen() {
       viewGrid: 'Grid Gallery',
       viewTimeline: 'Timeline',
       allTags: 'All Tags',
-      designTag: 'Design',
+      designTag: 'Product',
       engTag: 'Engineering',
-      fullstackTag: 'Full-Stack',
+      fullstackTag: 'Browser',
       projectsCount: 'projects',
       chronology: 'Chronology',
       viewDetails: 'VIEW DETAILS',
@@ -127,9 +127,9 @@ export default function BayjfScreen() {
       summaryTitle: 'BayJF 概览',
       totalProjects: '项目总数',
       categoriesCount: '活跃类别',
-      latestYear: '最新作品',
-      coreFocus: '核心技术领域',
-      techDistribution: '技术与栈分布',
+      latestYear: '当前方向',
+      coreFocus: '交付范围',
+      techDistribution: '项目技术栈',
       chartToggleTags: '技术栈',
       chartToggleCats: '项目类别',
       scrollDown: '向下滚动查看项目',
@@ -137,9 +137,9 @@ export default function BayjfScreen() {
       viewGrid: '网格画廊',
       viewTimeline: '时间线模式',
       allTags: '所有标签',
-      designTag: '设计',
+      designTag: '产品',
       engTag: '工程',
-      fullstackTag: '全栈',
+      fullstackTag: '浏览器',
       projectsCount: '个项目',
       chronology: '编年史',
       viewDetails: '查看详情',
@@ -151,38 +151,12 @@ export default function BayjfScreen() {
 
   // Map each project to a general filter category
   const getProjectFilterCategory = (project: Project) => {
-    const tags = project.tags.map((t: string) => t.toLowerCase());
-    if (
-      tags.includes('creative coding') || 
-      tags.includes('webgl') || 
-      tags.includes('audio processing') ||
-      tags.includes('código creativo') || 
-      tags.includes('proceso audio')
-    ) {
-      return 'Creative Tech';
+    const tags = project.tags.map((tag) => tag.toLowerCase());
+    if (project.id === 'tab-garden' || tags.some(tag => tag.includes('chrome') || tag.includes('manifest'))) {
+      return 'Browser Tools';
     }
-    if (
-      tags.includes('saas') || 
-      tags.includes('dashboard') || 
-      tags.includes('data viz') ||
-      tags.includes('panel control') || 
-      tags.includes('visualización')
-    ) {
-      return 'SaaS';
-    }
-    if (
-      tags.includes('product design') || 
-      tags.includes('spatial ui') || 
-      tags.includes('minimalism') ||
-      tags.includes('diseño producto') || 
-      tags.includes('ui espacial') || 
-      tags.includes('minimalismo')
-    ) {
-      return 'Product Design';
-    }
-    if (tags.some(tag => tag.includes('chrome') || tag.includes('manifest'))) return 'Browser Tools';
-    if (tags.some(tag => tag.includes('spring') || tag.includes('supabase') || tag.includes('react'))) return 'Full-Stack';
-    return 'AI Agent';
+    if (project.id === 'word-base') return 'Learning';
+    return 'Productivity';
   };
 
   // Map projects to custom tag groups
@@ -190,32 +164,17 @@ export default function BayjfScreen() {
     if (group === 'All') return true;
     const projectTags = project.tags.map(t => t.toLowerCase());
     
-    if (group === 'Design') {
-      const designKeywords = [
-        'ui/ux', 'glassmorphism', 'efecto vidrio', 'interaction design', 
-        'diseño interacción', 'typography', 'tipografía', 'minimalism', 
-        'minimalismo', 'spatial ui', 'ui espacial', 'mobile ux', 'ux móvil', 
-        'micro-interactions', 'microinteracciones'
-      ];
-      return projectTags.some(tag => designKeywords.includes(tag));
+    if (group === 'Product') {
+      return project.id === 'soft-desk' || project.id === 'word-base';
     }
     
     if (group === 'Engineering') {
-      const engKeywords = [
-        'web app', 'app web', 'fintech', 'dashboard', 'panel control', 
-        'data viz', 'visualización', 'saas', 'systems design', 'diseño sistemas', 
-        'audio processing', 'proceso audio', 'creative coding', 'código creativo', 
-        'webgl', '3d modeling', 'modelado 3d', 'react native'
-      ];
+      const engKeywords = ['electron', 'react', 'typescript', 'sqlite', 'supabase', 'next.js', 'tauri', 'hono'];
       return projectTags.some(tag => engKeywords.includes(tag));
     }
     
-    if (group === 'Full-Stack') {
-      const fsKeywords = [
-        'saas', 'fintech', 'web app', 'app web', 'spatial ui', 
-        'ui espacial', 'collaboration', 'colaboración', 'dashboard', 'panel control'
-      ];
-      return projectTags.some(tag => fsKeywords.includes(tag));
+    if (group === 'Browser') {
+      return project.id === 'tab-garden';
     }
     
     return true;
@@ -267,11 +226,14 @@ export default function BayjfScreen() {
     }
   })();
 
-  // Sort project timeline list descending by year
+  const getProjectDate = (project: Project) => project.date || (project.year ? String(project.year) : '');
+  const getProjectYear = (project: Project) => getProjectDate(project).slice(0, 4);
+
+  // Sort project timeline list descending by GitHub feature date
   const timelineProjects = [...filteredProjects].sort((a, b) => {
-    const yearA = a.year || 2024;
-    const yearB = b.year || 2024;
-    return yearB - yearA;
+    const dateA = Date.parse(a.date || '') || a.year || 0;
+    const dateB = Date.parse(b.date || '') || b.year || 0;
+    return dateB - dateA;
   });
 
   // Sync scroll listener and page overflow check
@@ -435,8 +397,8 @@ export default function BayjfScreen() {
             </div>
             <p className="font-sans text-xs md:text-sm text-[#444748]/75 dark:text-[#c4c7c7]/70 leading-relaxed mb-6">
               {language === 'en'
-                ? 'Synthesized metrics revealing distribution profiles, stack specialization, and digital output chronologies.'
-                : 'Métricas sintetizadas que revelan perfiles de distribución, especialización tecnológica y cronología.'}
+                ? 'A compact view of the real products, delivery surfaces, and technologies behind my current work.'
+                : '这里汇总真实项目、交付形态与当前使用的技术栈。'}
             </p>
           </div>
 
@@ -464,7 +426,7 @@ export default function BayjfScreen() {
                 {localTxt.latestYear}
               </span>
               <span className="font-serif text-3xl font-bold text-[#1b1c1b] dark:text-[#fbf9f7]">
-                2026
+                {language === 'en' ? 'Now' : '当前'}
               </span>
             </div>
 
@@ -597,9 +559,9 @@ export default function BayjfScreen() {
           <div className="flex flex-wrap items-center gap-1.5">
             {[
               { id: 'All', label: localTxt.allTags },
-              { id: 'Design', label: localTxt.designTag },
+              { id: 'Product', label: localTxt.designTag },
               { id: 'Engineering', label: localTxt.engTag },
-              { id: 'Full-Stack', label: localTxt.fullstackTag }
+              { id: 'Browser', label: localTxt.fullstackTag }
             ].map(group => {
               const isActive = selectedTagGroup === group.id;
               return (
@@ -663,7 +625,7 @@ export default function BayjfScreen() {
           className="text-center py-24 bg-[#e4e2e0]/10 dark:bg-white/5 rounded-3xl border border-dashed border-[#e4e2e0] dark:border-white/5 px-6"
         >
           <p className="font-serif text-2xl text-[#444748]/80 dark:text-[#c4c7c7]/80">
-            {language === 'en' ? 'No projects match your criteria' : 'Ningún proyecto coincide con tus criterios'}
+            {language === 'en' ? 'No projects match your criteria' : '没有符合当前条件的项目'}
           </p>
           <p className="font-sans text-sm text-[#444748]/50 dark:text-[#c4c7c7]/50 mt-2 max-w-md mx-auto">
             {language === 'en' 
@@ -720,8 +682,8 @@ export default function BayjfScreen() {
                   {/* Category tag */}
                   <span className="font-sans text-[10px] font-bold tracking-widest text-[#54615b] dark:text-[#bbcac2] mb-2 uppercase flex items-center justify-between">
                     <span>{project.category}</span>
-                    {project.year && (
-                      <span className="font-mono text-xs text-[#444748]/50 dark:text-[#c4c7c7]/50 font-semibold">{project.year}</span>
+                    {getProjectDate(project) && (
+                      <span className="font-mono text-xs text-[#444748]/50 dark:text-[#c4c7c7]/50 font-semibold">{getProjectDate(project)}</span>
                     )}
                   </span>
 
@@ -811,7 +773,7 @@ export default function BayjfScreen() {
                   <div className={`absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#1b1c1b] dark:bg-[#fbf9f7] text-[#fbf9f7] dark:text-[#1b1c1b] border-4 border-[#e4e2e0]/60 dark:border-white/10 flex items-center justify-center transform -translate-x-1/2 md:translate-x-0 font-mono text-[10px] font-bold z-10 shadow-sm ${
                     isEven ? 'md:left-auto md:right-0 md:-right-12' : 'md:left-0 md:-left-12'
                   }`}>
-                    {project.year || 2024}
+                    {getProjectYear(project)}
                   </div>
 
                   {/* Card Content */}
@@ -829,7 +791,7 @@ export default function BayjfScreen() {
                             {project.category}
                           </span>
                           <span className="font-mono text-[10px] text-[#444748]/50 dark:text-[#c4c7c7]/50 font-bold flex items-center gap-1">
-                            <Clock size={10} /> {project.year || 2024}
+                            <Clock size={10} /> {getProjectDate(project)}
                           </span>
                         </div>
                         <h3 className="font-serif text-xl font-bold text-[#1b1c1b] dark:text-[#fbf9f7] mb-2 group-hover:text-[#54615b] dark:group-hover:text-[#bbcac2] transition-colors">
