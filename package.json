@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
     "dev:api": "tsx server/dev.ts",
-    "build": "vite build",
+    "build": "vite build && npm run build:worker",
+    "build:worker": "esbuild worker/index.ts --bundle --format=esm --platform=browser --outfile=dist/_worker.js",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
