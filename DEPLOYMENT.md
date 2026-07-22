@@ -3,7 +3,8 @@
 The two applications deploy independently after changes are merged:
 
 - Vercel runs the Hono API as an Edge Function through `api/index.ts`.
-- Cloudflare Pages serves the static Vite frontend from `dist`.
+- Cloudflare Pages serves the static Vite frontend from `dist` and its Worker
+  proxies same-origin `/api/*` requests to Vercel.
 - Supabase stores contact messages; only the Vercel API receives the service-role key.
 
 Deployment stages:
@@ -32,8 +33,8 @@ Vercel Preview values for `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and
 stable alias `https://bayjf-dev.vercel.app`.
 
 Vercel Deployment Protection/SSO must be disabled for this API-only project so
-the Cloudflare-hosted browser app can call both Preview and Production without
-a Vercel login cookie. The deployment workflow verifies the public `/api/health`
+the Cloudflare Pages Worker can call both Preview and Production without a
+Vercel login cookie. The deployment workflow verifies the public `/api/health`
 endpoint and fails before promotion when access is protected.
 
 Requests under `/api/*` are rewritten to the Hono function. After deployment,
@@ -47,14 +48,18 @@ Use the Pages project named `bayjf`. Create the GitHub environment
 - `CLOUDFLARE_API_TOKEN`: scoped for Cloudflare Pages edit access.
 - `CLOUDFLARE_ACCOUNT_ID`
 
-Create `preview-cloudflare-pages` with the same two secrets. Configure its
-`VITE_API_URL` variable as `https://bayjf-dev.vercel.app/api`; copy the GA4 and
-Clarity variables when analytics should also run in preview.
+Create `preview-cloudflare-pages` with the same two secrets. Configure the
+Cloudflare Pages project's Worker runtime variable `API_BASE_URL` separately
+for each Pages environment:
 
-Add the environment variable `VITE_API_URL` to that GitHub environment, for
-example `https://YOUR_API_PROJECT.vercel.app/api`. It is intentionally a
-GitHub environment variable rather than a secret because it is embedded into
-the public browser bundle.
+- `dev` branch: `https://bayjf-dev.vercel.app`
+- production: `https://bayjf.vercel.app`
+
+`API_BASE_URL` is read by `dist/_worker.js` at request time. It is not a
+`VITE_*` build variable and must not include `/api`; the Worker appends the
+incoming `/api/*` path when it proxies to Vercel. Copy the GA4 and Clarity
+variables into the corresponding GitHub environment when analytics should
+also run in preview.
 
 Optional analytics variables in the same GitHub environment:
 
@@ -70,7 +75,8 @@ Never create a `VITE_` variable containing a Supabase service-role key.
 
 1. Apply `supabase/migrations/20260719000000_create_contact_messages.sql`.
 2. Configure and deploy the Vercel API first.
-3. Put the resulting Vercel `/api` URL in Cloudflare's `VITE_API_URL` variable.
+3. Put the Vercel API base URL without `/api` in Cloudflare Pages'
+   `API_BASE_URL` runtime variable for each environment.
 4. Put the resulting Cloudflare frontend origin in Vercel's `ALLOWED_ORIGINS`.
 5. Merge to `dev` for preview deployment, then merge reviewed changes to `main`
    for production deployment. Both workflows also support manual runs.
