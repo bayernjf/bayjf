@@ -31,6 +31,26 @@ body {
   padding: 0;
 }
 
+/* Keep browser autofill aligned with the contact card in both themes. */
+.contact-field:-webkit-autofill,
+.contact-field:-webkit-autofill:hover,
+.contact-field:-webkit-autofill:focus {
+  -webkit-text-fill-color: #1b1c1b;
+  -webkit-box-shadow: 0 0 0 1000px #fbf9f7 inset;
+  box-shadow: 0 0 0 1000px #fbf9f7 inset;
+  caret-color: #1b1c1b;
+  transition: background-color 9999s ease-out 0s;
+}
+
+.dark .contact-field:-webkit-autofill,
+.dark .contact-field:-webkit-autofill:hover,
+.dark .contact-field:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fbf9f7;
+  -webkit-box-shadow: 0 0 0 1000px #161716 inset;
+  box-shadow: 0 0 0 1000px #161716 inset;
+  caret-color: #fbf9f7;
+}
+
 .custom-cursor {
   display: none;
   contain: strict;

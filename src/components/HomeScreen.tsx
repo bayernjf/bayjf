@@ -7,6 +7,34 @@ import { ScreenType } from '../types';
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { useEffect, useState } from 'react';
+import agent01 from '../assets/ai-agent/01-ai-agent.png';
+import agent02 from '../assets/ai-agent/02-agent-orbit.png';
+import agent03 from '../assets/ai-agent/03-agent-cubes.png';
+import agent04 from '../assets/ai-agent/04-agent-flow.png';
+import agent05 from '../assets/ai-agent/05-agent-hand.png';
+import agent06 from '../assets/ai-agent/06-agent-network.jpg';
+import agent07 from '../assets/ai-agent/07-agent-data.jpg';
+import agent08 from '../assets/ai-agent/08-agent-graph.jpg';
+import agent09 from '../assets/ai-agent/09-agent-mesh.jpg';
+import agent10 from '../assets/ai-agent/10-agent-brain.jpg';
+import agent11 from '../assets/ai-agent/11-agent-shards.jpg';
+import agent12 from '../assets/ai-agent/12-agent-rings.jpg';
+import agent13 from '../assets/ai-agent/13-agent-grid.jpg';
+import agent14 from '../assets/ai-agent/14-agent-brain.jpg';
+import agent15 from '../assets/ai-agent/15-agent-tower.png';
+import agent16 from '../assets/ai-agent/16-agent-cube.png';
+import agent17 from '../assets/ai-agent/17-agent-vault.png';
+import agent18 from '../assets/ai-agent/18-agent-chip.png';
+import agent19 from '../assets/ai-agent/19-agent-core.png';
+
+const agentProjectImages = [
+  agent01, agent02, agent03, agent04, agent05, agent06, agent07, agent08, agent09, agent10,
+  agent11, agent12, agent13, agent14, agent15, agent16, agent17, agent18, agent19,
+].map((src, index) => ({
+  src,
+  alt: `AI Agent concept visual ${index + 1}`,
+}));
 
 interface HomeScreenProps {
   onNavigate: (screen: ScreenType, transitionType?: 'none' | 'push') => void;
@@ -14,6 +42,15 @@ interface HomeScreenProps {
 
 export default function HomeScreen({ onNavigate }: HomeScreenProps) {
   const { t } = useLanguage();
+  const [activeImage, setActiveImage] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveImage((current) => (current + 1) % agentProjectImages.length);
+    }, 5000);
+
+    return () => window.clearInterval(timer);
+  }, []);
 
   return (
     <div className="pt-20 min-h-screen">
@@ -32,6 +69,8 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
             {t('home.hero.title1')}
             <br />
             <span className="text-[#54615b] dark:text-[#bbcac2]">{t('home.hero.title2')}</span>
+            <br />
+            <span className="text-[#82978f] dark:text-[#a7bdb5]">{t('home.hero.title3')}</span>
           </h1>
 
           <p className="font-sans text-lg md:text-xl text-[#444748] dark:text-[#c4c7c7] max-w-2xl mx-auto mb-12 leading-relaxed">
@@ -81,12 +120,31 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
             <div className="md:col-span-5">
               <div className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden shadow-xl border border-white/10 p-2 bg-white/5 backdrop-blur-md">
                 <div className="w-full h-full rounded-xl overflow-hidden relative group">
-                  <img
-                    alt="SoftDesk project preview"
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-out scale-105 group-hover:scale-100"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUIjKKY_IpX50adzUr3oXUApDyO8LctnMjCdCxK9AhK8N09oSThogr7WniXGq0w7SZbtiohJBMd_vR2QSklU_hEnGE4yM4XFkk4G46iwP5xfThx_I59NDHsJxWvc4rhhRZKREmkCyQYKo6zwKTfC3z29NVrVzhWwFjgQnsynm5qOD5YksuInkxUv6J55QR3KnSN9BGzUAnEEHTLSEt_GoUuIDMpNVYn9jYHN8r707kApTo70dOlM8r3fr0XkJwKW2B1fUEEKdqkCFD"
-                  />
+                  {agentProjectImages.map((image, index) => (
+                    <img
+                      key={image.src}
+                      alt={image.alt}
+                      src={image.src}
+                      loading={index === activeImage ? 'eager' : 'lazy'}
+                      aria-hidden={index !== activeImage}
+                      className={`absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-out scale-105 group-hover:scale-100 ${
+                        index === activeImage ? 'opacity-100' : 'opacity-0'
+                      }`}
+                    />
+                  ))}
                   <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10" aria-label="Project previews">
+                    {agentProjectImages.map((image, index) => (
+                      <button
+                        key={image.src}
+                        type="button"
+                        onClick={() => setActiveImage(index)}
+                        aria-label={`Show project preview ${index + 1}`}
+                        aria-current={index === activeImage}
+                        className={`h-1.5 rounded-full transition-all ${index === activeImage ? 'w-6 bg-white' : 'w-1.5 bg-white/50 hover:bg-white/80'}`}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
