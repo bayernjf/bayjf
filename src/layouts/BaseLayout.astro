@@ -1,0 +1,84 @@
+---
+import '../index.css';
+import { translate, SEO_KEYS, type Language, type ScreenKey } from '../i18n/translations';
+import { baseForLang } from '../i18n/routing';
+
+interface Props {
+  lang: Language;
+  screen: ScreenKey;
+}
+
+const { lang, screen } = Astro.props;
+
+const gaId = import.meta.env.VITE_GA_MEASUREMENT_ID?.trim();
+const clarityId = import.meta.env.VITE_CLARITY_PROJECT_ID?.trim();
+
+const title = translate(lang, SEO_KEYS[screen].title);
+const description = translate(lang, SEO_KEYS[screen].desc);
+const siteUrl = 'https://bayjf.pages.dev';
+const canonical = `${siteUrl}${baseForLang(lang)}${screen === 'home' ? '' : `/${screen === 'bayjf' ? 'projects' : screen}`}`;
+const ogImage = 'https://soft-desk-landing.pages.dev/preview.png';
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <!-- 暗色主题防闪：在首屏渲染前同步写入 .dark，避免 MPA 每页闪白 -->
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem('bayjf_theme');
+          var theme = saved === 'light' || saved === 'dark' ? saved : 'dark';
+          if (theme === 'dark') document.documentElement.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- 埋点：GA4 + Clarity，ID 缺失时不注入脚本 -->
+    {gaId && (
+      <script is:inline src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+    )}
+    <script is:inline define:vars={{ gaId, clarityId }}>
+      if (gaId) {
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () { window.dataLayer.push(arguments); };
+        window.gtag('js', new Date());
+        window.gtag('config', gaId, { send_page_view: false });
+      }
+      if (clarityId && !window.clarity) {
+        window.clarity = function () {
+          var q = (window.clarity.q = window.clarity.q || []);
+          q.push(arguments);
+        };
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.clarity.ms/tag/' + encodeURIComponent(clarityId);
+        document.head.appendChild(s);
+      }
+    </script>
+  </head>
+  <body class="min-h-screen bg-[#fbf9f7] text-[#1b1c1b] dark:bg-[#121212] dark:text-[#fbf9f7] selection:bg-[#54615b]/20 dark:selection:bg-[#bbcac2]/25">
+    <slot />
+  </body>
+</html>
