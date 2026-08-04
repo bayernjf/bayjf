@@ -4,7 +4,7 @@
  */
 
 import { ExperienceItem } from '../types';
-import { motion } from 'motion/react';
+import { motion, type Variants } from 'motion/react';
 import { Briefcase, Calendar, MapPin, Building, ChevronRight } from 'lucide-react';
 import SkillsGrid from './SkillsGrid';
 import { useLanguage } from '../context/LanguageContext';
@@ -15,17 +15,17 @@ interface ExperienceCardProps {
 }
 
 function ExperienceCard({ item, isLeft }: ExperienceCardProps) {
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { opacity: 0, y: 30, scale: 0.98 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      scale: 1, 
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } 
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }
     }
   };
 
-  const listContainerVariants = {
+  const listContainerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -36,10 +36,10 @@ function ExperienceCard({ item, isLeft }: ExperienceCardProps) {
     }
   };
 
-  const listItemVariants = {
+  const listItemVariants: Variants = {
     hidden: { opacity: 0, x: isLeft ? 10 : -10 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       x: 0,
       transition: { duration: 0.4, ease: 'easeOut' }
     }

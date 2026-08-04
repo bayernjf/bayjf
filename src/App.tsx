@@ -11,8 +11,8 @@ import CustomCursor from './components/CustomCursor';
 import ScrollProgress from './components/ScrollProgress';
 import SEOManager from './components/SEOManager';
 import BackToTop from './components/BackToTop';
-import { AnimatePresence, motion } from 'motion/react';
-import { useLanguage } from './context/LanguageContext';
+import { AnimatePresence, motion, type Variants } from 'motion/react';
+import { useLanguage, type Language } from './context/LanguageContext';
 import { playThemeToggleSound } from './utils/sound';
 import { trackPageView } from './utils/analytics';
 
@@ -21,8 +21,8 @@ const BayjfScreen = lazy(() => import('./components/BayjfScreen'));
 const ExperienceScreen = lazy(() => import('./components/ExperienceScreen'));
 const ContactScreen = lazy(() => import('./components/ContactScreen'));
 
-export default function App() {
-  const [currentScreen, setCurrentScreen] = useState<ScreenType>('home');
+export default function App({ lang, initialScreen = 'home' }: { lang: Language; initialScreen?: ScreenType }) {
+  const [currentScreen, setCurrentScreen] = useState<ScreenType>(initialScreen);
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     try {
       const saved = localStorage.getItem('bayjf_theme');
@@ -149,7 +149,7 @@ export default function App() {
   };
 
   // Variants for push vs none transitions
-  const pageVariants = {
+  const pageVariants: Variants = {
     initial: (direction: 'none' | 'push') => ({
       opacity: 0,
       x: direction === 'push' ? '100%' : 0,
@@ -161,7 +161,7 @@ export default function App() {
       filter: 'none',
       transition: {
         duration: transitionDirection === 'push' ? 0.6 : 0.25,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.22, 1, 0.36, 1] as const,
       },
     },
     exit: (direction: 'none' | 'push') => ({
@@ -170,7 +170,7 @@ export default function App() {
       filter: direction === 'push' ? 'blur(4px)' : 'none',
       transition: {
         duration: direction === 'push' ? 0.5 : 0.2,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.22, 1, 0.36, 1] as const,
       },
     }),
   };
@@ -195,6 +195,7 @@ export default function App() {
         onNavigate={handleNavigate}
         theme={theme}
         toggleTheme={toggleTheme}
+        lang={lang}
       />
 
       {/* Main Content Area with Page Transitions */}

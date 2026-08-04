@@ -6,18 +6,25 @@
 import { ScreenType } from '../types';
 import { Sun, Moon, Menu, X, Globe, Search, Volume2, VolumeX } from 'lucide-react';
 import { useState, MouseEvent } from 'react';
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage, type Language } from '../context/LanguageContext';
+import { swapLocale } from '../i18n/routing';
 
 interface HeaderProps {
   currentScreen: ScreenType;
   onNavigate: (screen: ScreenType, transitionType?: 'none' | 'push') => void;
   theme: 'light' | 'dark';
   toggleTheme: () => void;
+  lang: Language;
 }
 
-export default function Header({ currentScreen, onNavigate, theme, toggleTheme }: HeaderProps) {
+export default function Header({ currentScreen, onNavigate, theme, toggleTheme, lang }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { language, setLanguage, t, searchQuery, setSearchQuery, soundEnabled, setSoundEnabled } = useLanguage();
+
+  // 语言切换走 URL（MPA + URL 语言路由）：在同一屏路径下切换语言前缀。
+  const switchLocale = (next: Language) => {
+    window.location.href = swapLocale(window.location.pathname, next);
+  };
 
   // Logo goes to Home screen
   const handleLogoClick = (e: MouseEvent) => {
@@ -100,7 +107,7 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme }
           <div className="flex items-center bg-[#e4e2e0]/30 dark:bg-white/5 rounded-full p-1 border border-[#e4e2e0]/50 dark:border-white/5 shadow-sm">
             <button
               id="lang-btn-en"
-              onClick={() => setLanguage('en')}
+              onClick={() => switchLocale('en')}
               className={`px-2.5 py-1 rounded-full text-[10px] font-sans font-bold tracking-wider transition-all duration-300 ${
                 language === 'en'
                   ? 'bg-[#1b1c1b] dark:bg-[#fbf9f7] text-[#fbf9f7] dark:text-[#1b1c1b] shadow-sm'
@@ -111,7 +118,7 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme }
             </button>
             <button
               id="lang-btn-zh"
-              onClick={() => setLanguage('zh')}
+              onClick={() => switchLocale('zh')}
               className={`px-2.5 py-1 rounded-full text-[10px] font-sans font-bold tracking-wider transition-all duration-300 ${
                 language === 'zh'
                   ? 'bg-[#1b1c1b] dark:bg-[#fbf9f7] text-[#fbf9f7] dark:text-[#1b1c1b] shadow-sm'
@@ -207,7 +214,7 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme }
                 <button
                   id="lang-btn-mobile-en"
                   onClick={() => {
-                    setLanguage('en');
+                    switchLocale('en');
                     setMobileMenuOpen(false);
                   }}
                   className={`px-3 py-1 rounded-full text-[10px] font-sans font-bold tracking-wider transition-all duration-300 ${
@@ -221,7 +228,7 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme }
                 <button
                   id="lang-btn-mobile-zh"
                   onClick={() => {
-                    setLanguage('zh');
+                    switchLocale('zh');
                     setMobileMenuOpen(false);
                   }}
                   className={`px-3 py-1 rounded-full text-[10px] font-sans font-bold tracking-wider transition-all duration-300 ${
