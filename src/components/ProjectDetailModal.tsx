@@ -103,9 +103,9 @@ export default function ProjectDetailModal({ project, onClose }: ProjectDetailMo
     challenge: language === 'en' 
       ? 'The goal was to create a modern and accessible digital tool satisfying highest quality standards and usability metrics.'
       : '目标是打造一款现代、易用且符合高质量标准的数字工具。',
-    solution: language === 'en'
+      solution: language === 'en'
       ? 'Implemented lightweight and modular visual structures centered around core system-driven paradigms.'
-      : 'Se implementaron estructuras visuales ligeras y modulares centradas en paradigmas impulsados por el sistema principal.'
+      : '以核心系统驱动的范式为中心，实现了轻量且模块化的视觉结构。'
   };
 
   return (
@@ -179,7 +179,7 @@ export default function ProjectDetailModal({ project, onClose }: ProjectDetailMo
               {/* Challenge section */}
               <div>
                 <h4 className="font-sans text-[11px] font-bold tracking-widest text-[#54615b] dark:text-[#bbcac2] uppercase mb-2 flex items-center gap-1.5">
-                  <Target size={14} /> {language === 'en' ? 'The Challenge' : 'El Desafío'}
+                  <Target size={14} /> {language === 'en' ? 'The Challenge' : '挑战'}
                 </h4>
                 <p className="font-sans text-sm leading-relaxed text-[#444748]/90 dark:text-[#c4c7c7]/90">
                   {caseStudy.challenge}
@@ -189,7 +189,7 @@ export default function ProjectDetailModal({ project, onClose }: ProjectDetailMo
               {/* Solution section */}
               <div>
                 <h4 className="font-sans text-[11px] font-bold tracking-widest text-[#54615b] dark:text-[#bbcac2] uppercase mb-2 flex items-center gap-1.5">
-                  <Lightbulb size={14} /> {language === 'en' ? 'The Solution' : 'La Solución'}
+                  <Lightbulb size={14} /> {language === 'en' ? 'The Solution' : '解决方案'}
                 </h4>
                 <p className="font-sans text-sm leading-relaxed text-[#444748]/90 dark:text-[#c4c7c7]/90">
                   {caseStudy.solution}
