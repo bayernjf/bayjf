@@ -102,6 +102,16 @@ Playwright（或说明当前环境无法执行的原因）。任一必需检查�
   语言切换走整页导航（`Header` 的 `swapLocale`），不依赖 `localStorage`。
 - 用户可见文本应同时维护中英文翻译，统一放在 `src/i18n/translations.ts`。
 - 新增交互应考虑键盘操作、ARIA、移动端和深色模式。
+- 本地图片必须经 `astro:assets` 优化（构建期压缩 + WebP 转换）。`astro:assets`
+  只能在 `.astro` 中调用，因此首页轮播的 19 张 `src/assets/ai-agent/*` 图片在
+  `src/components/IslandRoot.astro` 里用 `getImage()` 生成优化 URL，再作为
+  `agentImages` prop 经 `SiteIsland → App → HomeScreen` 下发；不要在 `.tsx` 里
+  直接 `import` 这些原始大图。远程 `project.image` 仍由 `BlurUpImage` 处理。
+- **客户端组件不要直接读取 `import.meta.env.VITE_*`**：`astro dev` 不会把这些变量
+  注入到 React island 的客户端 bundle（生产构建会内联，故仅 dev 受影响），直接在
+  `.tsx` 里读取会得到 `undefined`，导致 Turnstile 组件不渲染、埋点 ID 缺失，并引发
+  hydrate 不匹配。需要在客户端使用的 `VITE_*` 变量（如 `VITE_TURNSTILE_SITE_KEY`）
+  应在 `.astro` 层读取后经 prop 下发（参考 `turnstileSiteKey` 的传递链）。
 - 不要将 Supabase service-role key 或其他服务端密钥引入浏览器代码。
 
 ## Hono 与 Supabase 约定
@@ -277,6 +287,7 @@ CLOUDFLARE_ACCOUNT_ID
 |------|------|
 | `src/App.tsx` | 路由感知的屏幕切换、懒加载和全局页面访问埋点 |
 | `src/components/SiteIsland.tsx` | 挂载到各路由的 client:load 交互 island |
+| `src/components/IslandRoot.astro` | 在 Astro 层用 `astro:assets` 优化本地图片并下发 `agentImages` prop |
 | `src/context/LanguageContext.tsx` | 中英文内容、项目数据与全局搜索状态 |
 | `src/components/ContactScreen.tsx` | 联系表单 UI、校验和提交状态 |
 | `src/api/contact.ts` | 浏览器端联系 API client |
