@@ -8,41 +8,19 @@ import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useEffect, useState } from 'react';
-import agent01 from '../assets/ai-agent/01-ai-agent.png';
-import agent02 from '../assets/ai-agent/02-agent-orbit.png';
-import agent03 from '../assets/ai-agent/03-agent-cubes.png';
-import agent04 from '../assets/ai-agent/04-agent-flow.png';
-import agent05 from '../assets/ai-agent/05-agent-hand.png';
-import agent06 from '../assets/ai-agent/06-agent-network.jpg';
-import agent07 from '../assets/ai-agent/07-agent-data.jpg';
-import agent08 from '../assets/ai-agent/08-agent-graph.jpg';
-import agent09 from '../assets/ai-agent/09-agent-mesh.jpg';
-import agent10 from '../assets/ai-agent/10-agent-brain.jpg';
-import agent11 from '../assets/ai-agent/11-agent-shards.jpg';
-import agent12 from '../assets/ai-agent/12-agent-rings.jpg';
-import agent13 from '../assets/ai-agent/13-agent-grid.jpg';
-import agent14 from '../assets/ai-agent/14-agent-brain.jpg';
-import agent15 from '../assets/ai-agent/15-agent-tower.png';
-import agent16 from '../assets/ai-agent/16-agent-cube.png';
-import agent17 from '../assets/ai-agent/17-agent-vault.png';
-import agent18 from '../assets/ai-agent/18-agent-chip.png';
-import agent19 from '../assets/ai-agent/19-agent-core.png';
-
-const agentProjectImages = [
-  agent01, agent02, agent03, agent04, agent05, agent06, agent07, agent08, agent09, agent10,
-  agent11, agent12, agent13, agent14, agent15, agent16, agent17, agent18, agent19,
-].map((src, index) => ({
-  src,
-  alt: `AI Agent concept visual ${index + 1}`,
-}));
+import type { AgentImage } from './SiteIsland';
 
 interface HomeScreenProps {
   onNavigate: (screen: ScreenType, transitionType?: 'none' | 'push') => void;
+  agentImages: AgentImage[];
 }
 
-export default function HomeScreen({ onNavigate }: HomeScreenProps) {
+export default function HomeScreen({ onNavigate, agentImages }: HomeScreenProps) {
   const { t } = useLanguage();
   const [activeImage, setActiveImage] = useState(0);
+
+  // 图片已在中英两版页面入口（IslandRoot.astro）经 astro:assets 优化，这里仅消费。
+  const agentProjectImages = agentImages;
 
   useEffect(() => {
     const timer = window.setInterval(() => {

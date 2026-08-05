@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import SiteIsland from '../../components/SiteIsland';
+import IslandRoot from '../../components/IslandRoot.astro';
 import type { Language, ScreenKey } from '../../i18n/routing';
 
 export const getStaticPaths = () => [{ params: { lang: 'zh' } }];
@@ -9,5 +9,5 @@ const screen: ScreenKey = 'contact';
 ---
 
 <BaseLayout lang={lang} screen={screen}>
-  <SiteIsland lang={lang} screen={screen} client:load />
+  <IslandRoot lang={lang} screen={screen} />
 </BaseLayout>

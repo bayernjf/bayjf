@@ -15,13 +15,14 @@ import { AnimatePresence, motion, type Variants } from 'motion/react';
 import { useLanguage, type Language } from './context/LanguageContext';
 import { playThemeToggleSound } from './utils/sound';
 import { trackPageView } from './utils/analytics';
+import type { AgentImage } from './components/SiteIsland';
 
 const HomeScreen = lazy(() => import('./components/HomeScreen'));
 const BayjfScreen = lazy(() => import('./components/BayjfScreen'));
 const ExperienceScreen = lazy(() => import('./components/ExperienceScreen'));
 const ContactScreen = lazy(() => import('./components/ContactScreen'));
 
-export default function App({ lang, initialScreen = 'home' }: { lang: Language; initialScreen?: ScreenType }) {
+export default function App({ lang, initialScreen = 'home', agentImages = [] }: { lang: Language; initialScreen?: ScreenType; agentImages?: AgentImage[] }) {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>(initialScreen);
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     try {
@@ -136,7 +137,7 @@ export default function App({ lang, initialScreen = 'home' }: { lang: Language; 
   const renderScreen = () => {
     switch (currentScreen) {
       case 'home':
-        return <HomeScreen onNavigate={handleNavigate} />;
+        return <HomeScreen onNavigate={handleNavigate} agentImages={agentImages} />;
       case 'bayjf':
         return <BayjfScreen />;
       case 'experience':
@@ -144,7 +145,7 @@ export default function App({ lang, initialScreen = 'home' }: { lang: Language; 
       case 'contact':
         return <ContactScreen />;
       default:
-        return <HomeScreen onNavigate={handleNavigate} />;
+        return <HomeScreen onNavigate={handleNavigate} agentImages={agentImages} />;
     }
   };
 
