@@ -2,6 +2,11 @@
 import '../index.css';
 import { translate, SEO_KEYS, type Language, type ScreenKey } from '../i18n/translations';
 import { baseForLang } from '../i18n/routing';
+import {
+  buildWebSiteSchema,
+  buildPersonSchema,
+  buildBreadcrumbSchema,
+} from '../i18n/schema';
 
 interface Props {
   lang: Language;
@@ -37,6 +42,11 @@ const ogLocaleAlternate = lang === 'en' ? 'zh_CN' : 'en_US';
 // 字体以非阻塞方式加载：CDN 不可达/缓慢时不阻塞首屏与 load 事件。
 const fontHref =
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,300..800;1,6..72,300..800&family=Work+Sans:wght@300;400;500;600;700&display=swap';
+
+// Schema.org JSON-LD：Person / WebSite / Breadcrumb
+const personJsonLd = buildPersonSchema(lang);
+const websiteJsonLd = buildWebSiteSchema(lang);
+const breadcrumbJsonLd = buildBreadcrumbSchema(lang, screen);
 ---
 
 <!doctype html>
@@ -70,6 +80,23 @@ const fontHref =
 
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <!-- Schema.org JSON-LD：让传统搜索引擎与生成式引擎都能稳定解析站点与作者身份 -->
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(personJsonLd)}
+    />
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(websiteJsonLd)}
+    />
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(breadcrumbJsonLd)}
+    />
 
     <!-- 字体：非阻塞加载（media=print + onload 切换），避免字体 CDN 不可达时阻塞 load 事件 -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
