@@ -18,6 +18,9 @@ const description = translate(lang, SEO_KEYS[screen].desc);
 const siteUrl = 'https://bayjf.pages.dev';
 const canonical = `${siteUrl}${baseForLang(lang)}${screen === 'home' ? '' : `/${screen === 'bayjf' ? 'projects' : screen}`}`;
 const ogImage = 'https://soft-desk-landing.pages.dev/preview.png';
+// 字体以非阻塞方式加载：CDN 不可达/缓慢时不阻塞首屏与 load 事件。
+const fontHref =
+  'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,300..800;1,6..72,300..800&family=Work+Sans:wght@300;400;500;600;700&display=swap';
 ---
 
 <!doctype html>
@@ -43,6 +46,14 @@ const ogImage = 'https://soft-desk-landing.pages.dev/preview.png';
 
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <!-- 字体：非阻塞加载（media=print + onload 切换），避免字体 CDN 不可达时阻塞 load 事件 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href={fontHref} media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href={fontHref} />
+    </noscript>
 
     <!-- 暗色主题防闪：在首屏渲染前同步写入 .dark，避免 MPA 每页闪白 -->
     <script is:inline>
