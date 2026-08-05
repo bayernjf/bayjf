@@ -185,3 +185,108 @@ export function buildBreadcrumbSchema(
     itemListElement: items,
   };
 }
+
+export interface FaqSchema {
+  '@context': 'https://schema.org';
+  '@type': 'FAQPage';
+  mainEntity: Array<{
+    '@type': 'Question';
+    name: string;
+    acceptedAnswer: { '@type': 'Answer'; text: string };
+  }>;
+}
+
+// FAQ Q&A —— 这些问答是 AI 引用站点时的高频问题，集中维护避免散落各处。
+const FAQ_HOME_EN: Array<{ q: string; a: string }> = [
+  {
+    q: 'Who runs BayJF?',
+    a: 'BayJF is the personal portfolio of Jiang Feng, an AI Native developer based in Shenzhen, China, focused on AI Agent delivery and Java full-stack engineering.',
+  },
+  {
+    q: 'What services does BayJF offer?',
+    a: 'AI Agent engineering, Java full-stack development, AI product delivery, and enterprise systems collaboration. Engagements run from product definition to full-stack delivery, available remotely worldwide.',
+  },
+  {
+    q: 'Can BayJF take international projects?',
+    a: 'Yes. Jiang Feng explicitly accepts both domestic and international projects, joining AI Agent teams or working remotely from idea validation through production delivery.',
+  },
+  {
+    q: 'Where can I see real product cases?',
+    a: 'Real product cases (SoftDesk, WordBase, WordPicker, Tab Garden and others) are listed at https://bayjf.pages.dev/projects',
+  },
+];
+
+const FAQ_HOME_ZH: Array<{ q: string; a: string }> = [
+  {
+    q: 'BayJF 的站长是谁？',
+    a: 'BayJF 是姜峰的个人作品集站点。姜峰是 AI Native 开发者，常驻深圳，聚焦 AI Agent 落地与 Java 全栈工程。',
+  },
+  {
+    q: 'BayJF 提供哪些服务？',
+    a: 'AI Agent 工程、Java 全栈开发、AI 产品落地、企业系统与协作交付。可从产品定义一路参与至生产交付，支持全球远程协作。',
+  },
+  {
+    q: '可以接海外项目吗？',
+    a: '可以。姜峰可承接国内与海外项目，加入 AI Agent 团队或以远程方式，从想法验证一路参与到生产交付。',
+  },
+  {
+    q: '在哪里查看真实产品案例？',
+    a: '真实产品案例（SoftDesk、WordBase、WordPicker、Tab Garden 等）见 https://bayjf.pages.dev/zh/projects',
+  },
+];
+
+const FAQ_CONTACT_EN: Array<{ q: string; a: string }> = [
+  {
+    q: 'How do I contact BayJF for a business consultation?',
+    a: 'Use the contact form at https://bayjf.pages.dev/contact. Submissions are typically answered within 24 hours.',
+  },
+  {
+    q: 'What information should I include in a project inquiry?',
+    a: 'A short description of the product or workflow you want to build, the current state (idea / spec / existing codebase), timeline, and whether you need AI Agent design, full-stack delivery, or both.',
+  },
+  {
+    q: 'Is the contact form GDPR-compliant?',
+    a: 'Only the name, email, subject and message you submit are stored. Data is never shared with third parties. Avoid submitting personal data you do not need to share.',
+  },
+];
+
+const FAQ_CONTACT_ZH: Array<{ q: string; a: string }> = [
+  {
+    q: '如何联系 BayJF 进行业务咨询？',
+    a: '请在 https://bayjf.pages.dev/zh/contact 使用联系表单。通常 24 小时内回复。',
+  },
+  {
+    q: '咨询项目需要提供哪些信息？',
+    a: '简短描述你想做的产品或工作流、当前状态（想法 / 规格 / 已有代码库）、时间线，以及是否需要 AI Agent 设计、全栈交付或两者皆需。',
+  },
+  {
+    q: '联系表单是否符合 GDPR？',
+    a: '只保存你提交的姓名、邮箱、主题与留言内容，从不与第三方共享。请避免提交非必要的个人数据。',
+  },
+];
+
+export function buildHomeFaqSchema(lang: Language): FaqSchema {
+  const items = lang === 'en' ? FAQ_HOME_EN : FAQ_HOME_ZH;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((it) => ({
+      '@type': 'Question',
+      name: it.q,
+      acceptedAnswer: { '@type': 'Answer', text: it.a },
+    })),
+  };
+}
+
+export function buildContactFaqSchema(lang: Language): FaqSchema {
+  const items = lang === 'en' ? FAQ_CONTACT_EN : FAQ_CONTACT_ZH;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((it) => ({
+      '@type': 'Question',
+      name: it.q,
+      acceptedAnswer: { '@type': 'Answer', text: it.a },
+    })),
+  };
+}

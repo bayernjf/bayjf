@@ -6,6 +6,8 @@ import {
   buildWebSiteSchema,
   buildPersonSchema,
   buildBreadcrumbSchema,
+  buildHomeFaqSchema,
+  buildContactFaqSchema,
 } from '../i18n/schema';
 
 interface Props {
@@ -47,6 +49,13 @@ const fontHref =
 const personJsonLd = buildPersonSchema(lang);
 const websiteJsonLd = buildWebSiteSchema(lang);
 const breadcrumbJsonLd = buildBreadcrumbSchema(lang, screen);
+// FAQ JSON-LD：只在 home 与 contact 页注入，对应 AI 引用站点的高频问题
+const faqJsonLd =
+  screen === 'home'
+    ? buildHomeFaqSchema(lang)
+    : screen === 'contact'
+      ? buildContactFaqSchema(lang)
+      : null;
 ---
 
 <!doctype html>
@@ -97,6 +106,13 @@ const breadcrumbJsonLd = buildBreadcrumbSchema(lang, screen);
       type="application/ld+json"
       set:html={JSON.stringify(breadcrumbJsonLd)}
     />
+    {faqJsonLd && (
+      <script
+        is:inline
+        type="application/ld+json"
+        set:html={JSON.stringify(faqJsonLd)}
+      />
+    )}
 
     <!-- 字体：非阻塞加载（media=print + onload 切换），避免字体 CDN 不可达时阻塞 load 事件 -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
