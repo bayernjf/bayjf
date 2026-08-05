@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
+import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { fileURLToPath } from 'node:url';
 
@@ -8,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 export default defineConfig({
   // 前端保持静态站（双平台架构：Cloudflare Pages 静态资源 + 现有 _worker.js 代理到 Vercel Hono）。
   output: 'static',
+  site: 'https://bayjf.pages.dev',
   i18n: {
     locales: ['en', 'zh'],
     defaultLocale: 'en',
@@ -15,7 +17,19 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
-  integrations: [react()],
+  integrations: [
+    react(),
+    // 多语言 sitemap：每个 URL 同时声明 en 与 zh 的 hreflang 互指。
+    sitemap({
+      i18n: {
+        defaultLocale: 'en',
+        locales: {
+          en: 'en-US',
+          zh: 'zh-CN',
+        },
+      },
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
     resolve: {
