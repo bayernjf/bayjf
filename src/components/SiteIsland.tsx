@@ -14,10 +14,12 @@ export default function SiteIsland({
   lang,
   screen,
   agentImages,
+  turnstileSiteKey,
 }: {
   lang: Language;
   screen: ScreenKey;
   agentImages: AgentImage[];
+  turnstileSiteKey?: string;
 }) {
   // 标记 hydrate 完成，便于 e2e 等待交互就绪，也可用于抑制 hydrate 前的交互闪烁。
   useEffect(() => {
@@ -27,7 +29,7 @@ export default function SiteIsland({
   return (
     <LanguageProvider initialLanguage={lang}>
       <ToastProvider>
-        <App lang={lang} initialScreen={screen as ScreenType} agentImages={agentImages} />
+        <App lang={lang} initialScreen={screen as ScreenType} agentImages={agentImages} turnstileSiteKey={turnstileSiteKey} />
       </ToastProvider>
     </LanguageProvider>
   );

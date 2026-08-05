@@ -36,6 +36,10 @@ interface Props {
 
 const { lang, screen } = Astro.props;
 
+// `import.meta.env.VITE_*` 在 astro dev 的客户端 bundle 中不会被注入（生产构建会内联），
+// 故在 Astro 层读取后作为 prop 下发，保证本地预览时 Turnstile 组件能拿到 sitekey。
+const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY ?? '';
+
 const sources = [
   agent01, agent02, agent03, agent04, agent05, agent06, agent07, agent08, agent09, agent10,
   agent11, agent12, agent13, agent14, agent15, agent16, agent17, agent18, agent19,
@@ -53,4 +57,4 @@ const agentImages = await Promise.all(
 );
 ---
 
-<SiteIsland lang={lang} screen={screen} agentImages={agentImages} client:load />
+<SiteIsland lang={lang} screen={screen} agentImages={agentImages} turnstileSiteKey={turnstileSiteKey} client:load />

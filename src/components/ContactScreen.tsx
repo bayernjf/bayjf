@@ -12,7 +12,11 @@ import { submitContactMessage } from '../api/contact';
 import { trackEvent } from '../utils/analytics';
 import TurnstileWidget from './TurnstileWidget';
 
-export default function ContactScreen() {
+interface ContactScreenProps {
+  turnstileSiteKey?: string;
+}
+
+export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenProps) {
   const { t, language } = useLanguage();
   const { showToast } = useToast();
   const status = {
@@ -53,7 +57,6 @@ export default function ContactScreen() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [turnstileToken, setTurnstileToken] = useState('');
-  const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
   const handleTurnstileError = useCallback(() => setTurnstileToken(''), []);
 
   const validate = (): boolean => {

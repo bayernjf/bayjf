@@ -22,7 +22,7 @@ const BayjfScreen = lazy(() => import('./components/BayjfScreen'));
 const ExperienceScreen = lazy(() => import('./components/ExperienceScreen'));
 const ContactScreen = lazy(() => import('./components/ContactScreen'));
 
-export default function App({ lang, initialScreen = 'home', agentImages = [] }: { lang: Language; initialScreen?: ScreenType; agentImages?: AgentImage[] }) {
+export default function App({ lang, initialScreen = 'home', agentImages = [], turnstileSiteKey = '' }: { lang: Language; initialScreen?: ScreenType; agentImages?: AgentImage[]; turnstileSiteKey?: string }) {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>(initialScreen);
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     try {
@@ -143,7 +143,7 @@ export default function App({ lang, initialScreen = 'home', agentImages = [] }: 
       case 'experience':
         return <ExperienceScreen />;
       case 'contact':
-        return <ContactScreen />;
+        return <ContactScreen turnstileSiteKey={turnstileSiteKey} />;
       default:
         return <HomeScreen onNavigate={handleNavigate} agentImages={agentImages} />;
     }
