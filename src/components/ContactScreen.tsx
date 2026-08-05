@@ -145,7 +145,7 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
   };
 
   return (
-    <div className="relative pt-32 pb-24 min-h-screen px-6 md:px-16 max-w-7xl mx-auto flex items-center">
+    <section aria-label="Contact" className="relative pt-32 pb-24 min-h-screen px-6 md:px-16 max-w-7xl mx-auto flex items-center">
       {/* Background radial glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#54615b]/10 via-transparent to-transparent pointer-events-none -z-10" />
 
@@ -392,6 +392,6 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
           </motion.div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

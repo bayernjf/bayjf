@@ -113,7 +113,7 @@ export default function ExperienceScreen() {
   const { t, experienceItems } = useLanguage();
 
   return (
-    <div className="pt-32 pb-24 min-h-screen px-6 md:px-16 max-w-7xl mx-auto">
+    <section aria-label="Experience and skills" className="pt-32 pb-24 min-h-screen px-6 md:px-16 max-w-7xl mx-auto">
       {/* Header section */}
       <div className="mb-20 text-center md:text-left">
         <motion.div
@@ -191,6 +191,6 @@ export default function ExperienceScreen() {
 
       {/* Technical Skills Grid Section */}
       <SkillsGrid />
-    </div>
+    </section>
   );
 }

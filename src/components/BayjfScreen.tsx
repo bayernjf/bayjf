@@ -304,7 +304,7 @@ export default function BayjfScreen() {
   };
 
   return (
-    <div className="pt-32 pb-24 min-h-screen px-6 md:px-16 max-w-7xl mx-auto">
+    <section aria-label="Selected projects" className="pt-32 pb-24 min-h-screen px-6 md:px-16 max-w-7xl mx-auto">
       {/* Title section with layout toggle in header */}
       <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6 border-b border-[#e4e2e0]/40 dark:border-white/5 pb-8">
         <motion.div
@@ -829,6 +829,6 @@ export default function BayjfScreen() {
           />
         )}
       </AnimatePresence>
-    </div>
+    </section>
   );
 }
