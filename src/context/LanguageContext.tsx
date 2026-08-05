@@ -12,6 +12,8 @@ export type { Language };
 const SOFT_DESK_RELEASE_DATE = '2026-06-22';
 const WORD_BASE_RELEASE_DATE = '2026-06-02';
 const TAB_GARDEN_RELEASE_DATE = '2026-07-19';
+// 以下 11 个产品落地页统一于 2026-08-05 上线
+const LANDING_BATCH_DATE = '2026-08-05';
 
 const PROJECTS_EN: Project[] = [
   {
@@ -43,6 +45,116 @@ const PROJECTS_EN: Project[] = [
     tags: ['Chrome Extension', 'TypeScript', 'Manifest V3', 'Supabase'],
     link: 'https://github.com/bayernjf/tab-manager',
     date: TAB_GARDEN_RELEASE_DATE
+  },
+  {
+    id: 'agent-dev',
+    title: 'Agent-Dev',
+    category: 'AGENTIC PRODUCT DELIVERY PLATFORM',
+    description: 'An agentic product delivery platform for turning AI Agent ideas into shipped products, orchestrating agents, tools, and human review across the delivery pipeline.',
+    image: 'https://agent-dev-landing.pages.dev/preview.png',
+    tags: ['AI Agent', 'Astro', 'TypeScript', 'Tailwind CSS'],
+    link: 'https://agent-dev-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'know-collect',
+    title: 'VideoVault',
+    category: 'CROSS-PLATFORM VIDEO BOOKMARK MANAGER',
+    description: 'A cross-platform video bookmark manager that collects and organizes videos from Douyin, Bilibili, and Xiaohongshu into a single searchable library.',
+    image: 'https://know-collect-landing.pages.dev/preview.png',
+    tags: ['Astro', 'TypeScript', 'Tailwind CSS'],
+    link: 'https://know-collect-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'one-code',
+    title: 'AI Watchdog',
+    category: 'AI CODING MONITOR · VS CODE EXTENSION',
+    description: 'A VS Code extension that monitors AI coding agents (Copilot Chat, Cline, terminal) in real time and notifies you via sound and desktop notifications when the AI finishes or needs a takeover.',
+    image: 'https://one-code-landing.pages.dev/preview.png',
+    tags: ['VS Code Extension', 'TypeScript', 'Astro', 'Tailwind CSS'],
+    link: 'https://one-code-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'one-world',
+    title: 'One World',
+    category: '2D LIFE GAMIFICATION ENGINE',
+    description: 'A 2D top-down life gamification engine that turns daily routines and goals into a playable, progressing world.',
+    image: 'https://one-world-landing.pages.dev/preview.png',
+    tags: ['Game', 'Astro', 'TypeScript', 'Tailwind CSS'],
+    link: 'https://one-world-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'pr-helper',
+    title: 'PR Helper',
+    category: 'GITHUB PR & RELEASE CONTROL TOWER',
+    description: 'A GitHub-first control tower for pull requests and releases, consolidating review, merge, and release workflows into one dashboard.',
+    image: 'https://pr-helper-landing.pages.dev/preview.png',
+    tags: ['GitHub', 'Astro', 'TypeScript', 'Tailwind CSS'],
+    link: 'https://pr-helper-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'shareit',
+    title: 'ShareIt',
+    category: 'PRIVACY-FIRST FAMILY MEDIA SHARING',
+    description: 'A privacy-first family photo and video sharing app that keeps your media under your control while making sharing effortless.',
+    image: 'https://shareit-landing.pages.dev/preview.png',
+    tags: ['Astro', 'TypeScript', 'Tailwind CSS'],
+    link: 'https://shareit-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'splity',
+    title: 'Splity',
+    category: 'KNOWLEDGE-TO-FLASHCARD SPLITTER',
+    description: 'A knowledge-to-flashcard tool that splits pasted text into front/back flip cards, supporting 6 formats. No registration, data stays in the browser.',
+    image: 'https://splity-landing.pages.dev/preview.png',
+    tags: ['Astro', 'TypeScript', 'Tailwind CSS'],
+    link: 'https://splity-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'termana',
+    title: 'Termana',
+    category: 'TERMINAL PROJECT LAUNCHER FOR CODING AGENTS',
+    description: 'A local-first terminal project launcher. Manage multiple projects in one panel, bind a coding agent (Claude Code, Codex, Aider, OpenCode) to each, and launch with one click. Built-in AGENTS.md context editor.',
+    image: 'https://termana-landing.pages.dev/preview.png',
+    tags: ['Tauri', 'Rust', 'TypeScript', 'macOS', 'Windows'],
+    link: 'https://termana-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'toclick',
+    title: 'FlagBreaker',
+    category: 'AI-POWERED SELF-DISCIPLINE APP',
+    description: 'An AI-persona-powered self-discipline app that supervises your habits and goals through character-driven accountability.',
+    image: 'https://toclick-landing.pages.dev/preview.png',
+    tags: ['AI', 'Astro', 'TypeScript', 'Tailwind CSS'],
+    link: 'https://toclick-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'vfx-todo',
+    title: 'VFX Todo',
+    category: 'DESKTOP TODO APP WITH VISUAL EFFECTS',
+    description: 'A Tauri-based desktop todo app that triggers 8 WebGL visual effects (bullet comments, particles, fireworks, etc.) when you complete a task. Lightweight, native, cross-platform.',
+    image: 'https://vfx-todo-landing.pages.dev/preview.png',
+    tags: ['Tauri', 'Rust', 'TypeScript', 'WebGL'],
+    link: 'https://vfx-todo-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'word-picker',
+    title: 'WordPicker',
+    category: 'BROWSER VOCABULARY LOOKUP EXTENSION',
+    description: 'A browser extension for in-page word lookup and vocabulary collection, designed to work with the WordBase ecosystem.',
+    image: 'https://word-picker-landing.pages.dev/preview.png',
+    tags: ['Chrome Extension', 'TypeScript', 'Astro', 'Tailwind CSS'],
+    link: 'https://word-picker-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
   }
 ];
 
@@ -76,6 +188,116 @@ const PROJECTS_ZH: Project[] = [
     tags: ['Chrome 扩展', 'TypeScript', 'Manifest V3', 'Supabase'],
     link: 'https://github.com/bayernjf/tab-manager',
     date: TAB_GARDEN_RELEASE_DATE
+  },
+  {
+    id: 'agent-dev',
+    title: 'Agent-Dev',
+    category: '智能体产品交付平台',
+    description: '智能体产品交付平台，把 AI Agent 想法变成可交付产品，在交付链路上编排智能体、工具与人工审核。',
+    image: 'https://agent-dev-landing.pages.dev/preview.png',
+    tags: ['AI Agent', 'Astro', 'TypeScript', 'Tailwind CSS'],
+    link: 'https://agent-dev-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'know-collect',
+    title: 'VideoVault',
+    category: '跨平台视频书签管理器',
+    description: '跨平台视频书签管理器，将抖音、B 站、小红书的视频统一收藏并整理为可搜索的资料库。',
+    image: 'https://know-collect-landing.pages.dev/preview.png',
+    tags: ['Astro', 'TypeScript', 'Tailwind CSS'],
+    link: 'https://know-collect-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'one-code',
+    title: 'AI Watchdog',
+    category: 'AI 编码监控 · VS Code 扩展',
+    description: 'VS Code 扩展，实时监控 Copilot Chat、Cline、终端等 AI 编码工具；当 AI 完成任务或需要接管时，立即通过声音和桌面通知提醒你。',
+    image: 'https://one-code-landing.pages.dev/preview.png',
+    tags: ['VS Code 扩展', 'TypeScript', 'Astro', 'Tailwind CSS'],
+    link: 'https://one-code-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'one-world',
+    title: 'One World',
+    category: '2D 生活游戏化引擎',
+    description: '2D 俯视角生活游戏化引擎，把日常习惯与目标转化为可游玩、可成长的世界。',
+    image: 'https://one-world-landing.pages.dev/preview.png',
+    tags: ['Game', 'Astro', 'TypeScript', 'Tailwind CSS'],
+    link: 'https://one-world-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'pr-helper',
+    title: 'PR Helper',
+    category: 'GitHub PR 与发布控制塔',
+    description: 'GitHub 优先的 PR 与发布控制塔，将评审、合并与发布流程整合到一个看板。',
+    image: 'https://pr-helper-landing.pages.dev/preview.png',
+    tags: ['GitHub', 'Astro', 'TypeScript', 'Tailwind CSS'],
+    link: 'https://pr-helper-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'shareit',
+    title: 'ShareIt',
+    category: '隐私优先的家庭媒体分享',
+    description: '隐私优先的家庭照片与视频分享应用，媒体由你掌控，分享依然轻松。',
+    image: 'https://shareit-landing.pages.dev/preview.png',
+    tags: ['Astro', 'TypeScript', 'Tailwind CSS'],
+    link: 'https://shareit-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'splity',
+    title: 'Splity',
+    category: '知识点学习卡片分割工具',
+    description: '粘贴一段文本，自动识别 6 种格式并拆分为正反面翻转卡片。无需注册，数据留在浏览器，开箱即用。',
+    image: 'https://splity-landing.pages.dev/preview.png',
+    tags: ['Astro', 'TypeScript', 'Tailwind CSS'],
+    link: 'https://splity-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'termana',
+    title: 'Termana',
+    category: '面向 Coding Agent 的终端项目启动器',
+    description: '本地优先的终端项目启动器。在一个面板里管理多个项目，为每个项目绑定一个 coding agent（Claude Code、Codex、Aider、OpenCode），点一下即可启动。内置 AGENTS.md 上下文编辑器。',
+    image: 'https://termana-landing.pages.dev/preview.png',
+    tags: ['Tauri', 'Rust', 'TypeScript', 'macOS', 'Windows'],
+    link: 'https://termana-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'toclick',
+    title: '反旗 FlagBreaker',
+    category: 'AI 人设化监督自律应用',
+    description: 'AI 人设化监督自律 App，通过角色驱动的问责机制监督你的习惯与目标。',
+    image: 'https://toclick-landing.pages.dev/preview.png',
+    tags: ['AI', 'Astro', 'TypeScript', 'Tailwind CSS'],
+    link: 'https://toclick-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'vfx-todo',
+    title: 'VFX Todo',
+    category: '带特效的桌面待办应用',
+    description: '基于 Tauri 的桌面待办应用，完成任务时触发 8 种 WebGL 视觉特效（弹幕、粒子、烟花等）。轻量、原生、跨平台。',
+    image: 'https://vfx-todo-landing.pages.dev/preview.png',
+    tags: ['Tauri', 'Rust', 'TypeScript', 'WebGL'],
+    link: 'https://vfx-todo-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
+  },
+  {
+    id: 'word-picker',
+    title: 'WordPicker',
+    category: '浏览器查词扩展',
+    description: '浏览器扩展，支持页内查词与单词收藏，与 WordBase 生态配合使用。',
+    image: 'https://word-picker-landing.pages.dev/preview.png',
+    tags: ['Chrome 扩展', 'TypeScript', 'Astro', 'Tailwind CSS'],
+    link: 'https://word-picker-landing.pages.dev/',
+    date: LANDING_BATCH_DATE
   }
 ];
 
