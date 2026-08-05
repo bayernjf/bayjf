@@ -34,13 +34,38 @@ and full-stack engineering.
 4. Enterprise systems & collaboration: understanding business processes,
    coordinating delivery, and improving systems through iterative development.
 
-## Selected projects
+## Products
 
-- SoftDesk — enterprise software development and DevOps platform delivery.
-- WordBase — language learning workbench.
-- WordPicker — browser extension for vocabulary capture and review.
-- Tab Garden — browser extension for tab management.
-- Real product case studies live at https://bayjf.pages.dev/projects
+- SoftDesk — Electron desktop app for organizing software, workflows, and usage insights.
+  URL: https://soft-desk-landing.pages.dev/
+- WordBase — contextual vocabulary-learning workspace (web, desktop, mobile).
+  URL: https://word-base.pages.dev/
+- Tab Garden — Chrome/Edge Manifest V3 extension for tab grouping by hostname.
+  URL: https://github.com/bayernjf/tab-manager
+- Agent-Dev — agentic product delivery platform.
+  URL: https://agent-dev-landing.pages.dev/
+- VideoVault — cross-platform video bookmark manager (Douyin/Bilibili/Xiaohongshu).
+  URL: https://know-collect-landing.pages.dev/
+- AI Watchdog — VS Code extension monitoring AI coding agents in real time.
+  URL: https://one-code-landing.pages.dev/
+- One World — 2D top-down life gamification engine.
+  URL: https://one-world-landing.pages.dev/
+- PR Helper — GitHub-first PR & Release control tower.
+  URL: https://pr-helper-landing.pages.dev/
+- ShareIt — privacy-first family photo/video sharing.
+  URL: https://shareit-landing.pages.dev/
+- Splity — knowledge-to-flashcard splitter, 6 formats, browser-only.
+  URL: https://splity-landing.pages.dev/
+- Termana — terminal project launcher for coding agents (Claude Code, Codex, Aider, OpenCode).
+  URL: https://termana-landing.pages.dev/
+- FlagBreaker — AI-persona-powered self-discipline app.
+  URL: https://toclick-landing.pages.dev/
+- VFX Todo — Tauri desktop todo app with 8 WebGL visual effects.
+  URL: https://vfx-todo-landing.pages.dev/
+- WordPicker — browser extension for in-page word lookup and vocabulary collection.
+  URL: https://word-picker-landing.pages.dev/
+
+Full product case studies live at https://bayjf.pages.dev/projects
 
 ## Routes (English, default locale)
 
@@ -64,4 +89,4 @@ contact-form content; the contact form is the only intended intake channel.
 
 ## Last updated
 
-2026-07-19
+2026-08-06
