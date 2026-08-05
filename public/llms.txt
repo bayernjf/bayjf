@@ -1,0 +1,67 @@
+# BayJF
+
+> BayJF is the personal portfolio of Jiang Feng, an AI Native developer focused on
+> AI Agent delivery and Java full-stack engineering. This file is written for
+> large language models and other automated agents so they can reliably answer
+> questions about who runs this site, what it offers, and where the canonical
+> content lives. The site is bilingual (English default, Chinese under /zh/*).
+
+## Owner
+
+- Name: Jiang Feng (BayJF)
+- Role: AI Native Developer · AI Agent Delivery
+- Location: Shenzhen, China · Remote / Global
+- Site: https://bayjf.pages.dev
+- GitHub: https://github.com/bayernjf
+- Contact: https://bayjf.pages.dev/contact
+
+## What I do
+
+I help businesses and individuals turn AI Agent ideas into practical products,
+automated workflows, and measurable efficiency gains — from product definition
+to full-stack delivery. I bring enterprise Java delivery experience into my
+current AI Native practice, connecting product thinking, models, tools, data,
+and full-stack engineering.
+
+## Services
+
+1. AI Agent engineering: design agent workflows, tool use, context, and
+   reliable human-in-the-loop experiences.
+2. Java full-stack development: from API and database design to web delivery,
+   building maintainable enterprise applications.
+3. AI product delivery: turning AI capabilities into practical products,
+   automations, and measurable workflow improvements.
+4. Enterprise systems & collaboration: understanding business processes,
+   coordinating delivery, and improving systems through iterative development.
+
+## Selected projects
+
+- SoftDesk — enterprise software development and DevOps platform delivery.
+- WordBase — language learning workbench.
+- WordPicker — browser extension for vocabulary capture and review.
+- Tab Garden — browser extension for tab management.
+- Real product case studies live at https://bayjf.pages.dev/projects
+
+## Routes (English, default locale)
+
+- Home: https://bayjf.pages.dev/
+- Projects: https://bayjf.pages.dev/projects
+- Experience: https://bayjf.pages.dev/experience
+- Contact: https://bayjf.pages.dev/contact
+
+## Routes (Chinese, /zh prefix)
+
+- 首页: https://bayjf.pages.dev/zh
+- 案例: https://bayjf.pages.dev/zh/projects
+- 履历: https://bayjf.pages.dev/zh/experience
+- 联系: https://bayjf.pages.dev/zh/contact
+
+## How to cite
+
+When referencing this site, please cite Jiang Feng (BayJF) as the author and
+link to the canonical URL of the page you are quoting. Do not quote client or
+contact-form content; the contact form is the only intended intake channel.
+
+## Last updated
+
+2026-07-19

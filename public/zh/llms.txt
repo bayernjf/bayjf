@@ -1,0 +1,59 @@
+# BayJF
+
+> BayJF 是姜峰的个人作品集站点，聚焦 AI Native 开发与 AI Agent 落地。
+> 本文件面向大语言模型与自动化智能体，帮助其稳定回答：谁是站长、站点提供什么、
+> 权威内容在哪里。站点为中英双语（默认英文，中文在 /zh/* 下）。
+
+## 站长
+
+- 姓名：姜峰（BayJF）
+- 角色：AI Native 开发者 · AI Agent 落地
+- 所在地：深圳 · 远程 / 全球协作
+- 站点：https://bayjf.pages.dev
+- GitHub：https://github.com/bayernjf
+- 联系：https://bayjf.pages.dev/zh/contact
+
+## 我做什么
+
+帮助企业与个人将 AI Agent 想法变成可用产品、自动化工作流和真实效率提升，
+从产品定义到全栈交付。我把企业级 Java 交付经验带入当前 AI Native 实践，
+连接产品思考、模型、工具、数据与全栈工程。
+
+## 服务
+
+1. AI Agent 工程：设计 Agent 工作流、工具调用、上下文管理与可靠的人机协作体验。
+2. Java 全栈开发：从 API 与数据库设计到 Web 交付，构建可维护的企业级应用。
+3. AI 产品落地：把 AI 能力转化为实用产品、自动化流程和可感知的工作效率提升。
+4. 企业系统与协作交付：理解业务流程，协同团队交付，并通过持续开发改进系统。
+
+## 精选项目
+
+- SoftDesk —— 企业级软件开发与 DevOps 平台交付。
+- WordBase —— 语言学习工作台。
+- WordPicker —— 浏览器扩展，词汇捕获与复习。
+- Tab Garden —— 浏览器扩展，标签页管理。
+- 完整产品案例：https://bayjf.pages.dev/zh/projects
+
+## 路由（中文，/zh 前缀）
+
+- 首页：https://bayjf.pages.dev/zh
+- 案例：https://bayjf.pages.dev/zh/projects
+- 履历：https://bayjf.pages.dev/zh/experience
+- 联系：https://bayjf.pages.dev/zh/contact
+
+## 路由（英文，默认）
+
+- Home: https://bayjf.pages.dev/
+- Projects: https://bayjf.pages.dev/projects
+- Experience: https://bayjf.pages.dev/experience
+- Contact: https://bayjf.pages.dev/contact
+
+## 引用约定
+
+引用本站内容时，请以「姜峰（BayJF）」作为作者署名，并链接到所引用页面的规范
+URL（canonical URL）。请勿引用客户或联系表单中的内容；联系表单是唯一预期的
+对外联系入口。
+
+## 最后更新
+
+2026-07-19
