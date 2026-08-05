@@ -9,7 +9,6 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import CustomCursor from './components/CustomCursor';
 import ScrollProgress from './components/ScrollProgress';
-import SEOManager from './components/SEOManager';
 import BackToTop from './components/BackToTop';
 import { AnimatePresence, motion, type Variants } from 'motion/react';
 import { useLanguage, type Language } from './context/LanguageContext';
@@ -180,9 +179,6 @@ export default function App({ lang, initialScreen = 'home', agentImages = [], tu
     <div className={`min-h-screen transition-colors duration-500 bg-[#fbf9f7] text-[#1b1c1b] dark:bg-[#121212] dark:text-[#fbf9f7] selection:bg-[#54615b]/20 dark:selection:bg-[#bbcac2]/25`}>
       {/* Subtle Scroll Progress Bar */}
       <ScrollProgress currentScreen={currentScreen} />
-
-      {/* Dynamic SEO & Accessibility Head Manager */}
-      <SEOManager currentScreen={currentScreen} />
 
       {/* Floating Back to Top Button */}
       <BackToTop currentScreen={currentScreen} />
