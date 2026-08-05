@@ -16,8 +16,24 @@ const clarityId = import.meta.env.VITE_CLARITY_PROJECT_ID?.trim();
 const title = translate(lang, SEO_KEYS[screen].title);
 const description = translate(lang, SEO_KEYS[screen].desc);
 const siteUrl = 'https://bayjf.pages.dev';
-const canonical = `${siteUrl}${baseForLang(lang)}${screen === 'home' ? '' : `/${screen === 'bayjf' ? 'projects' : screen}`}`;
-const ogImage = 'https://soft-desk-landing.pages.dev/preview.png';
+
+// 路径辅助：screen → URL 子路径（bayjf 屏对应 /projects）
+function pathFor(lang: Language, screen: ScreenKey): string {
+  const base = baseForLang(lang);
+  if (screen === 'home') return base || '/';
+  const sub = screen === 'bayjf' ? 'projects' : screen;
+  return `${base}/${sub}`;
+}
+
+const canonical = `${siteUrl}${pathFor(lang, screen)}`;
+// 同一页面在另一种语言下的对应 URL，用于 hreflang 互指
+const otherLang: Language = lang === 'en' ? 'zh' : 'en';
+const alternateUrl = `${siteUrl}${pathFor(otherLang, screen)}`;
+const xDefaultUrl = `${siteUrl}${pathFor('en', screen)}`;
+
+const ogImage = `${siteUrl}/og.svg`;
+const ogLocale = lang === 'en' ? 'en_US' : 'zh_CN';
+const ogLocaleAlternate = lang === 'en' ? 'zh_CN' : 'en_US';
 // 字体以非阻塞方式加载：CDN 不可达/缓慢时不阻塞首屏与 load 事件。
 const fontHref =
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,300..800;1,6..72,300..800&family=Work+Sans:wght@300;400;500;600;700&display=swap';
@@ -31,12 +47,20 @@ const fontHref =
     <title>{title}</title>
     <meta name="description" content={description} />
 
+    <!-- 多语言 hreflang：当前语言 → 对应语言 → x-default -->
+    <link rel="alternate" hreflang={lang === 'en' ? 'en-US' : 'zh-CN'} href={canonical} />
+    <link rel="alternate" hreflang={otherLang === 'en' ? 'en-US' : 'zh-CN'} href={alternateUrl} />
+    <link rel="alternate" hreflang="x-default" href={xDefaultUrl} />
+
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={ogLocaleAlternate} />
+    <meta property="og:site_name" content="BayJF" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
