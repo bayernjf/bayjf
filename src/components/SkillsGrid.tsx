@@ -5,7 +5,7 @@
 
 import { useState } from 'react';
 import { motion, type Variants } from 'motion/react';
-import { PenTool, Code, Cpu, Award, CheckCircle2 } from 'lucide-react';
+import { PenTool, Code, Cpu, Award, CheckCircle2, type LucideIcon } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 interface Skill {
@@ -16,7 +16,7 @@ interface Skill {
 interface SkillCategory {
   id: string;
   title: string;
-  icon: any;
+  icon: LucideIcon;
   description: string;
   skills: Skill[];
   tags: string[];
@@ -78,7 +78,7 @@ const SKILL_CATEGORIES: SkillCategory[] = [
 ];
 
 export default function SkillsGrid() {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [, setActiveCategory] = useState<string | null>(null);
   const { t, language } = useLanguage();
 
   const getTranslationId = (id: string) => id === 'creative-tech' ? 'creative' : id;
@@ -149,7 +149,6 @@ export default function SkillsGrid() {
       >
         {SKILL_CATEGORIES.map((category) => {
           const Icon = category.icon;
-          const isHovered = activeCategory === category.id;
           const transId = getTranslationId(category.id);
 
           return (

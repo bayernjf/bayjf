@@ -1,10 +1,30 @@
 import '@testing-library/jest-dom/vitest';
-import { afterEach, vi } from 'vitest';
+import { afterEach, beforeEach, vi } from 'vitest';
 import { cleanup } from '@testing-library/react';
+
+const storage = new Map<string, string>();
+const localStorageMock: Storage = {
+  get length() {
+    return storage.size;
+  },
+  clear: () => storage.clear(),
+  getItem: (key) => storage.get(key) ?? null,
+  key: (index) => Array.from(storage.keys())[index] ?? null,
+  removeItem: (key) => storage.delete(key),
+  setItem: (key, value) => storage.set(key, String(value)),
+};
+
+beforeEach(() => {
+  vi.stubGlobal('localStorage', localStorageMock);
+  Object.defineProperty(window, 'localStorage', {
+    configurable: true,
+    value: localStorageMock,
+  });
+});
 
 afterEach(() => {
   cleanup();
-  localStorage.clear();
+  globalThis.localStorage?.clear();
 });
 
 Object.defineProperty(window, 'matchMedia', {

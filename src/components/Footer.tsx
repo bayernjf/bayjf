@@ -4,7 +4,7 @@
  */
 
 import { useLanguage } from '../context/LanguageContext';
-import { Github, Linkedin, Twitter } from 'lucide-react';
+import { Github, Mail } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -18,18 +18,8 @@ export default function Footer() {
         </p>
         <div className="flex items-center space-x-6">
           <a
-            id="footer-linkedin"
-            href="https://linkedin.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn"
-            className="interactive group flex items-center justify-center w-9 h-9 rounded-full bg-[#e4e2e0]/30 dark:bg-white/5 hover:bg-[#54615b] dark:hover:bg-[#bbcac2] border border-[#e4e2e0]/40 dark:border-white/5 hover:border-transparent dark:hover:border-transparent text-[#444748] dark:text-[#c4c7c7] hover:text-[#fbf9f7] dark:hover:text-[#1b1c1b] transition-all duration-300 transform hover:scale-105"
-          >
-            <Linkedin size={16} className="transition-transform duration-300 group-hover:rotate-[8deg]" />
-          </a>
-          <a
             id="footer-github"
-            href="https://github.com"
+            href="https://github.com/bayernjf"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub"
@@ -38,14 +28,12 @@ export default function Footer() {
             <Github size={16} className="transition-transform duration-300 group-hover:scale-110" />
           </a>
           <a
-            id="footer-twitter"
-            href="https://twitter.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Twitter"
+            id="footer-email"
+            href="mailto:hello@bayjf.pages.dev"
+            aria-label="Email"
             className="interactive group flex items-center justify-center w-9 h-9 rounded-full bg-[#e4e2e0]/30 dark:bg-white/5 hover:bg-[#54615b] dark:hover:bg-[#bbcac2] border border-[#e4e2e0]/40 dark:border-white/5 hover:border-transparent dark:hover:border-transparent text-[#444748] dark:text-[#c4c7c7] hover:text-[#fbf9f7] dark:hover:text-[#1b1c1b] transition-all duration-300 transform hover:scale-105"
           >
-            <Twitter size={16} className="transition-transform duration-300 group-hover:rotate-[-8deg]" />
+            <Mail size={16} className="transition-transform duration-300 group-hover:scale-110" />
           </a>
         </div>
       </div>
