@@ -3,14 +3,14 @@ export type Language = 'en' | 'zh';
 export const TRANSLATIONS: Record<Language, Record<string, string>> = {
   en: {
     // SEO & Meta
-    'seo.home.title': 'AI Native Developer & AI Agent Builder | BayJF',
-    'seo.home.desc': 'AI Native full-stack developer helping businesses and individuals turn AI Agent ideas into practical products and workflows.',
+    'seo.home.title': 'AI Agent Development & Full-Stack Product Delivery | BayJF',
+    'seo.home.desc': 'AI Agent workflow design, business system integration, and full-stack product delivery for teams and founders.',
     'seo.bayjf.title': 'Selected Projects | BayJF',
-    'seo.bayjf.desc': 'Real products and tools built across AI-enabled workflows, enterprise systems, language learning, and browser productivity.',
+    'seo.bayjf.desc': 'Product cases that show AI Agent delivery, workflow automation, and full-stack engineering across business tools and consumer products.',
     'seo.experience.title': 'Experience & Skills | BayJF',
     'seo.experience.desc': 'A chronological journey through my professional career, highlighting key roles, projects, and my core technical capabilities.',
-    'seo.contact.title': "Let's Connect | BayJF",
-    'seo.contact.desc': 'Get in touch for new opportunities, creative collaborations, or custom product design and engineering solutions.',
+    'seo.contact.title': 'Discuss an AI Agent or Product Project | BayJF',
+    'seo.contact.desc': 'Discuss AI Agent workflows, automation, and full-stack product delivery for your team or new venture.',
 
     // Header
     'nav.home': 'Home',
@@ -22,23 +22,23 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'nav.soundOff': 'Unmute toggle sound',
 
     // HomeScreen
-    'home.hero.title1': 'AI Native',
-    'home.hero.title2': 'AI Agent Delivery',
-    'home.hero.title3': 'Traditional Workflow Optimization & Organizational Efficiency',
-    'home.hero.subtitle': 'I help businesses and individuals turn AI Agent ideas into practical products, automated workflows, and measurable efficiency gains — from product definition to full-stack delivery.',
-    'home.hero.btnWork': 'Real Cases',
-    'home.hero.btnAbout': 'About Me',
+    'home.hero.title1': 'AI Agent &',
+    'home.hero.title2': 'Full-Stack Delivery',
+    'home.hero.title3': 'From workflow to launch',
+    'home.hero.subtitle': 'For teams and founders: AI Agent workflow design, business system integration, and full-stack product delivery. Start with the real bottleneck, then ship a product that can be used and improved.',
+    'home.hero.btnWork': 'View Product Cases',
+    'home.hero.btnAbout': 'Discuss Your Project',
     'home.hero.scroll': 'Scroll',
-    'home.philosophy.title': 'Build the agent. Improve the work.',
-    'home.philosophy.p1': 'I focus on turning complex work into clear, reliable systems. For AI Agent projects, that means understanding the real workflow first, then connecting models, tools, data, and human decisions into a product people can actually use.',
-    'home.philosophy.p2': 'I bring enterprise Java delivery experience into my current AI Native practice, connecting product thinking, models, tools, data, and full-stack engineering.',
+    'home.philosophy.title': 'Build useful AI. Improve real work.',
+    'home.philosophy.p1': 'I turn repetitive and fragmented work into clear, reliable systems. Each project begins with the actual workflow, then connects models, tools, data, and human review into a product the team can operate.',
+    'home.philosophy.p2': 'I combine enterprise Java delivery with AI product engineering, taking work from problem framing and prototype validation to full-stack launch and iteration.',
     'home.philosophy.yearsExp': 'AI Native Focus',
     'home.philosophy.projectsShipped': 'Real Product Cases',
 
     // BayjfScreen
-    'bayjf.headerTag': 'My BayJF',
+    'bayjf.headerTag': 'Product Cases',
     'bayjf.title': 'Selected Projects',
-    'bayjf.desc': 'A selection of real products and tools built for business efficiency, learning workflows, and everyday productivity.',
+    'bayjf.desc': 'These products show how I take AI Agent, automation, and product ideas from workflow discovery through full-stack delivery.',
     'bayjf.filter': 'Filter:',
     'bayjf.viewCaseStudy': 'VIEW CASE STUDY',
     'bayjf.more': 'more',
@@ -76,8 +76,8 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
 
     // ContactScreen
     'contact.headerTag': 'Contact',
-    'contact.title': 'Contact Me for a Business Consultation',
-    'contact.desc': 'Enterprise AI Agent consulting, full-stack product development and delivery, and AI-led improvements to organizational structure and efficiency.',
+    'contact.title': 'Discuss Your AI Agent or Product Project',
+    'contact.desc': 'For teams and founders building AI Agent workflows, internal efficiency tools, web products, desktop software, or browser extensions.',
     'contact.info.location': 'Based In',
     'contact.info.locationVal': 'Shenzhen · Remote / Global',
     'contact.info.email': 'Direct Email',
@@ -101,14 +101,14 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
   },
   zh: {
     // SEO & Meta
-    'seo.home.title': 'AI Native 开发者与 AI Agent 落地 | BayJF',
-    'seo.home.desc': 'AI Native 全栈开发者姜峰，帮助企业与个人落地 AI Agent、自动化工作流与效率工具。',
+    'seo.home.title': 'AI Agent 开发与全栈产品交付 | BayJF',
+    'seo.home.desc': '面向企业团队与创业者，提供 AI Agent 工作流设计、业务系统集成和全栈产品交付服务。',
     'seo.bayjf.title': '精选项目 | BayJF',
-    'seo.bayjf.desc': '展示 SoftDesk、WordBase、WordPicker 与 Tab Garden 等真实产品，记录从产品想法到全栈交付的实践。',
+    'seo.bayjf.desc': '展示 AI Agent 落地、工作流自动化与全栈工程交付的真实产品案例。',
     'seo.experience.title': '工作经历与技能 | 作品集',
     'seo.experience.desc': '我的职业生涯成长轨迹，重点展示关键角色、项目和核心技术能力。',
-    'seo.contact.title': '取得联系 | BayJF',
-    'seo.contact.desc': '期待与您就新机遇、创意合作或定制化产品设计与工程解决方案展开交流。',
+    'seo.contact.title': '咨询 AI Agent 或产品项目 | BayJF',
+    'seo.contact.desc': '咨询 AI Agent 工作流、自动化方案和全栈产品交付，适合团队与创业项目。',
 
     // Header
     'nav.home': '首页',
@@ -120,23 +120,23 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'nav.soundOff': '开启开关提示音',
 
     // HomeScreen
-    'home.hero.title1': 'AI Native',
-    'home.hero.title2': 'AI Agent 落地',
-    'home.hero.title3': '传统工作流优化、组织效率提升',
-    'home.hero.subtitle': '帮助企业与个人将 AI Agent 想法变成可用产品、自动化工作流和真实效率提升，从产品定义到全栈交付。',
-    'home.hero.btnWork': '真实案例',
-    'home.hero.btnAbout': '关于我',
+    'home.hero.title1': 'AI Agent 与',
+    'home.hero.title2': '全栈产品交付',
+    'home.hero.title3': '从工作流到上线',
+    'home.hero.subtitle': '面向企业团队与创业者，提供 AI Agent 工作流设计、业务系统集成和全栈产品交付服务。先定位真实流程瓶颈，再交付可上线、可迭代的产品与自动化方案。',
+    'home.hero.btnWork': '查看产品案例',
+    'home.hero.btnAbout': '发起项目咨询',
     'home.hero.scroll': '向下滑动',
-    'home.philosophy.title': '让 Agent 真正改善工作',
-    'home.philosophy.p1': '我关注的是如何把复杂工作变成清晰、可靠的系统。做 AI Agent 时，我会先理解真实业务流程，再把模型、工具、数据和人的判断连接起来，交付真正能被使用的产品。',
-    'home.philosophy.p2': '我可以承接国内和海外项目，加入 AI Agent 团队，或以远程方式从想法验证一路参与到生产交付。',
+    'home.philosophy.title': '让 AI 真正改善业务工作',
+    'home.philosophy.p1': '我把重复、分散的工作梳理成清晰、可靠的系统。做 AI Agent 时，先理解真实流程，再将模型、工具、数据与人工审核连接起来，交付团队真正能运营的产品。',
+    'home.philosophy.p2': '结合企业 Java 交付经验与 AI 产品工程能力，从问题定义、原型验证到全栈上线和持续迭代，完成完整交付。',
     'home.philosophy.yearsExp': 'AI Native 方向',
     'home.philosophy.projectsShipped': '真实产品案例',
 
     // BayjfScreen
-    'bayjf.headerTag': '我的案例',
+    'bayjf.headerTag': '产品案例',
     'bayjf.title': '精选项目',
-    'bayjf.desc': '这里展示我亲自构建的真实产品：桌面效率工具、语言学习工作台与浏览器扩展，记录 AI Native 的产品实践与全栈交付。',
+    'bayjf.desc': '这些真实产品展示了我如何将 AI Agent、自动化与产品想法，从工作流梳理推进到全栈交付。',
     'bayjf.filter': '筛选:',
     'bayjf.viewCaseStudy': '查看案例研究',
     'bayjf.more': '更多',
@@ -170,8 +170,8 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
 
     // ContactScreen
     'contact.headerTag': '取得联系',
-    'contact.title': '随时联系我进行业务咨询',
-    'contact.desc': 'AI Agent 的企业咨询服务、产品全栈开发与交付、AI 落地优化组织架构和效率提升。',
+    'contact.title': '咨询你的 AI Agent 或产品项目',
+    'contact.desc': '适合需要 AI Agent 工作流、内部效率工具、Web 应用、桌面软件或浏览器扩展的团队与创业者。',
     'contact.info.location': '当前位于',
     'contact.info.locationVal': '深圳 · 远程 / 全球协作',
     'contact.info.email': '直连邮箱',

@@ -201,6 +201,7 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
                 </a>
                 <button
                   id={`contact-email-copy-btn-${index}`}
+                  type="button"
                   onClick={handleCopyEmail(email)}
                   className="interactive p-2.5 bg-[#e4e2e0]/40 dark:bg-white/5 text-[#444748] dark:text-[#c4c7c7] hover:text-[#54615b] dark:hover:text-[#bbcac2] hover:bg-[#e4e2e0] dark:hover:bg-white/10 rounded-full transition-all duration-300 ml-2 shadow-sm hover:scale-110"
                   title={language === 'en' ? `Copy ${email}` : `复制 ${email}`}
@@ -224,7 +225,7 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
               </a>
               <a
                 id="social-link-code"
-                href="https://github.com"
+                href="https://github.com/bayernjf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-3 bg-[#e4e2e0]/40 dark:bg-white/5 text-[#444748] dark:text-[#c4c7c7] hover:text-[#54615b] dark:hover:text-[#bbcac2] hover:bg-[#e4e2e0] dark:hover:bg-white/10 rounded-full transition-all duration-300 scale-100 hover:scale-110"
