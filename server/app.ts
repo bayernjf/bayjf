@@ -10,6 +10,23 @@ type AppBindings = { Bindings: Env; Variables: Variables };
 type RepositoryFactory = (env: Env) => ContactRepository;
 const MAX_CONTACT_BODY_BYTES = 16 * 1024;
 const TURNSTILE_TIMEOUT_MS = 10_000;
+const CONTACT_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+const CONTACT_RATE_LIMIT_MAX = 5;
+const contactAttempts = new Map<string, { count: number; resetAt: number }>();
+
+function isContactRateLimited(ip: string | undefined): boolean {
+  // Cloudflare supplies the IP in production. Skip anonymous local requests so
+  // development and repository-level tests are not serialized behind one key.
+  if (!ip) return false;
+  const now = Date.now();
+  const current = contactAttempts.get(ip);
+  if (!current || current.resetAt <= now) {
+    contactAttempts.set(ip, { count: 1, resetAt: now + CONTACT_RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+  current.count += 1;
+  return current.count > CONTACT_RATE_LIMIT_MAX;
+}
 
 function allowedOrigins(env: Env): string[] {
   return (env.ALLOWED_ORIGINS ?? 'http://localhost:3000')
@@ -65,6 +82,11 @@ export function createApp(
   app.get('/api/health', (c) => c.json({ status: 'ok' }));
 
   app.post('/api/contact', async (c) => {
+    const remoteIp = c.req.header('CF-Connecting-IP');
+    if (isContactRateLimited(remoteIp)) {
+      c.header('Retry-After', String(Math.ceil(CONTACT_RATE_LIMIT_WINDOW_MS / 1000)));
+      return c.json({ error: 'RATE_LIMITED', message: 'Too many contact attempts. Try again later.' }, 429);
+    }
     const contentLength = Number(c.req.header('Content-Length'));
     if (Number.isFinite(contentLength) && contentLength > MAX_CONTACT_BODY_BYTES) {
       return c.json({ error: 'PAYLOAD_TOO_LARGE', message: 'Request body is too large.' }, 413);
@@ -95,14 +117,14 @@ export function createApp(
     const turnstileToken = typeof objectBody.turnstileToken === 'string'
       ? objectBody.turnstileToken
       : '';
-    if (!await verifyTurnstile(turnstileToken, c.env, c.req.header('CF-Connecting-IP'))) {
+    if (!await verifyTurnstile(turnstileToken, c.env, remoteIp)) {
       return c.json({ error: 'VERIFICATION_FAILED', message: 'Human verification failed.' }, 403);
     }
 
     try {
       await repositoryFactory(c.env).create({
         ...result.data,
-        ip_hash: await hashIp(c.req.header('CF-Connecting-IP')),
+        ip_hash: await hashIp(remoteIp),
         user_agent: c.req.header('User-Agent')?.slice(0, 500),
       });
       return c.json({ ok: true }, 201);
