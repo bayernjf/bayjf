@@ -3,23 +3,24 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { motion, AnimatePresence, type Variants } from 'motion/react';
-import { 
-  ArrowRight, 
-  SlidersHorizontal, 
-  Layers, 
-  CalendarDays, 
-  Grid, 
-  ChevronDown, 
-  Sparkles, 
-  Folder, 
-  BarChart3, 
-  Tag, 
-  Clock 
+import {
+  ArrowRight,
+  SlidersHorizontal,
+  Layers,
+  CalendarDays,
+  Grid,
+  ChevronDown,
+  Sparkles,
+  Folder,
+  BarChart3,
+  Tag,
+  Clock
 } from 'lucide-react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 'recharts';
 import BlurUpImage from './BlurUpImage';
+import BlindBoxCard from './BlindBoxCard';
 import { useLanguage, Language } from '../context/LanguageContext';
 import { Project } from '../types';
 import ProjectDetailModal from './ProjectDetailModal';
@@ -29,6 +30,7 @@ export default function BayjfScreen() {
   const [selectedTagGroup, setSelectedTagGroup] = useState<string>('All');
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [displayMode, setDisplayMode] = useState<'grid' | 'timeline'>('grid');
+  const [blindBoxMode, setBlindBoxMode] = useState(true);
   const [chartMetric, setChartMetric] = useState<'tech' | 'category'>('tech');
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
   const [isDark, setIsDark] = useState(false);
@@ -594,7 +596,24 @@ export default function BayjfScreen() {
           </div>
 
           {/* Premium capsule view toggle selector */}
-          <div className="flex bg-[#e4e2e0]/55 dark:bg-white/5 border border-[#e4e2e0]/40 dark:border-white/5 p-1 rounded-xl">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setBlindBoxMode((v) => !v)}
+              id="blind-box-toggle"
+              aria-pressed={blindBoxMode}
+              aria-label={t('bayjf.blindBox.mode')}
+              title={t('bayjf.blindBox.mode')}
+              className={`interactive flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-bold tracking-widest uppercase transition-all ${
+                blindBoxMode
+                  ? 'bg-[#54615b] dark:bg-[#bbcac2] text-white dark:text-[#1b1c1b] border-transparent shadow-sm scale-[1.03]'
+                  : 'bg-transparent border-[#e4e2e0]/40 dark:border-white/5 text-[#444748]/55 dark:text-[#c4c7c7]/55 hover:text-[#1b1c1b]'
+              }`}
+            >
+              <Sparkles size={14} />
+              {t('bayjf.blindBox.mode')}
+            </button>
+
+            <div className="flex bg-[#e4e2e0]/55 dark:bg-white/5 border border-[#e4e2e0]/40 dark:border-white/5 p-1 rounded-xl">
             <button
               onClick={() => setDisplayMode('grid')}
               id="display-mode-grid"
@@ -613,9 +632,18 @@ export default function BayjfScreen() {
             >
               <CalendarDays size={15} />
             </button>
+            </div>
           </div>
         </div>
       </motion.div>
+
+      {/* Blind box hint */}
+      {blindBoxMode && displayMode === 'grid' && (
+        <p className="font-sans text-xs text-[#444748]/55 dark:text-[#c4c7c7]/55 mb-6 flex items-center gap-2">
+          <Sparkles size={13} className="text-[#54615b] dark:text-[#bbcac2]" />
+          {t('bayjf.blindBox.hint')}
+        </p>
+      )}
 
       {/* Projects Grid Container / Chronological Timeline */}
       {filteredProjects.length === 0 ? (
@@ -635,15 +663,21 @@ export default function BayjfScreen() {
         </motion.div>
       ) : displayMode === 'grid' ? (
         // Standard Grid View with Layout Animations
-        <motion.div 
-          layout 
+        <motion.div
+          layout
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10"
         >
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
+            {filteredProjects.map((project, index) => {
+              const card = blindBoxMode ? (
+                <BlindBoxCard
+                  project={project}
+                  index={index}
+                  onOpen={handleSelectProject}
+                />
+              ) : (
               <motion.div
                 layout
-                key={project.id}
                 variants={cardVariants}
                 initial="hidden"
                 animate="visible"
@@ -666,7 +700,7 @@ export default function BayjfScreen() {
                     alt={project.title}
                     className="transition-transform duration-700 ease-out group-hover:scale-105 group-hover:rotate-1"
                   />
-                  
+
                   {/* Visual Glassmorphic Overlay on Hover */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
                     <div className="text-[#fbf9f7] transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
@@ -725,15 +759,17 @@ export default function BayjfScreen() {
                       className="interactive inline-flex items-center gap-2 text-xs font-bold tracking-widest text-[#1b1c1b] dark:text-[#fbf9f7] hover:text-[#54615b] dark:hover:text-[#bbcac2] transition-colors group/link focus:outline-none"
                     >
                       {t('bayjf.viewCaseStudy')}
-                      <ArrowRight 
-                        size={14} 
-                        className="transform group-hover/link:translate-x-1.5 transition-transform duration-300" 
+                      <ArrowRight
+                        size={14}
+                        className="transform group-hover/link:translate-x-1.5 transition-transform duration-300"
                       />
                     </button>
                   </div>
                 </div>
               </motion.div>
-            ))}
+              );
+              return <Fragment key={project.id}>{card}</Fragment>;
+            })}
           </AnimatePresence>
         </motion.div>
       ) : (

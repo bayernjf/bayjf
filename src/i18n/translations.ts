@@ -49,6 +49,10 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'bayjf.externalLink': 'Visit Live Project',
     'bayjf.launchDemo': 'Launch Demo',
 
+    // Blind box mode
+    'bayjf.blindBox.mode': 'Blind Box Mode',
+    'bayjf.blindBox.hint': 'Hover a box to reveal the project',
+
     // ExperienceScreen
     'experience.headerTag': 'Career Experience',
     'experience.title': 'Experience',
