@@ -5,7 +5,6 @@
 
 import { ScreenType } from '../types';
 import { motion } from 'motion/react';
-import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useEffect, useState } from 'react';
 import type { AgentImage } from './SiteIsland';
@@ -13,9 +12,10 @@ import type { AgentImage } from './SiteIsland';
 interface HomeScreenProps {
   onNavigate: (screen: ScreenType, transitionType?: 'none' | 'push') => void;
   agentImages: AgentImage[];
+  lang: 'en' | 'zh';
 }
 
-export default function HomeScreen({ onNavigate, agentImages }: HomeScreenProps) {
+export default function HomeScreen({ onNavigate, agentImages, lang }: HomeScreenProps) {
   const { t } = useLanguage();
   const [activeImage, setActiveImage] = useState(0);
 
@@ -58,7 +58,7 @@ export default function HomeScreen({ onNavigate, agentImages }: HomeScreenProps)
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <a
               id="view-work-btn"
-              href="#"
+              href={`${lang === 'zh' ? '/zh' : ''}/projects`}
               onClick={(e) => {
                 e.preventDefault();
                 onNavigate('bayjf', 'push');
@@ -69,10 +69,10 @@ export default function HomeScreen({ onNavigate, agentImages }: HomeScreenProps)
             </a>
             <a
               id="about-me-btn"
-              href="#"
+              href={`${lang === 'zh' ? '/zh' : ''}/contact`}
               onClick={(e) => {
                 e.preventDefault();
-                onNavigate('experience', 'none');
+                onNavigate('contact', 'none');
               }}
               className="interactive inline-flex items-center justify-center border border-[#444748] dark:border-[#c4c7c7] text-[#444748] dark:text-[#c4c7c7] hover:bg-[#54615b]/10 hover:scale-105 transition-all duration-300 px-8 py-4 rounded-full font-sans font-semibold text-sm tracking-wider"
             >

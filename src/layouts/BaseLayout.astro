@@ -13,15 +13,18 @@ import {
 interface Props {
   lang: Language;
   screen: ScreenKey;
+  pathOverride?: string;
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
-const { lang, screen } = Astro.props;
+const { lang, screen, pathOverride, seoTitle, seoDescription } = Astro.props;
 
 const gaId = import.meta.env.VITE_GA_MEASUREMENT_ID?.trim();
 const clarityId = import.meta.env.VITE_CLARITY_PROJECT_ID?.trim();
 
-const title = translate(lang, SEO_KEYS[screen].title);
-const description = translate(lang, SEO_KEYS[screen].desc);
+const title = seoTitle || translate(lang, SEO_KEYS[screen].title);
+const description = seoDescription || translate(lang, SEO_KEYS[screen].desc);
 const siteUrl = 'https://bayjf.pages.dev';
 
 // 路径辅助：screen → URL 子路径（bayjf 屏对应 /projects）
@@ -32,11 +35,14 @@ function pathFor(lang: Language, screen: ScreenKey): string {
   return `${base}/${sub}`;
 }
 
-const canonical = `${siteUrl}${pathFor(lang, screen)}`;
+const canonical = `${siteUrl}${pathOverride || pathFor(lang, screen)}`;
 // 同一页面在另一种语言下的对应 URL，用于 hreflang 互指
 const otherLang: Language = lang === 'en' ? 'zh' : 'en';
-const alternateUrl = `${siteUrl}${pathFor(otherLang, screen)}`;
-const xDefaultUrl = `${siteUrl}${pathFor('en', screen)}`;
+const productPath = pathOverride ? pathOverride.replace(/^\/zh(?=\/|$)/, '') : null;
+const alternatePath = productPath ? (lang === 'zh' ? productPath : `/zh${productPath}`) : pathFor(otherLang, screen);
+const xDefaultPath = productPath || pathFor('en', screen);
+const alternateUrl = `${siteUrl}${alternatePath}`;
+const xDefaultUrl = `${siteUrl}${xDefaultPath}`;
 
 const ogImage = `${siteUrl}/og.svg`;
 const ogLocale = lang === 'en' ? 'en_US' : 'zh_CN';

@@ -13,7 +13,6 @@ import {
   Grid,
   ChevronDown,
   Sparkles,
-  Folder,
   BarChart3,
   Tag,
   Clock
@@ -495,7 +494,7 @@ export default function BayjfScreen() {
                   itemStyle={{ color: isDark ? '#fbf9f7' : '#1b1c1b' }}
                 />
                 <Bar dataKey="count" radius={[4, 4, 0, 0]} barSize={24}>
-                  {processedChartData.map((entry, index) => (
+                  {processedChartData.map((_, index) => (
                     <Cell 
                       key={`cell-${index}`} 
                       fill={isDark ? '#bbcac2' : '#54615b'} 
@@ -667,7 +666,7 @@ export default function BayjfScreen() {
           layout
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10"
         >
-          <AnimatePresence mode="popLayout">
+          <AnimatePresence mode="sync">
             {filteredProjects.map((project, index) => {
               const card = blindBoxMode ? (
                 <BlindBoxCard
@@ -843,9 +842,13 @@ export default function BayjfScreen() {
                             <span key={t} className="font-sans text-[10px] bg-[#e4e2e0]/40 dark:bg-white/5 px-2 py-0.5 rounded text-[#444748] dark:text-[#c4c7c7]">{t}</span>
                           ))}
                         </div>
-                        <button className="text-[10px] font-bold tracking-widest text-[#1b1c1b] dark:text-[#fbf9f7] inline-flex items-center gap-1 group/btn">
+                        <a
+                          href={`${language === 'zh' ? '/zh' : ''}/products/${project.id}`}
+                          onClick={(event) => event.stopPropagation()}
+                          className="text-[10px] font-bold tracking-widest text-[#1b1c1b] dark:text-[#fbf9f7] inline-flex items-center gap-1 group/btn"
+                        >
                           {localTxt.viewDetails} <ArrowRight size={10} className="transform group-hover/btn:translate-x-1 transition-transform" />
-                        </button>
+                        </a>
                       </div>
                     </div>
                   </div>

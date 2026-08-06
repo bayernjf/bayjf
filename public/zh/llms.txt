@@ -59,6 +59,23 @@
 
 完整产品案例：https://bayjf.pages.dev/zh/projects
 
+## 产品详情页
+
+- SoftDesk：https://bayjf.pages.dev/zh/products/soft-desk
+- WordBase：https://bayjf.pages.dev/zh/products/word-base
+- Tab Garden：https://bayjf.pages.dev/zh/products/tab-garden
+- Agent-Dev：https://bayjf.pages.dev/zh/products/agent-dev
+- VideoVault：https://bayjf.pages.dev/zh/products/know-collect
+- AI Watchdog：https://bayjf.pages.dev/zh/products/one-code
+- One World：https://bayjf.pages.dev/zh/products/one-world
+- PR Helper：https://bayjf.pages.dev/zh/products/pr-helper
+- ShareIt：https://bayjf.pages.dev/zh/products/shareit
+- Splity：https://bayjf.pages.dev/zh/products/splity
+- Termana：https://bayjf.pages.dev/zh/products/termana
+- FlagBreaker：https://bayjf.pages.dev/zh/products/toclick
+- VFX Todo：https://bayjf.pages.dev/zh/products/vfx-todo
+- WordPicker：https://bayjf.pages.dev/zh/products/word-picker
+
 ## 路由（中文，/zh 前缀）
 
 - 首页：https://bayjf.pages.dev/zh

@@ -136,7 +136,7 @@ export default function App({ lang, initialScreen = 'home', agentImages = [], tu
   const renderScreen = () => {
     switch (currentScreen) {
       case 'home':
-        return <HomeScreen onNavigate={handleNavigate} agentImages={agentImages} />;
+        return <HomeScreen onNavigate={handleNavigate} agentImages={agentImages} lang={lang} />;
       case 'bayjf':
         return <BayjfScreen />;
       case 'experience':
@@ -144,7 +144,7 @@ export default function App({ lang, initialScreen = 'home', agentImages = [], tu
       case 'contact':
         return <ContactScreen turnstileSiteKey={turnstileSiteKey} />;
       default:
-        return <HomeScreen onNavigate={handleNavigate} agentImages={agentImages} />;
+        return <HomeScreen onNavigate={handleNavigate} agentImages={agentImages} lang={lang} />;
     }
   };
 

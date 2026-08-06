@@ -67,6 +67,23 @@ and full-stack engineering.
 
 Full product case studies live at https://bayjf.pages.dev/projects
 
+## Product detail pages
+
+- SoftDesk: https://bayjf.pages.dev/products/soft-desk
+- WordBase: https://bayjf.pages.dev/products/word-base
+- Tab Garden: https://bayjf.pages.dev/products/tab-garden
+- Agent-Dev: https://bayjf.pages.dev/products/agent-dev
+- VideoVault: https://bayjf.pages.dev/products/know-collect
+- AI Watchdog: https://bayjf.pages.dev/products/one-code
+- One World: https://bayjf.pages.dev/products/one-world
+- PR Helper: https://bayjf.pages.dev/products/pr-helper
+- ShareIt: https://bayjf.pages.dev/products/shareit
+- Splity: https://bayjf.pages.dev/products/splity
+- Termana: https://bayjf.pages.dev/products/termana
+- FlagBreaker: https://bayjf.pages.dev/products/toclick
+- VFX Todo: https://bayjf.pages.dev/products/vfx-todo
+- WordPicker: https://bayjf.pages.dev/products/word-picker
+
 ## Routes (English, default locale)
 
 - Home: https://bayjf.pages.dev/

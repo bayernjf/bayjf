@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode } from 'react';
 import { Project, ExperienceItem } from '../types';
 import { TRANSLATIONS, type Language } from '../i18n/translations';
 
@@ -15,7 +15,7 @@ const TAB_GARDEN_RELEASE_DATE = '2026-07-19';
 // 以下 11 个产品落地页统一于 2026-08-05 上线
 const LANDING_BATCH_DATE = '2026-08-05';
 
-const PROJECTS_EN: Project[] = [
+export const PROJECTS_EN: Project[] = [
   {
     id: 'soft-desk',
     title: 'SoftDesk',
@@ -158,7 +158,7 @@ const PROJECTS_EN: Project[] = [
   }
 ];
 
-const PROJECTS_ZH: Project[] = [
+export const PROJECTS_ZH: Project[] = [
   {
     id: 'soft-desk',
     title: 'SoftDesk',

@@ -38,7 +38,7 @@ export interface WebSiteSchema {
   description: string;
   inLanguage: string;
   publisher: { '@id': string };
-  potentialAction: {
+  potentialAction?: {
     '@type': 'SearchAction';
     target: string;
     'query-input': string;
@@ -116,11 +116,6 @@ export function buildWebSiteSchema(lang: Language): WebSiteSchema {
     description: desc,
     inLanguage: lang === 'en' ? 'en-US' : 'zh-CN',
     publisher: { '@id': `${SITE_URL}/#person` },
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: `${SITE_URL}/?q={search_term_string}`,
-      'query-input': 'required name=search_term_string',
-    },
   };
 }
 

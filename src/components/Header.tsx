@@ -4,7 +4,7 @@
  */
 
 import { ScreenType } from '../types';
-import { Sun, Moon, Menu, X, Globe, Search, Volume2, VolumeX } from 'lucide-react';
+import { Sun, Moon, Menu, X, Search, Volume2, VolumeX } from 'lucide-react';
 import { useState, MouseEvent } from 'react';
 import { useLanguage, type Language } from '../context/LanguageContext';
 import { swapLocale } from '../i18n/routing';
@@ -19,7 +19,7 @@ interface HeaderProps {
 
 export default function Header({ currentScreen, onNavigate, theme, toggleTheme, lang }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { language, setLanguage, t, searchQuery, setSearchQuery, soundEnabled, setSoundEnabled } = useLanguage();
+  const { language, t, searchQuery, setSearchQuery, soundEnabled, setSoundEnabled } = useLanguage();
 
   // 语言切换走 URL（MPA + URL 语言路由）：在同一屏路径下切换语言前缀。
   const switchLocale = (next: Language) => {
@@ -47,7 +47,7 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
         <a
           id="nav-logo"
           className="font-serif text-2xl font-bold text-[#1b1c1b] dark:text-[#fbf9f7] hover:scale-105 transition-all duration-300 tracking-tight"
-          href="#"
+          href={lang === 'zh' ? '/zh' : '/'}
           onClick={handleLogoClick}
         >
           BayJF
@@ -63,7 +63,7 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
               <a
                 key={item.screen}
                 id={`nav-${item.screen}`}
-                href="#"
+                href={item.screen === 'home' ? (lang === 'zh' ? '/zh' : '/') : `${lang === 'zh' ? '/zh' : ''}/${item.screen === 'bayjf' ? 'projects' : item.screen}`}
                 onClick={(e) => {
                   e.preventDefault();
                   onNavigate(item.screen, 'none');
@@ -188,7 +188,7 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
                 <a
                   key={item.screen}
                   id={`nav-mobile-${item.screen}`}
-                  href="#"
+                  href={item.screen === 'home' ? (lang === 'zh' ? '/zh' : '/') : `${lang === 'zh' ? '/zh' : ''}/${item.screen === 'bayjf' ? 'projects' : item.screen}`}
                   onClick={(e) => {
                     e.preventDefault();
                     onNavigate(item.screen, 'none');

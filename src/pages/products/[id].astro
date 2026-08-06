@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { PROJECTS_EN } from '../../context/LanguageContext';
+
+export function getStaticPaths() {
+  return PROJECTS_EN.map((project) => ({ params: { id: project.id }, props: { project } }));
+}
+
+const { id } = Astro.params;
+const { project } = Astro.props;
+if (!project) throw new Error(`Unknown product: ${id}`);
+const path = `/products/${project.id}`;
+const productSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: project.title,
+  description: project.description,
+  applicationCategory: project.category,
+  url: project.link,
+  image: project.image,
+  author: { '@type': 'Person', name: 'Jiang Feng (BayJF)', url: 'https://bayjf.pages.dev' },
+};
+---
+
+<BaseLayout lang="en" screen="bayjf" pathOverride={path} seoTitle={`${project.title} | BayJF`} seoDescription={project.description}>
+  <main class="min-h-screen px-6 pb-24 pt-32 md:px-16">
+    <article class="mx-auto max-w-5xl">
+      <a class="text-sm text-[#54615b] dark:text-[#bbcac2]" href="/projects">← Back to projects</a>
+      <div class="mt-8 grid gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-start">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#54615b] dark:text-[#bbcac2]">{project.category}</p>
+          <h1 class="mt-4 font-serif text-5xl font-bold tracking-tight md:text-7xl">{project.title}</h1>
+          <p class="mt-6 max-w-2xl text-lg leading-relaxed text-[#444748] dark:text-[#c4c7c7]">{project.description}</p>
+          <div class="mt-8 flex flex-wrap gap-2">
+            {project.tags.map((tag) => <span class="rounded-md border border-black/10 px-3 py-1 text-xs dark:border-white/10">{tag}</span>)}
+          </div>
+          <a class="mt-10 inline-flex rounded-full bg-[#1b1c1b] px-6 py-3 text-sm font-semibold text-white dark:bg-[#fbf9f7] dark:text-[#1b1c1b]" href={project.link} target="_blank" rel="noopener noreferrer">Open product</a>
+        </div>
+        <img class="aspect-video w-full rounded-2xl object-cover shadow-xl" src={project.image} alt={`${project.title} product preview`} loading="eager" />
+      </div>
+    </article>
+  </main>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(productSchema)} />
+</BaseLayout>
