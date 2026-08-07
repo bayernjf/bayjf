@@ -95,7 +95,7 @@ export default function BlindBoxCard({ project, onOpen, index = 0, onRevealChang
       tabIndex={0}
       aria-label={project.title}
       aria-expanded={revealed}
-      onKeyDown={(e) => {
+      onKeyDown={(e: React.KeyboardEvent) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           onOpen(project);

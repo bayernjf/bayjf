@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useCallback, FormEvent, MouseEvent } from 'react';
+import { useState, useCallback, MouseEvent } from 'react';
 import { motion } from 'motion/react';
 import { Mail, Link, Code, ArrowRight, Copy, AlertCircle } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
@@ -95,7 +95,7 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
     }
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validate()) {
       showToast(

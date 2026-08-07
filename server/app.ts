@@ -1,4 +1,4 @@
-import { Hono } from 'hono';
+import { Hono, type Context } from 'hono';
 import { cors } from 'hono/cors';
 import { secureHeaders } from 'hono/secure-headers';
 import { validateContactMessage } from './contact';
@@ -67,7 +67,7 @@ export function createApp(
   const app = new Hono<AppBindings>();
 
   app.use('*', secureHeaders());
-  app.use('*', async (c, next) => {
+  app.use('*', async (c: Context<AppBindings>, next: () => Promise<void>) => {
     c.set('requestId', crypto.randomUUID());
     await next();
     c.header('X-Request-Id', c.get('requestId'));
@@ -79,9 +79,9 @@ export function createApp(
     maxAge: 86400,
   }));
 
-  app.get('/api/health', (c) => c.json({ status: 'ok' }));
+  app.get('/api/health', (c: Context<AppBindings>) => c.json({ status: 'ok' }));
 
-  app.post('/api/contact', async (c) => {
+  app.post('/api/contact', async (c: Context<AppBindings>) => {
     const remoteIp = c.req.header('CF-Connecting-IP');
     if (isContactRateLimited(remoteIp)) {
       c.header('Retry-After', String(Math.ceil(CONTACT_RATE_LIMIT_WINDOW_MS / 1000)));
@@ -134,7 +134,7 @@ export function createApp(
     }
   });
 
-  app.notFound((c) => c.json({ error: 'NOT_FOUND' }, 404));
+  app.notFound((c: Context<AppBindings>) => c.json({ error: 'NOT_FOUND' }, 404));
   return app;
 }
 
