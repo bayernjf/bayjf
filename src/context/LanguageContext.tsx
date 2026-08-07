@@ -41,9 +41,9 @@ export const PROJECTS_EN: Project[] = [
     title: 'Tab Garden',
     category: 'BROWSER PRODUCTIVITY EXTENSION',
     description: 'A Chrome and Edge Manifest V3 extension that groups tabs by hostname, preserves user-created groups, and syncs grouping preferences after sign-in.',
-    image: 'https://opengraph.githubassets.com/1/bayernjf/tab-manager',
+    image: 'https://tab-manager-landing.pages.dev/preview.png',
     tags: ['Chrome Extension', 'TypeScript', 'Manifest V3', 'Supabase'],
-    link: 'https://github.com/bayernjf/tab-manager',
+    link: 'https://tab-manager-landing.pages.dev/',
     date: TAB_GARDEN_RELEASE_DATE
   },
   {
@@ -184,9 +184,9 @@ export const PROJECTS_ZH: Project[] = [
     title: 'Tab Garden',
     category: '浏览器效率扩展',
     description: '面向 Chrome 与 Edge 的 Manifest V3 扩展，按站点自动分组标签页、保留用户自定义分组，并在登录后同步分组偏好。',
-    image: 'https://opengraph.githubassets.com/1/bayernjf/tab-manager',
+    image: 'https://tab-manager-landing.pages.dev/preview.png',
     tags: ['Chrome 扩展', 'TypeScript', 'Manifest V3', 'Supabase'],
-    link: 'https://github.com/bayernjf/tab-manager',
+    link: 'https://tab-manager-landing.pages.dev/',
     date: TAB_GARDEN_RELEASE_DATE
   },
   {
