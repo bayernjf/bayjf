@@ -14,7 +14,7 @@ import type { ScreenKey } from './routing';
 import { translate, SEO_KEYS } from './translations';
 import { baseForLang } from './routing';
 
-export const SITE_URL = 'https://bayjf.pages.dev';
+export const SITE_URL = 'https://bayjf.com';
 export const OWNER_NAME = 'Jiang Feng (BayJF)';
 export const OWNER_GIVEN_NAME = 'Jiang';
 export const OWNER_FAMILY_NAME = 'Feng';
@@ -22,11 +22,11 @@ export const OWNER_JOB_TITLE_EN = 'AI Native Developer & AI Agent Delivery';
 export const OWNER_JOB_TITLE_ZH = 'AI Native 开发者 · AI Agent 落地';
 export const OWNER_LOCATION_EN = 'Shenzhen, China · Remote / Global';
 export const OWNER_LOCATION_ZH = '深圳 · 远程 / 全球协作';
-export const OWNER_EMAIL = 'hello@bayjf.pages.dev';
+export const OWNER_EMAIL = 'hello@bayjf.com';
 // sameAs 链接：让 AI 引擎交叉验证作者身份。仅放真实公开身份。
 export const OWNER_SAME_AS: string[] = [
   'https://github.com/bayernjf',
-  'https://bayjf.pages.dev',
+  'https://bayjf.com',
 ];
 
 export interface WebSiteSchema {
@@ -207,7 +207,7 @@ const FAQ_HOME_EN: Array<{ q: string; a: string }> = [
   },
   {
     q: 'Where can I see real product cases?',
-    a: 'Real product cases (SoftDesk, WordBase, WordPicker, Tab Garden and others) are listed at https://bayjf.pages.dev/projects',
+    a: 'Real product cases (SoftDesk, WordBase, WordPicker, Tab Garden and others) are listed at https://bayjf.com/projects',
   },
 ];
 
@@ -226,14 +226,14 @@ const FAQ_HOME_ZH: Array<{ q: string; a: string }> = [
   },
   {
     q: '在哪里查看真实产品案例？',
-    a: '真实产品案例（SoftDesk、WordBase、WordPicker、Tab Garden 等）见 https://bayjf.pages.dev/zh/projects',
+    a: '真实产品案例（SoftDesk、WordBase、WordPicker、Tab Garden 等）见 https://bayjf.com/zh/projects',
   },
 ];
 
 const FAQ_CONTACT_EN: Array<{ q: string; a: string }> = [
   {
     q: 'How do I contact BayJF for a business consultation?',
-    a: 'Use the contact form at https://bayjf.pages.dev/contact. Submissions are typically answered within 24 hours.',
+    a: 'Use the contact form at https://bayjf.com/contact. Submissions are typically answered within 24 hours.',
   },
   {
     q: 'What information should I include in a project inquiry?',
@@ -248,7 +248,7 @@ const FAQ_CONTACT_EN: Array<{ q: string; a: string }> = [
 const FAQ_CONTACT_ZH: Array<{ q: string; a: string }> = [
   {
     q: '如何联系 BayJF 进行业务咨询？',
-    a: '请在 https://bayjf.pages.dev/zh/contact 使用联系表单。通常 24 小时内回复。',
+    a: '请在 https://bayjf.com/zh/contact 使用联系表单。通常 24 小时内回复。',
   },
   {
     q: '咨询项目需要提供哪些信息？',

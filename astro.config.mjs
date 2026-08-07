@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 export default defineConfig({
   // 前端保持静态站（双平台架构：Cloudflare Pages 静态资源 + 现有 _worker.js 代理到 Vercel Hono）。
   output: 'static',
-  site: 'https://bayjf.pages.dev',
+  site: 'https://bayjf.com',
   i18n: {
     locales: ['en', 'zh'],
     defaultLocale: 'en',

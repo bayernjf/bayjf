@@ -35,5 +35,5 @@
   <!-- Bottom row: tagline + URL -->
   <rect x="80" y="540" width="6" height="40" fill="#bbcac2"/>
   <text x="100" y="568" font-family="Inter, sans-serif" font-size="22" font-weight="500" fill="#bbcac2">Jiang Feng · Shenzhen · Remote / Global</text>
-  <text x="1120" y="568" text-anchor="end" font-family="Inter, sans-serif" font-size="22" font-weight="500" fill="#bbcac2">bayjf.pages.dev</text>
+  <text x="1120" y="568" text-anchor="end" font-family="Inter, sans-serif" font-size="22" font-weight="500" fill="#bbcac2">bayjf.com</text>
 </svg>

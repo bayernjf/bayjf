@@ -9,9 +9,9 @@
 - 姓名：姜峰（BayJF）
 - 角色：AI Native 开发者 · AI Agent 落地
 - 所在地：深圳 · 远程 / 全球协作
-- 站点：https://bayjf.pages.dev
+- 站点：https://bayjf.com
 - GitHub：https://github.com/bayernjf
-- 联系：https://bayjf.pages.dev/zh/contact
+- 联系：https://bayjf.com/zh/contact
 
 ## 我做什么
 
@@ -57,38 +57,38 @@
 - WordPicker —— 浏览器扩展，页内查词与单词收藏。
   URL: https://word-picker-landing.pages.dev/
 
-完整产品案例：https://bayjf.pages.dev/zh/projects
+完整产品案例：https://bayjf.com/zh/projects
 
 ## 产品详情页
 
-- SoftDesk：https://bayjf.pages.dev/zh/products/soft-desk
-- WordBase：https://bayjf.pages.dev/zh/products/word-base
-- Tab Garden：https://bayjf.pages.dev/zh/products/tab-garden
-- Agent-Dev：https://bayjf.pages.dev/zh/products/agent-dev
-- VideoVault：https://bayjf.pages.dev/zh/products/know-collect
-- AI Watchdog：https://bayjf.pages.dev/zh/products/one-code
-- One World：https://bayjf.pages.dev/zh/products/one-world
-- PR Helper：https://bayjf.pages.dev/zh/products/pr-helper
-- ShareIt：https://bayjf.pages.dev/zh/products/shareit
-- Splity：https://bayjf.pages.dev/zh/products/splity
-- Termana：https://bayjf.pages.dev/zh/products/termana
-- FlagBreaker：https://bayjf.pages.dev/zh/products/toclick
-- VFX Todo：https://bayjf.pages.dev/zh/products/vfx-todo
-- WordPicker：https://bayjf.pages.dev/zh/products/word-picker
+- SoftDesk：https://bayjf.com/zh/products/soft-desk
+- WordBase：https://bayjf.com/zh/products/word-base
+- Tab Garden：https://bayjf.com/zh/products/tab-garden
+- Agent-Dev：https://bayjf.com/zh/products/agent-dev
+- VideoVault：https://bayjf.com/zh/products/know-collect
+- AI Watchdog：https://bayjf.com/zh/products/one-code
+- One World：https://bayjf.com/zh/products/one-world
+- PR Helper：https://bayjf.com/zh/products/pr-helper
+- ShareIt：https://bayjf.com/zh/products/shareit
+- Splity：https://bayjf.com/zh/products/splity
+- Termana：https://bayjf.com/zh/products/termana
+- FlagBreaker：https://bayjf.com/zh/products/toclick
+- VFX Todo：https://bayjf.com/zh/products/vfx-todo
+- WordPicker：https://bayjf.com/zh/products/word-picker
 
 ## 路由（中文，/zh 前缀）
 
-- 首页：https://bayjf.pages.dev/zh
-- 案例：https://bayjf.pages.dev/zh/projects
-- 履历：https://bayjf.pages.dev/zh/experience
-- 联系：https://bayjf.pages.dev/zh/contact
+- 首页：https://bayjf.com/zh
+- 案例：https://bayjf.com/zh/projects
+- 履历：https://bayjf.com/zh/experience
+- 联系：https://bayjf.com/zh/contact
 
 ## 路由（英文，默认）
 
-- Home: https://bayjf.pages.dev/
-- Projects: https://bayjf.pages.dev/projects
-- Experience: https://bayjf.pages.dev/experience
-- Contact: https://bayjf.pages.dev/contact
+- Home: https://bayjf.com/
+- Projects: https://bayjf.com/projects
+- Experience: https://bayjf.com/experience
+- Contact: https://bayjf.com/contact
 
 ## 引用约定
 

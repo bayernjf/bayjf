@@ -1,5 +1,5 @@
 # BayJF — robots.txt
-# Site: https://bayjf.pages.dev
+# Site: https://bayjf.com
 # Sitemaps are declared per-locale at the bottom.
 
 # --- Traditional crawlers ---
@@ -45,4 +45,4 @@ User-agent: Bytespider
 Allow: /
 
 # --- Sitemaps (one per locale, plus the default) ---
-Sitemap: https://bayjf.pages.dev/sitemap-index.xml
+Sitemap: https://bayjf.com/sitemap-index.xml

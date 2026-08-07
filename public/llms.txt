@@ -11,9 +11,9 @@
 - Name: Jiang Feng (BayJF)
 - Role: AI Native Developer · AI Agent Delivery
 - Location: Shenzhen, China · Remote / Global
-- Site: https://bayjf.pages.dev
+- Site: https://bayjf.com
 - GitHub: https://github.com/bayernjf
-- Contact: https://bayjf.pages.dev/contact
+- Contact: https://bayjf.com/contact
 
 ## What I do
 
@@ -65,38 +65,38 @@ and full-stack engineering.
 - WordPicker — browser extension for in-page word lookup and vocabulary collection.
   URL: https://word-picker-landing.pages.dev/
 
-Full product case studies live at https://bayjf.pages.dev/projects
+Full product case studies live at https://bayjf.com/projects
 
 ## Product detail pages
 
-- SoftDesk: https://bayjf.pages.dev/products/soft-desk
-- WordBase: https://bayjf.pages.dev/products/word-base
-- Tab Garden: https://bayjf.pages.dev/products/tab-garden
-- Agent-Dev: https://bayjf.pages.dev/products/agent-dev
-- VideoVault: https://bayjf.pages.dev/products/know-collect
-- AI Watchdog: https://bayjf.pages.dev/products/one-code
-- One World: https://bayjf.pages.dev/products/one-world
-- PR Helper: https://bayjf.pages.dev/products/pr-helper
-- ShareIt: https://bayjf.pages.dev/products/shareit
-- Splity: https://bayjf.pages.dev/products/splity
-- Termana: https://bayjf.pages.dev/products/termana
-- FlagBreaker: https://bayjf.pages.dev/products/toclick
-- VFX Todo: https://bayjf.pages.dev/products/vfx-todo
-- WordPicker: https://bayjf.pages.dev/products/word-picker
+- SoftDesk: https://bayjf.com/products/soft-desk
+- WordBase: https://bayjf.com/products/word-base
+- Tab Garden: https://bayjf.com/products/tab-garden
+- Agent-Dev: https://bayjf.com/products/agent-dev
+- VideoVault: https://bayjf.com/products/know-collect
+- AI Watchdog: https://bayjf.com/products/one-code
+- One World: https://bayjf.com/products/one-world
+- PR Helper: https://bayjf.com/products/pr-helper
+- ShareIt: https://bayjf.com/products/shareit
+- Splity: https://bayjf.com/products/splity
+- Termana: https://bayjf.com/products/termana
+- FlagBreaker: https://bayjf.com/products/toclick
+- VFX Todo: https://bayjf.com/products/vfx-todo
+- WordPicker: https://bayjf.com/products/word-picker
 
 ## Routes (English, default locale)
 
-- Home: https://bayjf.pages.dev/
-- Projects: https://bayjf.pages.dev/projects
-- Experience: https://bayjf.pages.dev/experience
-- Contact: https://bayjf.pages.dev/contact
+- Home: https://bayjf.com/
+- Projects: https://bayjf.com/projects
+- Experience: https://bayjf.com/experience
+- Contact: https://bayjf.com/contact
 
 ## Routes (Chinese, /zh prefix)
 
-- 首页: https://bayjf.pages.dev/zh
-- 案例: https://bayjf.pages.dev/zh/projects
-- 履历: https://bayjf.pages.dev/zh/experience
-- 联系: https://bayjf.pages.dev/zh/contact
+- 首页: https://bayjf.com/zh
+- 案例: https://bayjf.com/zh/projects
+- 履历: https://bayjf.com/zh/experience
+- 联系: https://bayjf.com/zh/contact
 
 ## How to cite
 

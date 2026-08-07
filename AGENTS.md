@@ -183,8 +183,8 @@ CLOUDFLARE_ACCOUNT_ID
 ## 部署架构
 
 - Hono API：Vercel 项目 `bayjf`，正式地址 `https://bayjf.vercel.app/api`。
-- Astro 前端（静态）：Cloudflare Pages 项目 `bayjf`，正式地址
-  `https://bayjf.pages.dev`。
+- Astro 前端（静态）：Cloudflare Pages 项目 `bayjf`，自定义域名
+  `https://bayjf.com`（alias `bayjf.pages.dev`）。
 - GitHub Environment：`production-vercel-api`、`preview-vercel-api`、
   `production-cloudflare-pages`、`preview-cloudflare-pages`。
 - PR 到 `dev`/`main`：只运行验证和构建，不部署。
