@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const getStaticPaths = () => [{ params: { lang: 'zh' } }];
+const lang = 'zh';
+---
+
+<BaseLayout
+  lang={lang}
+  screen="home"
+  pathOverride="/zh/privacy"
+  seoTitle="隐私政策 — BayJF"
+  seoDescription="BayJF 隐私政策：联系表单、访问统计与本地偏好设置如何处理你的信息。"
+>
+  <main class="mx-auto max-w-3xl px-6 py-20 md:py-28">
+    <a href="/zh" class="text-sm text-[#54615b] dark:text-[#bbcac2] hover:underline">← 返回首页</a>
+    <h1 class="mt-6 font-serif text-3xl font-bold md:text-4xl">隐私政策</h1>
+    <p class="mt-2 text-sm text-[#444748] dark:text-[#c4c7c7]">最后更新：2026 年 8 月 7 日</p>
+
+    <div class="mt-10 space-y-10 text-sm leading-7 text-[#444748] dark:text-[#c4c7c7]">
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-[#1b1c1b] dark:text-[#fbf9f7]">1. 概述</h2>
+        <p class="mt-2">
+          BayJF（bayjf.com）是个人作品集网站。本政策说明你访问本站或使用联系表单时，哪些信息会被处理，以及我们如何对待这些信息。
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-[#1b1c1b] dark:text-[#fbf9f7]">2. 联系表单</h2>
+        <ul class="mt-2 list-disc space-y-1 pl-5">
+          <li>提交联系表单时，你提供的姓名、邮箱与留言内容会存入 Supabase Postgres 数据库，仅用于回复你。</li>
+          <li>为防止滥用，留言可能附带你 IP 地址的 SHA-256 哈希与截断的 User-Agent；我们不存储原始 IP。</li>
+          <li>提交受 Cloudflare Turnstile 人机校验与频率限制保护。</li>
+          <li>联系数据不会被出售、共享给第三方，也不会在未经你同意的情况下用于营销。</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-[#1b1c1b] dark:text-[#fbf9f7]">3. 访问统计</h2>
+        <p class="mt-2">
+          若已启用，本站使用 Google Analytics 4 与 Microsoft Clarity 了解聚合使用情况（页面浏览、大致地区、设备类型），这些服务可能使用 Cookie。统计事件不包含姓名、邮箱或留言内容；未配置统计 ID 时不会加载任何统计脚本。
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-[#1b1c1b] dark:text-[#fbf9f7]">4. 本地偏好</h2>
+        <p class="mt-2">
+          本站将你的明暗主题选择保存在浏览器 localStorage 中，仅存于你的设备，不会上传。
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-[#1b1c1b] dark:text-[#fbf9f7]">5. 托管与日志</h2>
+        <p class="mt-2">
+          本站前端托管于 Cloudflare Pages，API 运行于 Vercel。这些平台可能按各自隐私政策保留标准访问日志（IP、User-Agent），不受本站控制。
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-[#1b1c1b] dark:text-[#fbf9f7]">6. 第三方链接</h2>
+        <p class="mt-2">
+          本站包含指向 GitHub 等第三方服务的链接，其隐私实践以各自的政策为准。
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-[#1b1c1b] dark:text-[#fbf9f7]">7. 你的权利与联系方式</h2>
+        <p class="mt-2">
+          你可以随时通过
+          <a href="mailto:hello@bayjf.com" class="text-[#54615b] dark:text-[#bbcac2] hover:underline">hello@bayjf.com</a>
+          请求查询或删除与你邮箱相关的留言数据。本政策的变更将在本页发布并更新日期。
+        </p>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

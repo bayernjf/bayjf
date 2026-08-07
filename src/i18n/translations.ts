@@ -98,6 +98,8 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
 
     // Footer
     'footer.copyright': '© {year} BayJF · AI Native / AI Agent Delivery. All rights reserved.',
+    'footer.privacy': 'Privacy Policy',
+    'footer.terms': 'Terms of Service',
   },
   zh: {
     // SEO & Meta
@@ -192,6 +194,8 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
 
     // Footer
     'footer.copyright': '© {year} BayJF · AI Native / AI Agent 落地。保留所有权利。',
+    'footer.privacy': '隐私政策',
+    'footer.terms': '服务条款',
   },
 };
 

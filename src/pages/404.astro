@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const lang = 'en';
+---
+
+<BaseLayout
+  lang={lang}
+  screen="home"
+  pathOverride="/404"
+  seoTitle="404 — Page Not Found | BayJF"
+  seoDescription="The page you visited does not exist or has been moved."
+>
+  <main class="flex min-h-[70vh] flex-col items-center justify-center px-6 text-center">
+    <p class="font-serif text-7xl font-bold text-[#54615b] dark:text-[#bbcac2]">404</p>
+    <h1 class="mt-4 font-serif text-2xl font-semibold">Page Not Found</h1>
+    <p class="mt-2 text-sm text-[#444748] dark:text-[#c4c7c7]">
+      The page you visited does not exist or has been moved.
+    </p>
+    <div class="mt-8 flex items-center gap-4">
+      <a
+        href="/"
+        class="interactive rounded-full bg-[#54615b] px-6 py-3 text-sm font-semibold text-[#fbf9f7] transition-all duration-300 hover:scale-105"
+      >
+        Back to Home
+      </a>
+      <a
+        href="/zh"
+        class="interactive rounded-full border border-[#e4e2e0]/60 dark:border-white/10 px-6 py-3 text-sm font-semibold text-[#444748] dark:text-[#c4c7c7] transition-all duration-300 hover:scale-105"
+      >
+        中文首页
+      </a>
+    </div>
+  </main>
+</BaseLayout>
