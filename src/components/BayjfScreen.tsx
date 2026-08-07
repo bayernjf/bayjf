@@ -17,7 +17,7 @@ import {
   Tag,
   Clock
 } from 'lucide-react';
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 'recharts';
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 import BlurUpImage from './BlurUpImage';
 import BlindBoxCard from './BlindBoxCard';
 import { useLanguage, Language } from '../context/LanguageContext';
@@ -493,15 +493,28 @@ export default function BayjfScreen() {
                   }}
                   itemStyle={{ color: isDark ? '#fbf9f7' : '#1b1c1b' }}
                 />
-                <Bar dataKey="count" radius={[4, 4, 0, 0]} barSize={24}>
-                  {processedChartData.map((_, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
-                      fill={isDark ? '#bbcac2' : '#54615b'} 
-                      fillOpacity={0.85 - (index * 0.08)}
-                    />
-                  ))}
-                </Bar>
+                <Bar
+                  dataKey="count"
+                  radius={[4, 4, 0, 0]}
+                  barSize={24}
+                  fill={isDark ? '#bbcac2' : '#54615b'}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  shape={(props: any) => {
+                    const idx = typeof props.index === 'number' ? props.index : 0;
+                    return (
+                      <rect
+                        x={props.x}
+                        y={props.y}
+                        width={props.width}
+                        height={props.height}
+                        rx={4}
+                        ry={4}
+                        fill={isDark ? '#bbcac2' : '#54615b'}
+                        fillOpacity={0.85 - (idx * 0.08)}
+                      />
+                    );
+                  }}
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>
