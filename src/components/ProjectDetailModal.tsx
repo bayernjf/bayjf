@@ -220,7 +220,7 @@ export default function ProjectDetailModal({ project, onClose }: ProjectDetailMo
                   <a
                     id={`modal-external-link-${project.id}`}
                     href={project.link}
-                    className="interactive flex items-center justify-center gap-2 py-2.5 px-4 w-full rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white font-sans text-xs font-bold tracking-wider transition-all duration-300 shadow-md"
+                    className="interactive flex items-center justify-center gap-2 py-2.5 px-4 w-full rounded-xl bg-sage hover:bg-ink dark:bg-mint dark:hover:bg-paper text-paper dark:text-ink font-sans text-xs font-bold tracking-wider transition-all duration-300 shadow-md"
                   >
                     <span>{t('bayjf.launchDemo')}</span>
                     <ExternalLink size={13} />
