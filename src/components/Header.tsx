@@ -4,7 +4,7 @@
  */
 
 import { ScreenType } from '../types';
-import { Sun, Moon, Menu, X, Search, Volume2, VolumeX } from 'lucide-react';
+import { Sun, Moon, Monitor, Menu, X, Search, Volume2, VolumeX } from 'lucide-react';
 import { useState, MouseEvent } from 'react';
 import { useLanguage, type Language } from '../context/LanguageContext';
 import { swapLocale } from '../i18n/routing';
@@ -12,7 +12,7 @@ import { swapLocale } from '../i18n/routing';
 interface HeaderProps {
   currentScreen: ScreenType;
   onNavigate: (screen: ScreenType, transitionType?: 'none' | 'push') => void;
-  theme: 'light' | 'dark';
+  theme: 'light' | 'dark' | 'system';
   toggleTheme: () => void;
   lang: Language;
 }
@@ -96,7 +96,7 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
                   onNavigate('bayjf', 'none');
                 }
               }}
-              className="pl-9 pr-4 py-1.5 w-36 lg:w-44 text-xs font-sans rounded-full bg-hairline/30 dark:bg-white/5 text-ink dark:text-paper placeholder-ink-soft/70 dark:placeholder-mist/70 border border-hairline/50 dark:border-white/5 focus:outline-none focus:border-sage dark:focus:border-mint focus:w-48 lg:focus:w-56 transition-all duration-300"
+              className="pl-9 pr-4 py-1.5 w-36 lg:w-44 text-xs font-sans rounded-full bg-hairline/30 dark:bg-white/5 text-ink dark:text-paper placeholder-ink-soft/80 dark:placeholder-mist/80 border border-hairline/50 dark:border-white/5 focus:outline-none focus:border-sage dark:focus:border-mint focus:w-48 lg:focus:w-56 transition-all duration-300"
             />
           </div>
         </div>
@@ -143,10 +143,11 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
           <button
             id="theme-toggle-btn"
             aria-label="Toggle Theme"
+            title={theme === 'light' ? 'Theme: Light' : theme === 'dark' ? 'Theme: Dark' : 'Theme: System'}
             className="p-2 text-ink dark:text-paper hover:scale-110 active:scale-95 transition-all duration-200"
             onClick={toggleTheme}
           >
-            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+            {theme === 'light' ? <Moon size={20} /> : theme === 'dark' ? <Sun size={20} /> : <Monitor size={20} />}
           </button>
 
           <button
@@ -178,7 +179,7 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
                     onNavigate('bayjf', 'none');
                   }
                 }}
-                className="pl-9 pr-4 py-2 w-full text-xs font-sans rounded-full bg-hairline/30 dark:bg-white/5 text-ink dark:text-paper placeholder-ink-soft/70 dark:placeholder-mist/70 border border-hairline/50 dark:border-white/5 focus:outline-none focus:border-sage dark:focus:border-mint transition-colors duration-300"
+                className="pl-9 pr-4 py-2 w-full text-xs font-sans rounded-full bg-hairline/30 dark:bg-white/5 text-ink dark:text-paper placeholder-ink-soft/80 dark:placeholder-mist/80 border border-hairline/50 dark:border-white/5 focus:outline-none focus:border-sage dark:focus:border-mint transition-colors duration-300"
               />
             </div>
             {navItems.map((item) => {

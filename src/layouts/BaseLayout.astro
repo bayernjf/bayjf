@@ -128,13 +128,18 @@ const faqJsonLd =
       <link rel="stylesheet" href={fontHref} />
     </noscript>
 
-    <!-- 暗色主题防闪：在首屏渲染前同步写入 .dark，避免 MPA 每页闪白 -->
+    <!-- 暗色主题防闪：首屏前同步写入 .dark；默认跟随系统 prefers-color-scheme，
+         显式 light/dark 选择优先于系统偏好，避免 MPA 每页闪白 -->
     <script is:inline>
       (function () {
         try {
           var saved = localStorage.getItem('bayjf_theme');
-          var theme = saved === 'light' || saved === 'dark' ? saved : 'dark';
-          if (theme === 'dark') document.documentElement.classList.add('dark');
+          var dark =
+            saved === 'dark' ||
+            (saved !== 'light' &&
+              window.matchMedia &&
+              window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (dark) document.documentElement.classList.add('dark');
         } catch (e) {}
       })();
     </script>

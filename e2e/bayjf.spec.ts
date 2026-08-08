@@ -74,6 +74,20 @@ test('persists a selected light theme after reload', async ({ page }) => {
   await expect.poll(() => page.evaluate(() => localStorage.getItem('bayjf_theme'))).toBe('light');
 });
 
+test('follows the system color scheme by default', async ({ page }) => {
+  // 无显式选择时，防闪脚本与运行时都跟随 prefers-color-scheme。
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.reload();
+  await waitForHydration(page);
+
+  await expect(page.locator('html')).toHaveClass(/dark/);
+
+  // 切回浅色系统偏好后应实时跟随（无需刷新）。
+  await page.emulateMedia({ colorScheme: 'light' });
+  await expect(page.locator('html')).not.toHaveClass(/dark/);
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('bayjf_theme'))).toBeNull();
+});
+
 test('sends contact API requests through the same-origin path', async ({ page }) => {
   let interceptedUrl = '';
   await page.route('**/api/contact', async (route) => {

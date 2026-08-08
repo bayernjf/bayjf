@@ -22,39 +22,58 @@ const ContactScreen = lazy(() => import('./components/ContactScreen'));
 
 export default function App({ lang, initialScreen = 'home', agentImages = [], turnstileSiteKey = '' }: { lang: Language; initialScreen?: ScreenType; agentImages?: AgentImage[]; turnstileSiteKey?: string }) {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>(initialScreen);
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>(() => {
     try {
       const saved = localStorage.getItem('bayjf_theme');
-      if (saved === 'light' || saved === 'dark') {
+      if (saved === 'light' || saved === 'dark' || saved === 'system') {
         return saved;
       }
     } catch (e) {}
-    return 'dark';
+    return 'system';
   });
+  // 系统明暗偏好：仅在 theme === 'system' 时决定实际主题
+  const [systemDark, setSystemDark] = useState<boolean>(() => {
+    try {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    } catch (e) {
+      return false;
+    }
+  });
+  const isDark = theme === 'system' ? systemDark : theme === 'dark';
   const [transitionDirection, setTransitionDirection] = useState<'none' | 'push'>('none');
   const { soundEnabled } = useLanguage();
 
-  // Handle theme toggling
+  // Follow live system preference changes (only affects visual when in system mode)
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const onChange = (e: MediaQueryListEvent) => setSystemDark(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  // Handle theme toggling: light -> dark -> system -> light
   const toggleTheme = () => {
-    const nextTheme = theme === 'light' ? 'dark' : 'light';
+    const nextTheme = theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light';
     setTheme(nextTheme);
     try {
       localStorage.setItem('bayjf_theme', nextTheme);
     } catch (e) {}
     if (soundEnabled) {
-      playThemeToggleSound(nextTheme);
+      // system 模式按当前系统偏好播放对应主题音效，与视觉变化一致
+      const nextIsDark = nextTheme === 'system' ? systemDark : nextTheme === 'dark';
+      playThemeToggleSound(nextIsDark ? 'dark' : 'light');
     }
   };
 
-  // Sync theme with HTML class
+  // Sync effective theme with HTML class
   useEffect(() => {
     const root = window.document.documentElement;
-    if (theme === 'dark') {
+    if (isDark) {
       root.classList.add('dark');
     } else {
       root.classList.remove('dark');
     }
-  }, [theme]);
+  }, [isDark]);
 
   // Navigate function matching the transitions specified
   const handleNavigate = useCallback((screen: ScreenType, transitionType: 'none' | 'push' = 'none') => {
