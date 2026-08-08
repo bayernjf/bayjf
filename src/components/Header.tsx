@@ -96,7 +96,7 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
                   onNavigate('bayjf', 'none');
                 }
               }}
-              className="pl-9 pr-4 py-1.5 w-36 lg:w-44 text-xs font-sans rounded-full bg-hairline/30 dark:bg-white/5 text-ink dark:text-paper placeholder-ink-soft/50 dark:placeholder-mist/40 border border-hairline/50 dark:border-white/5 focus:outline-none focus:border-sage dark:focus:border-mint focus:w-48 lg:focus:w-56 transition-all duration-300"
+              className="pl-9 pr-4 py-1.5 w-36 lg:w-44 text-xs font-sans rounded-full bg-hairline/30 dark:bg-white/5 text-ink dark:text-paper placeholder-ink-soft/70 dark:placeholder-mist/70 border border-hairline/50 dark:border-white/5 focus:outline-none focus:border-sage dark:focus:border-mint focus:w-48 lg:focus:w-56 transition-all duration-300"
             />
           </div>
         </div>
@@ -178,7 +178,7 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
                     onNavigate('bayjf', 'none');
                   }
                 }}
-                className="pl-9 pr-4 py-2 w-full text-xs font-sans rounded-full bg-hairline/30 dark:bg-white/5 text-ink dark:text-paper placeholder-ink-soft/50 dark:placeholder-mist/40 border border-hairline/50 dark:border-white/5 focus:outline-none focus:border-sage dark:focus:border-mint transition-colors duration-300"
+                className="pl-9 pr-4 py-2 w-full text-xs font-sans rounded-full bg-hairline/30 dark:bg-white/5 text-ink dark:text-paper placeholder-ink-soft/70 dark:placeholder-mist/70 border border-hairline/50 dark:border-white/5 focus:outline-none focus:border-sage dark:focus:border-mint transition-colors duration-300"
               />
             </div>
             {navItems.map((item) => {
