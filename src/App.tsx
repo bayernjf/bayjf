@@ -175,7 +175,7 @@ export default function App({ lang, initialScreen = 'home', agentImages = [], tu
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-500 bg-[#fbf9f7] text-[#1b1c1b] dark:bg-[#121212] dark:text-[#fbf9f7] selection:bg-[#54615b]/20 dark:selection:bg-[#bbcac2]/25`}>
+    <div className={`min-h-screen transition-colors duration-500 bg-paper text-ink dark:bg-night dark:text-paper selection:bg-sage/20 dark:selection:bg-mint/25`}>
       {/* Subtle Scroll Progress Bar */}
       <ScrollProgress currentScreen={currentScreen} />
 
@@ -206,7 +206,7 @@ export default function App({ lang, initialScreen = 'home', agentImages = [], tu
             <Suspense
               fallback={
                 <div className="min-h-screen grid place-items-center" role="status" aria-live="polite">
-                  <span className="text-sm text-[#444748] dark:text-[#c4c7c7]">Loading…</span>
+                  <span className="text-sm text-ink-soft dark:text-mist">Loading…</span>
                 </div>
               }
             >

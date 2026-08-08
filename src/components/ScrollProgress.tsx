@@ -54,7 +54,7 @@ export default function ScrollProgress({ currentScreen }: ScrollProgressProps) {
   return (
     <motion.div
       id="scroll-progress-bar"
-      className="fixed top-0 left-0 right-0 h-[3px] bg-[#54615b] dark:bg-[#bbcac2] z-[100] origin-left pointer-events-none shadow-[0_1px_3px_rgba(84,97,91,0.15)] dark:shadow-[0_1px_3px_rgba(187,202,194,0.15)]"
+      className="fixed top-0 left-0 right-0 h-[3px] bg-sage dark:bg-mint z-[100] origin-left pointer-events-none shadow-[0_1px_3px_rgba(84,97,91,0.15)] dark:shadow-[0_1px_3px_rgba(187,202,194,0.15)]"
       style={{ scaleX }}
     />
   );

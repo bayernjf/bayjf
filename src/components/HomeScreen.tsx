@@ -44,19 +44,19 @@ export default function HomeScreen({ onNavigate, agentImages, lang }: HomeScreen
               initial={reduce ? false : { opacity: 0, y: 28 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease }}
-              className="font-serif text-4xl md:text-6xl font-bold tracking-tight text-[#1b1c1b] dark:text-[#fbf9f7] leading-[1.1] pb-1 mb-8"
+              className="font-serif text-4xl md:text-6xl font-bold tracking-tight text-ink dark:text-paper leading-[1.1] pb-1 mb-8"
             >
               {t('home.hero.title1')}{' '}
-              <span className="text-[#54615b] dark:text-[#bbcac2]">{t('home.hero.title2')}</span>
+              <span className="text-sage dark:text-mint">{t('home.hero.title2')}</span>
               <br />
-              <em className="italic text-[#82978f] dark:text-[#a7bdb5]">{t('home.hero.title3')}</em>
+              <em className="italic text-ink-faint dark:text-mint-faint">{t('home.hero.title3')}</em>
             </motion.h1>
 
             <motion.p
               initial={reduce ? false : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.12, ease }}
-              className="font-sans text-lg text-[#444748] dark:text-[#c4c7c7] max-w-xl leading-relaxed mb-10"
+              className="font-sans text-lg text-ink-soft dark:text-mist max-w-xl leading-relaxed mb-10"
             >
               {t('home.hero.subtitle')}
             </motion.p>
@@ -74,7 +74,7 @@ export default function HomeScreen({ onNavigate, agentImages, lang }: HomeScreen
                   e.preventDefault();
                   onNavigate('bayjf', 'push');
                 }}
-                className="interactive inline-flex items-center justify-center bg-[#1b1c1b] dark:bg-[#fbf9f7] text-[#fbf9f7] dark:text-[#1b1c1b] hover:bg-[#54615b] dark:hover:bg-[#bbcac2] hover:scale-105 hover:shadow-lg transition-all duration-300 px-8 py-4 rounded-full font-sans font-semibold text-sm tracking-wider"
+                className="interactive inline-flex items-center justify-center bg-ink dark:bg-paper text-paper dark:text-ink hover:bg-sage dark:hover:bg-mint hover:scale-105 hover:shadow-lg transition-all duration-300 px-8 py-4 rounded-full font-sans font-semibold text-sm tracking-wider"
               >
                 {t('home.hero.btnWork')}
               </a>
@@ -85,7 +85,7 @@ export default function HomeScreen({ onNavigate, agentImages, lang }: HomeScreen
                   e.preventDefault();
                   onNavigate('contact', 'none');
                 }}
-                className="interactive inline-flex items-center justify-center border border-[#444748] dark:border-[#c4c7c7] text-[#444748] dark:text-[#c4c7c7] hover:bg-[#54615b]/10 hover:scale-105 transition-all duration-300 px-8 py-4 rounded-full font-sans font-semibold text-sm tracking-wider"
+                className="interactive inline-flex items-center justify-center border border-ink-soft dark:border-mist text-ink-soft dark:text-mist hover:bg-sage/10 hover:scale-105 transition-all duration-300 px-8 py-4 rounded-full font-sans font-semibold text-sm tracking-wider"
               >
                 {t('home.hero.btnAbout')}
               </a>
@@ -133,7 +133,7 @@ export default function HomeScreen({ onNavigate, agentImages, lang }: HomeScreen
       </section>
 
       {/* Philosophy: stacked editorial manifesto */}
-      <section className="py-24 md:py-40 bg-[#f5f3f1] dark:bg-[#161716] transition-colors duration-500">
+      <section className="py-24 md:py-40 bg-paper-raised dark:bg-night-raised transition-colors duration-500">
         <div className="max-w-7xl mx-auto px-6 md:px-16">
           <motion.div
             initial={reduce ? false : { opacity: 0, y: 32 }}
@@ -142,10 +142,10 @@ export default function HomeScreen({ onNavigate, agentImages, lang }: HomeScreen
             transition={{ duration: 0.7, ease }}
             className="max-w-3xl"
           >
-            <h2 className="font-serif text-3xl md:text-5xl font-bold text-[#1b1c1b] dark:text-[#fbf9f7] mb-8 leading-[1.1] pb-1">
+            <h2 className="font-serif text-3xl md:text-5xl font-bold text-ink dark:text-paper mb-8 leading-[1.1] pb-1">
               {t('home.philosophy.title')}
             </h2>
-            <div className="space-y-6 font-sans text-base md:text-lg text-[#444748] dark:text-[#c4c7c7] leading-relaxed">
+            <div className="space-y-6 font-sans text-base md:text-lg text-ink-soft dark:text-mist leading-relaxed">
               <p>
                 {t('home.philosophy.p1')}
               </p>
@@ -155,14 +155,14 @@ export default function HomeScreen({ onNavigate, agentImages, lang }: HomeScreen
             </div>
 
             {/* Stats Grid */}
-            <div className="mt-12 grid grid-cols-2 gap-8 border-t border-[#e4e2e0] dark:border-white/10 pt-8">
+            <div className="mt-12 grid grid-cols-2 gap-8 border-t border-hairline dark:border-white/10 pt-8">
               <div>
-                <span className="block font-serif text-4xl md:text-5xl font-bold text-[#54615b] dark:text-[#bbcac2] mb-2">AI</span>
-                <span className="font-sans text-xs uppercase tracking-widest text-[#444748] dark:text-[#c4c7c7] font-semibold">{t('home.philosophy.yearsExp')}</span>
+                <span className="block font-serif text-4xl md:text-5xl font-bold text-sage dark:text-mint mb-2">AI</span>
+                <span className="font-sans text-xs uppercase tracking-widest text-ink-soft dark:text-mist font-semibold">{t('home.philosophy.yearsExp')}</span>
               </div>
               <div>
-                <span className="block font-serif text-4xl md:text-5xl font-bold text-[#54615b] dark:text-[#bbcac2] mb-2">3</span>
-                <span className="font-sans text-xs uppercase tracking-widest text-[#444748] dark:text-[#c4c7c7] font-semibold">{t('home.philosophy.projectsShipped')}</span>
+                <span className="block font-serif text-4xl md:text-5xl font-bold text-sage dark:text-mint mb-2">3</span>
+                <span className="font-sans text-xs uppercase tracking-widest text-ink-soft dark:text-mist font-semibold">{t('home.philosophy.projectsShipped')}</span>
               </div>
             </div>
           </motion.div>

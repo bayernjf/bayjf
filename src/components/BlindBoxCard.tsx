@@ -90,7 +90,7 @@ export default function BlindBoxCard({ project, onOpen, index = 0, onRevealChang
       onFocus={() => setHovered(true)}
       onBlur={() => setHovered(false)}
       onTouchStart={() => setHovered(true)}
-      className="group relative flex flex-col h-full bg-[#fbf9f7] dark:bg-[#161716] rounded-2xl border border-[#e4e2e0] dark:border-white/5 shadow-md hover:shadow-xl hover:border-[#54615b]/20 dark:hover:border-white/10 transition-[border-color,box-shadow,background-color] duration-300 overflow-hidden cursor-pointer focus-within:ring-2 focus-within:ring-[#54615b]/40 outline-none"
+      className="group relative flex flex-col h-full bg-paper dark:bg-night-raised rounded-2xl border border-hairline dark:border-white/5 shadow-md hover:shadow-xl hover:border-sage/20 dark:hover:border-white/10 transition-[border-color,box-shadow,background-color] duration-300 overflow-hidden cursor-pointer focus-within:ring-2 focus-within:ring-sage/40 outline-none"
       role="button"
       tabIndex={0}
       aria-label={project.title}
@@ -103,7 +103,7 @@ export default function BlindBoxCard({ project, onOpen, index = 0, onRevealChang
       }}
     >
       {/* Thumbnail / revealed project image */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-[#f5f3f1] dark:bg-[#1a1b1a] border-b border-[#e4e2e0] dark:border-white/5">
+      <div className="relative aspect-[16/10] overflow-hidden bg-paper-raised dark:bg-night-hover border-b border-hairline dark:border-white/5">
         <BlurUpImage
           src={project.image}
           alt={project.title}
@@ -114,8 +114,8 @@ export default function BlindBoxCard({ project, onOpen, index = 0, onRevealChang
 
         {/* Glassmorphic category overlay once revealed */}
         <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 flex items-end p-6">
-          <div className="text-[#fbf9f7] translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-            <span className="font-sans text-[10px] font-bold tracking-widest uppercase bg-[#bbcac2]/80 backdrop-blur-md text-[#1b1c1b] px-2 py-1 rounded">
+          <div className="text-paper translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+            <span className="font-sans text-[10px] font-bold tracking-widest uppercase bg-mint/80 backdrop-blur-md text-ink px-2 py-1 rounded">
               {project.category}
             </span>
           </div>
@@ -124,15 +124,15 @@ export default function BlindBoxCard({ project, onOpen, index = 0, onRevealChang
 
       {/* Card Body */}
       <div className="flex flex-col flex-grow p-6 md:p-8">
-        <span className="font-sans text-[10px] font-bold tracking-widest text-[#54615b] dark:text-[#bbcac2] mb-2 uppercase flex items-center justify-between">
+        <span className="font-sans text-[10px] font-bold tracking-widest text-sage dark:text-mint mb-2 uppercase flex items-center justify-between">
           <span>{project.category}</span>
         </span>
 
-        <h3 className="font-serif text-2xl font-bold text-[#1b1c1b] dark:text-[#fbf9f7] mb-3 group-hover:text-[#54615b] dark:group-hover:text-[#bbcac2] transition-colors duration-300">
+        <h3 className="font-serif text-2xl font-bold text-ink dark:text-paper mb-3 group-hover:text-sage dark:group-hover:text-mint transition-colors duration-300">
           {project.title}
         </h3>
 
-        <p className="font-sans text-sm text-[#444748] dark:text-[#c4c7c7] mb-6 line-clamp-3 leading-relaxed flex-grow">
+        <p className="font-sans text-sm text-ink-soft dark:text-mist mb-6 line-clamp-3 leading-relaxed flex-grow">
           {project.description}
         </p>
 
@@ -140,15 +140,15 @@ export default function BlindBoxCard({ project, onOpen, index = 0, onRevealChang
           {project.tags.slice(0, 3).map((tag) => (
             <span
               key={tag}
-              className="font-sans text-[11px] bg-[#e4e2e0]/40 dark:bg-white/5 text-[#444748] dark:text-[#c4c7c7] px-2.5 py-1 rounded-md"
+              className="font-sans text-[11px] bg-hairline/40 dark:bg-white/5 text-ink-soft dark:text-mist px-2.5 py-1 rounded-md"
             >
               {tag}
             </span>
           ))}
         </div>
 
-        <div className="pt-4 border-t border-[#e4e2e0]/40 dark:border-white/5">
-          <span className="interactive inline-flex items-center gap-2 text-xs font-bold tracking-widest text-[#1b1c1b] dark:text-[#fbf9f7] group-hover:text-[#54615b] dark:group-hover:text-[#bbcac2] transition-colors">
+        <div className="pt-4 border-t border-hairline/40 dark:border-white/5">
+          <span className="interactive inline-flex items-center gap-2 text-xs font-bold tracking-widest text-ink dark:text-paper group-hover:text-sage dark:group-hover:text-mint transition-colors">
             {language === 'en' ? 'VIEW CASE STUDY' : '查看案例研究'}
           </span>
         </div>
@@ -182,14 +182,14 @@ export default function BlindBoxCard({ project, onOpen, index = 0, onRevealChang
             transition={{ duration: 1.4, repeat: hovered && !alwaysRevealed ? Infinity : 0 }}
           />
           <div className="absolute inset-x-0 bottom-0 flex flex-col items-center justify-end pb-6">
-            <Sparkles size={28} className="text-[#bbcac2]" />
+            <Sparkles size={28} className="text-mint" />
           </div>
         </motion.div>
 
         {/* Bottom half */}
         <motion.div
           data-blind-box="sealed"
-          className="relative w-full overflow-hidden bg-gradient-to-t from-[#0f100f] via-[#1b1c1b] to-[#232524]"
+          className="relative w-full overflow-hidden bg-gradient-to-t from-[#0f100f] via-ink to-[#232524]"
           style={{
             height: seamY,
             borderTop: '1px solid rgba(187,202,194,0.35)',
@@ -203,9 +203,9 @@ export default function BlindBoxCard({ project, onOpen, index = 0, onRevealChang
           transition={{ type: 'spring', stiffness: 200, damping: 26 }}
           aria-hidden={revealed}
         >
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0f100f] via-[#1b1c1b] to-[#232524]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0f100f] via-ink to-[#232524]" />
           <div className="absolute inset-x-0 top-0 flex flex-col items-center justify-start pt-6">
-            <span className="font-serif text-4xl font-bold text-[#fbf9f7]">?</span>
+            <span className="font-serif text-4xl font-bold text-paper">?</span>
           </div>
         </motion.div>
       </div>
@@ -218,12 +218,12 @@ export default function BlindBoxCard({ project, onOpen, index = 0, onRevealChang
         transition={{ duration: 0.3, delay: revealed ? 0.05 : 0 }}
       >
         {!revealed && (
-          <div className="absolute left-0 right-0 h-px bg-[#bbcac2]/50" style={{ top: seamY }} />
+          <div className="absolute left-0 right-0 h-px bg-mint/50" style={{ top: seamY }} />
         )}
         {BURST.map((p) => (
           <motion.span
             key={p.id}
-            className="absolute rounded-full bg-[#fbf9f7] shadow-[0_0_8px_rgba(187,202,194,0.9)]"
+            className="absolute rounded-full bg-paper shadow-[0_0_8px_rgba(187,202,194,0.9)]"
             style={{
               width: p.size,
               height: p.size,

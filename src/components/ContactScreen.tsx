@@ -147,7 +147,7 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
   return (
     <section aria-label="Contact" className="relative pt-32 pb-24 min-h-screen px-6 md:px-16 max-w-7xl mx-auto flex items-center">
       {/* Background radial glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#54615b]/10 via-transparent to-transparent pointer-events-none -z-10" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-sage/10 via-transparent to-transparent pointer-events-none -z-10" />
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-12 w-full items-center">
         {/* Left Column: Information */}
@@ -160,22 +160,22 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
             {/* Live Availability Status Indicator */}
             <div className="inline-flex flex-col mb-8 gap-2">
               <div className="flex items-center gap-1">
-                <div className="flex items-center px-3 py-1.5 rounded-full bg-[#e4e2e0]/40 dark:bg-white/5 border border-[#e4e2e0]/60 dark:border-white/5 text-xs font-sans tracking-wide">
+                <div className="flex items-center px-3 py-1.5 rounded-full bg-hairline/40 dark:bg-white/5 border border-hairline/60 dark:border-white/5 text-xs font-sans tracking-wide">
                   <span className="relative flex h-2 w-2 mr-2.5">
                     <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${status.available ? 'bg-emerald-400' : 'bg-amber-400'}`}></span>
                     <span className={`relative inline-flex rounded-full h-2 w-2 ${status.available ? 'bg-emerald-500' : 'bg-amber-500'}`}></span>
                   </span>
-                  <span className="font-semibold text-[#1b1c1b] dark:text-[#fbf9f7] mr-2">
+                  <span className="font-semibold text-ink dark:text-paper mr-2">
                     {status.label}
                   </span>
                 </div>
               </div>
             </div>
 
-            <h1 className="font-serif text-5xl md:text-7xl font-bold text-[#1b1c1b] dark:text-[#fbf9f7] mb-8 leading-tight">
+            <h1 className="font-serif text-5xl md:text-7xl font-bold text-ink dark:text-paper mb-8 leading-tight">
               {t('contact.title')}
             </h1>
-            <p className="font-sans text-lg text-[#444748] dark:text-[#c4c7c7] mb-12 max-w-md leading-relaxed">
+            <p className="font-sans text-lg text-ink-soft dark:text-mist mb-12 max-w-md leading-relaxed">
               {t('contact.desc')}
             </p>
           </motion.div>
@@ -192,9 +192,9 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
                 <a
                   id={`contact-email-link-${index}`}
                   href={`mailto:${email}`}
-                  className="interactive inline-flex items-center gap-4 text-xl md:text-2xl font-serif text-[#1b1c1b] dark:text-[#fbf9f7] hover:text-[#54615b] dark:hover:text-[#bbcac2] transition-colors group"
+                  className="interactive inline-flex items-center gap-4 text-xl md:text-2xl font-serif text-ink dark:text-paper hover:text-sage dark:hover:text-mint transition-colors group"
                 >
-                  <span className="p-3 bg-[#e4e2e0]/50 dark:bg-white/5 rounded-full text-[#54615b] dark:text-[#bbcac2] group-hover:scale-110 transition-transform duration-300">
+                  <span className="p-3 bg-hairline/50 dark:bg-white/5 rounded-full text-sage dark:text-mint group-hover:scale-110 transition-transform duration-300">
                     <Mail size={22} />
                   </span>
                   {email}
@@ -203,7 +203,7 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
                   id={`contact-email-copy-btn-${index}`}
                   type="button"
                   onClick={handleCopyEmail(email)}
-                  className="interactive p-2.5 bg-[#e4e2e0]/40 dark:bg-white/5 text-[#444748] dark:text-[#c4c7c7] hover:text-[#54615b] dark:hover:text-[#bbcac2] hover:bg-[#e4e2e0] dark:hover:bg-white/10 rounded-full transition-all duration-300 ml-2 shadow-sm hover:scale-110"
+                  className="interactive p-2.5 bg-hairline/40 dark:bg-white/5 text-ink-soft dark:text-mist hover:text-sage dark:hover:text-mint hover:bg-hairline dark:hover:bg-white/10 rounded-full transition-all duration-300 ml-2 shadow-sm hover:scale-110"
                   title={language === 'en' ? `Copy ${email}` : `复制 ${email}`}
                   aria-label={language === 'en' ? `Copy ${email}` : `复制 ${email}`}
                 >
@@ -219,7 +219,7 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
                 href="https://github.com/bayernjf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 bg-[#e4e2e0]/40 dark:bg-white/5 text-[#444748] dark:text-[#c4c7c7] hover:text-[#54615b] dark:hover:text-[#bbcac2] hover:bg-[#e4e2e0] dark:hover:bg-white/10 rounded-full transition-all duration-300 scale-100 hover:scale-110"
+                className="p-3 bg-hairline/40 dark:bg-white/5 text-ink-soft dark:text-mist hover:text-sage dark:hover:text-mint hover:bg-hairline dark:hover:bg-white/10 rounded-full transition-all duration-300 scale-100 hover:scale-110"
               >
                 <Link size={20} />
               </a>
@@ -228,7 +228,7 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
                 href="https://github.com/bayernjf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 bg-[#e4e2e0]/40 dark:bg-white/5 text-[#444748] dark:text-[#c4c7c7] hover:text-[#54615b] dark:hover:text-[#bbcac2] hover:bg-[#e4e2e0] dark:hover:bg-white/10 rounded-full transition-all duration-300 scale-100 hover:scale-110"
+                className="p-3 bg-hairline/40 dark:bg-white/5 text-ink-soft dark:text-mist hover:text-sage dark:hover:text-mint hover:bg-hairline dark:hover:bg-white/10 rounded-full transition-all duration-300 scale-100 hover:scale-110"
               >
                 <Code size={20} />
               </a>
@@ -239,13 +239,13 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
         {/* Right Column: Contact Form */}
         <div className="md:col-span-6 md:col-start-7 relative">
           {/* Subtle glow behind card */}
-          <div className="absolute -inset-4 bg-[#54615b]/5 dark:bg-[#54615b]/10 rounded-3xl blur-2xl -z-10" />
+          <div className="absolute -inset-4 bg-sage/5 dark:bg-sage/10 rounded-3xl blur-2xl -z-10" />
 
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="bg-[#fbf9f7] dark:bg-[#161716] p-8 md:p-12 rounded-3xl border border-[#e4e2e0] dark:border-white/5 shadow-2xl transition-all duration-500 hover:border-[#54615b]/20"
+            className="bg-paper dark:bg-night-raised p-8 md:p-12 rounded-3xl border border-hairline dark:border-white/5 shadow-2xl transition-all duration-500 hover:border-sage/20"
           >
             {isSuccess ? (
               <motion.div
@@ -254,10 +254,10 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
                 className="text-center py-12"
               >
                 <span className="text-4xl">✨</span>
-                <h3 className="font-serif text-2xl font-bold text-[#1b1c1b] dark:text-[#fbf9f7] mt-4 mb-2">
+                <h3 className="font-serif text-2xl font-bold text-ink dark:text-paper mt-4 mb-2">
                   {t('contact.form.successHeader')}
                 </h3>
-                <p className="font-sans text-sm text-[#444748] dark:text-[#c4c7c7] max-w-sm mx-auto">
+                <p className="font-sans text-sm text-ink-soft dark:text-mist max-w-sm mx-auto">
                   {t('contact.form.successSub')}
                 </p>
               </motion.div>
@@ -274,10 +274,10 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
                         placeholder={t('contact.form.namePlaceholder')}
                         value={formData.name}
                         onChange={(e) => handleChange('name', e.target.value)}
-                        className={`contact-field w-full bg-transparent border-b py-3 text-sm text-[#1b1c1b] dark:text-[#fbf9f7] placeholder-[#444748]/60 dark:placeholder-[#c4c7c7]/75 focus:outline-none transition-colors duration-300 ${
+                        className={`contact-field w-full bg-transparent border-b py-3 text-sm text-ink dark:text-paper placeholder-ink-soft/60 dark:placeholder-mist/75 focus:outline-none transition-colors duration-300 ${
                           errors.name
                             ? 'border-rose-500 dark:border-rose-400 focus:border-rose-600 dark:focus:border-rose-400'
-                            : 'border-[#e4e2e0] dark:border-white/10 focus:border-[#54615b] dark:focus:border-[#bbcac2]'
+                            : 'border-hairline dark:border-white/10 focus:border-sage dark:focus:border-mint'
                         }`}
                       />
                     </div>
@@ -297,10 +297,10 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
                         placeholder={t('contact.form.emailPlaceholder')}
                         value={formData.email}
                         onChange={(e) => handleChange('email', e.target.value)}
-                        className={`contact-field w-full bg-transparent border-b py-3 text-sm text-[#1b1c1b] dark:text-[#fbf9f7] placeholder-[#444748]/60 dark:placeholder-[#c4c7c7]/75 focus:outline-none transition-colors duration-300 ${
+                        className={`contact-field w-full bg-transparent border-b py-3 text-sm text-ink dark:text-paper placeholder-ink-soft/60 dark:placeholder-mist/75 focus:outline-none transition-colors duration-300 ${
                           errors.email
                             ? 'border-rose-500 dark:border-rose-400 focus:border-rose-600 dark:focus:border-rose-400'
-                            : 'border-[#e4e2e0] dark:border-white/10 focus:border-[#54615b] dark:focus:border-[#bbcac2]'
+                            : 'border-hairline dark:border-white/10 focus:border-sage dark:focus:border-mint'
                         }`}
                       />
                     </div>
@@ -321,10 +321,10 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
                       placeholder={t('contact.form.subjectPlaceholder')}
                       value={formData.subject}
                       onChange={(e) => handleChange('subject', e.target.value)}
-                      className={`contact-field w-full bg-transparent border-b py-3 text-sm text-[#1b1c1b] dark:text-[#fbf9f7] placeholder-[#444748]/60 dark:placeholder-[#c4c7c7]/75 focus:outline-none transition-colors duration-300 ${
+                      className={`contact-field w-full bg-transparent border-b py-3 text-sm text-ink dark:text-paper placeholder-ink-soft/60 dark:placeholder-mist/75 focus:outline-none transition-colors duration-300 ${
                         errors.subject
                           ? 'border-rose-500 dark:border-rose-400 focus:border-rose-600 dark:focus:border-rose-400'
-                          : 'border-[#e4e2e0] dark:border-white/10 focus:border-[#54615b] dark:focus:border-[#bbcac2]'
+                          : 'border-hairline dark:border-white/10 focus:border-sage dark:focus:border-mint'
                       }`}
                     />
                   </div>
@@ -344,10 +344,10 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
                       placeholder={t('contact.form.messagePlaceholder')}
                       value={formData.message}
                       onChange={(e) => handleChange('message', e.target.value)}
-                      className={`contact-field w-full bg-transparent border-b py-3 text-sm text-[#1b1c1b] dark:text-[#fbf9f7] placeholder-[#444748]/60 dark:placeholder-[#c4c7c7]/75 focus:outline-none transition-colors duration-300 resize-none ${
+                      className={`contact-field w-full bg-transparent border-b py-3 text-sm text-ink dark:text-paper placeholder-ink-soft/60 dark:placeholder-mist/75 focus:outline-none transition-colors duration-300 resize-none ${
                         errors.message
                           ? 'border-rose-500 dark:border-rose-400 focus:border-rose-600 dark:focus:border-rose-400'
-                          : 'border-[#e4e2e0] dark:border-white/10 focus:border-[#54615b] dark:focus:border-[#bbcac2]'
+                          : 'border-hairline dark:border-white/10 focus:border-sage dark:focus:border-mint'
                       }`}
                     />
                   </div>
@@ -382,7 +382,7 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
                     id="form-submit-btn"
                     type="submit"
                     disabled={isSubmitting}
-                    className="interactive bg-[#1b1c1b] dark:bg-[#fbf9f7] hover:bg-[#54615b] dark:hover:bg-[#bbcac2] text-[#fbf9f7] dark:text-[#1b1c1b] disabled:opacity-50 font-sans text-xs uppercase font-bold tracking-widest px-8 py-4 rounded-full flex items-center gap-3 hover:scale-105 active:scale-95 hover:shadow-lg transition-all duration-300"
+                    className="interactive bg-ink dark:bg-paper hover:bg-sage dark:hover:bg-mint text-paper dark:text-ink disabled:opacity-50 font-sans text-xs uppercase font-bold tracking-widest px-8 py-4 rounded-full flex items-center gap-3 hover:scale-105 active:scale-95 hover:shadow-lg transition-all duration-300"
                   >
                     {isSubmitting ? t('contact.form.sending') : t('contact.form.send')}
                     <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />

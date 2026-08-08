@@ -5,6 +5,28 @@
 @theme {
   --font-sans: "Inter", "Work Sans", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Newsreader", "Montserrat", Georgia, serif;
+
+  /* 暖单色编辑风语义色板：浅色 */
+  --color-paper: #fbf9f7; /* 页面背景 */
+  --color-paper-raised: #f5f3f1; /* 卡片与区块 */
+  --color-paper-muted: #eae8e5; /* 占位 shimmer */
+  --color-ink: #1b1c1b; /* 主文字 */
+  --color-ink-soft: #444748; /* 次级文字 */
+  --color-ink-faint: #82978f; /* 三级文字（大字装饰） */
+  --color-hairline: #e4e2e0; /* 边框与分隔线 */
+  --color-sage: #54615b; /* accent */
+
+  /* 暖单色编辑风语义色板：暗色 */
+  --color-night: #121212; /* 页面背景 */
+  --color-night-raised: #161716; /* 卡片与区块 */
+  --color-night-hover: #1a1b1a; /* hover 与边框 */
+  --color-night-soft: #1a1c1a; /* toast 背景 */
+  --color-night-panel: #151615; /* modal 面板 */
+  --color-night-overlay: #121312; /* modal 遮罩 */
+  --color-night-muted: #242524; /* 占位 shimmer */
+  --color-mist: #c4c7c7; /* 次级文字 */
+  --color-mint: #bbcac2; /* accent */
+  --color-mint-faint: #a7bdb5; /* 三级文字（大字装饰） */
 }
 
 /* Smooth anchor navigation */
@@ -34,18 +56,18 @@ body {
 .contact-field:-webkit-autofill,
 .contact-field:-webkit-autofill:hover,
 .contact-field:-webkit-autofill:focus {
-  -webkit-text-fill-color: #1b1c1b;
-  -webkit-box-shadow: 0 0 0 1000px #fbf9f7 inset;
-  box-shadow: 0 0 0 1000px #fbf9f7 inset;
-  caret-color: #1b1c1b;
+  -webkit-text-fill-color: var(--color-ink);
+  -webkit-box-shadow: 0 0 0 1000px var(--color-paper) inset;
+  box-shadow: 0 0 0 1000px var(--color-paper) inset;
+  caret-color: var(--color-ink);
   transition: background-color 9999s ease-out 0s;
 }
 
 .dark .contact-field:-webkit-autofill,
 .dark .contact-field:-webkit-autofill:hover,
 .dark .contact-field:-webkit-autofill:focus {
-  -webkit-text-fill-color: #fbf9f7;
-  -webkit-box-shadow: 0 0 0 1000px #161716 inset;
-  box-shadow: 0 0 0 1000px #161716 inset;
-  caret-color: #fbf9f7;
+  -webkit-text-fill-color: var(--color-paper);
+  -webkit-box-shadow: 0 0 0 1000px var(--color-night-raised) inset;
+  box-shadow: 0 0 0 1000px var(--color-night-raised) inset;
+  caret-color: var(--color-paper);
 }

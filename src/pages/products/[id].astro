@@ -25,16 +25,16 @@ const productSchema = {
 <BaseLayout lang="en" screen="bayjf" pathOverride={path} seoTitle={`${project.title} | BayJF`} seoDescription={project.description}>
   <main class="min-h-screen px-6 pb-24 pt-32 md:px-16">
     <article class="mx-auto max-w-5xl">
-      <a class="text-sm text-[#54615b] dark:text-[#bbcac2]" href="/projects">← Back to projects</a>
+      <a class="text-sm text-sage dark:text-mint" href="/projects">← Back to projects</a>
       <div class="mt-8 grid gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-start">
         <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#54615b] dark:text-[#bbcac2]">{project.category}</p>
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sage dark:text-mint">{project.category}</p>
           <h1 class="mt-4 font-serif text-5xl font-bold tracking-tight md:text-7xl">{project.title}</h1>
-          <p class="mt-6 max-w-2xl text-lg leading-relaxed text-[#444748] dark:text-[#c4c7c7]">{project.description}</p>
+          <p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft dark:text-mist">{project.description}</p>
           <div class="mt-8 flex flex-wrap gap-2">
             {project.tags.map((tag) => <span class="rounded-md border border-black/10 px-3 py-1 text-xs dark:border-white/10">{tag}</span>)}
           </div>
-          <a class="mt-10 inline-flex rounded-full bg-[#1b1c1b] px-6 py-3 text-sm font-semibold text-white dark:bg-[#fbf9f7] dark:text-[#1b1c1b]" href={project.link} target="_blank" rel="noopener noreferrer">Open product</a>
+          <a class="mt-10 inline-flex rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white dark:bg-paper dark:text-ink" href={project.link} target="_blank" rel="noopener noreferrer">Open product</a>
         </div>
         <img class="aspect-video w-full rounded-2xl object-cover shadow-xl" src={project.image} alt={`${project.title} product preview`} loading="eager" />
       </div>
