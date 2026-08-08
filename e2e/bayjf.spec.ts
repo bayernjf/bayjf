@@ -5,7 +5,9 @@ import { expect, test, type Page } from '@playwright/test';
 // 应用会在 hydrate 完成后在 <html> 上写入 data-app-hydrated 作为信号。
 async function waitForHydration(page: Page) {
   await page.waitForFunction(
-    () => document.documentElement.dataset.appHydrated === 'true',
+    // 整页导航（如语言切换）瞬间 documentElement 可能为 null，
+    // 用可选链返回 false 让 waitForFunction 继续轮询而不是抛错。
+    () => document.documentElement?.dataset.appHydrated === 'true',
     undefined,
     { timeout: 15000 },
   );
