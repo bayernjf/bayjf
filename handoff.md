@@ -32,3 +32,18 @@ BayJF 个人品牌站，是 14 个产品落地页的 hub（中枢）。Astro 7 +
 1. `git pull --rebase` 后 `git push`（分支 feature/20260719，勿动 main）。
 2. 等待 tab-manager-landing 部署完成，验证 Tab Garden 卡片图片与链接。
 3. （可选）部署后抽查 14 个落地页 → bayjf → 产品页的导航闭环。
+
+## 14 个落地页 taste-skill 设计审计（2026-08-08）
+本工作区作为编排入口，对同级目录 14 个 `-landing` 项目完成反 AI-slop
+设计 Tell 审计与修复（仅样式与文案，不动内容 IA/URL/功能）：
+- scroll 监听 → IntersectionObserver：soft-desk（滚动深度埋点）、
+  tab-manager（导航边框）、word-base（导航阴影），共 3 处。
+- 去 AI 紫换 emerald 单色 accent：word-base、word-picker
+  （word-picker Showcase 四色卡片为有意设计，保留）。
+- 英文文案 em-dash 清扫：14 个项目共 135 处（SEO 标题改 `|`、
+  404 改冒号、正文按语义换标点；中文“——”保留）。
+- eyebrow 节制：tab-manager 降级 6 个区块级 eyebrow，其余项目达标。
+- 验证：14/14 `npm run build` 全部通过。
+
+状态：改动均在各 landing 项目工作区，尚未提交；各项目 handoff.md
+已追加审计记录。bayjf 自身代码本次未改动，编排用临时脚本已清理。
