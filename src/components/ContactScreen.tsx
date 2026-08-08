@@ -274,7 +274,7 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
                         placeholder={t('contact.form.namePlaceholder')}
                         value={formData.name}
                         onChange={(e) => handleChange('name', e.target.value)}
-                        className={`contact-field w-full bg-transparent border-b py-3 text-sm text-ink dark:text-paper placeholder-ink-soft/60 dark:placeholder-mist/75 focus:outline-none transition-colors duration-300 ${
+                        className={`contact-field w-full bg-transparent border-b py-3 text-sm text-ink dark:text-paper placeholder-ink-soft/80 dark:placeholder-mist/75 focus:outline-none transition-colors duration-300 ${
                           errors.name
                             ? 'border-rose-500 dark:border-rose-400 focus:border-rose-600 dark:focus:border-rose-400'
                             : 'border-hairline dark:border-white/10 focus:border-sage dark:focus:border-mint'
@@ -297,7 +297,7 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
                         placeholder={t('contact.form.emailPlaceholder')}
                         value={formData.email}
                         onChange={(e) => handleChange('email', e.target.value)}
-                        className={`contact-field w-full bg-transparent border-b py-3 text-sm text-ink dark:text-paper placeholder-ink-soft/60 dark:placeholder-mist/75 focus:outline-none transition-colors duration-300 ${
+                        className={`contact-field w-full bg-transparent border-b py-3 text-sm text-ink dark:text-paper placeholder-ink-soft/80 dark:placeholder-mist/75 focus:outline-none transition-colors duration-300 ${
                           errors.email
                             ? 'border-rose-500 dark:border-rose-400 focus:border-rose-600 dark:focus:border-rose-400'
                             : 'border-hairline dark:border-white/10 focus:border-sage dark:focus:border-mint'
@@ -321,7 +321,7 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
                       placeholder={t('contact.form.subjectPlaceholder')}
                       value={formData.subject}
                       onChange={(e) => handleChange('subject', e.target.value)}
-                      className={`contact-field w-full bg-transparent border-b py-3 text-sm text-ink dark:text-paper placeholder-ink-soft/60 dark:placeholder-mist/75 focus:outline-none transition-colors duration-300 ${
+                      className={`contact-field w-full bg-transparent border-b py-3 text-sm text-ink dark:text-paper placeholder-ink-soft/80 dark:placeholder-mist/75 focus:outline-none transition-colors duration-300 ${
                         errors.subject
                           ? 'border-rose-500 dark:border-rose-400 focus:border-rose-600 dark:focus:border-rose-400'
                           : 'border-hairline dark:border-white/10 focus:border-sage dark:focus:border-mint'
@@ -344,7 +344,7 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
                       placeholder={t('contact.form.messagePlaceholder')}
                       value={formData.message}
                       onChange={(e) => handleChange('message', e.target.value)}
-                      className={`contact-field w-full bg-transparent border-b py-3 text-sm text-ink dark:text-paper placeholder-ink-soft/60 dark:placeholder-mist/75 focus:outline-none transition-colors duration-300 resize-none ${
+                      className={`contact-field w-full bg-transparent border-b py-3 text-sm text-ink dark:text-paper placeholder-ink-soft/80 dark:placeholder-mist/75 focus:outline-none transition-colors duration-300 resize-none ${
                         errors.message
                           ? 'border-rose-500 dark:border-rose-400 focus:border-rose-600 dark:focus:border-rose-400'
                           : 'border-hairline dark:border-white/10 focus:border-sage dark:focus:border-mint'
