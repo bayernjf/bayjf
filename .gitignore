@@ -13,3 +13,7 @@ test-results/
 .playwright-cli/
 .astro/
 .codex/
+
+# Local IDE plugin assets and ad-hoc tooling
+/_gitstatus.*
+taste-skill/
