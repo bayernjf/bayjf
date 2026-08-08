@@ -7,7 +7,6 @@ import { lazy, Suspense, useState, useEffect, useCallback } from 'react';
 import { ScreenType } from './types';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import CustomCursor from './components/CustomCursor';
 import ScrollProgress from './components/ScrollProgress';
 import BackToTop from './components/BackToTop';
 import { AnimatePresence, motion, type Variants } from 'motion/react';
@@ -182,9 +181,6 @@ export default function App({ lang, initialScreen = 'home', agentImages = [], tu
 
       {/* Floating Back to Top Button */}
       <BackToTop currentScreen={currentScreen} />
-
-      {/* Custom Mouse Follower */}
-      <CustomCursor />
 
       {/* Persistent Navigation Header */}
       <Header

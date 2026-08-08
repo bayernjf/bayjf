@@ -7,7 +7,7 @@
   --font-serif: "Newsreader", "Montserrat", Georgia, serif;
 }
 
-/* Scroll reveal and custom smooth interactive cursors */
+/* Smooth anchor navigation */
 html {
   scroll-behavior: smooth;
 }
@@ -48,21 +48,4 @@ body {
   -webkit-box-shadow: 0 0 0 1000px #161716 inset;
   box-shadow: 0 0 0 1000px #161716 inset;
   caret-color: #fbf9f7;
-}
-
-.custom-cursor {
-  display: none;
-  contain: strict;
-  opacity: 0;
-  transition: opacity 100ms;
-}
-
-.custom-cursor.is-visible {
-  opacity: 1;
-}
-
-@media (pointer: fine) and (min-width: 768px) {
-  .custom-cursor {
-    display: block;
-  }
 }

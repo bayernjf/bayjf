@@ -72,29 +72,6 @@ test('persists a selected light theme after reload', async ({ page }) => {
   await expect.poll(() => page.evaluate(() => localStorage.getItem('bayjf_theme'))).toBe('light');
 });
 
-test('keeps a native cursor until the custom cursor is ready', async ({ page }) => {
-  const html = page.locator('html');
-  const hasFinePointer = await page.evaluate(() =>
-    window.matchMedia('(pointer: fine) and (min-width: 768px)').matches,
-  );
-
-  await page.evaluate(() => document.documentElement.classList.remove('custom-cursor-active'));
-  await expect(html).not.toHaveClass(/custom-cursor-active/);
-  await expect(html).not.toHaveCSS('cursor', 'none');
-  await expect(page.locator('#custom-cursor')).toHaveCSS('opacity', '0');
-
-  await page.mouse.move(120, 80);
-
-  if (hasFinePointer) {
-    await expect(html).toHaveClass(/custom-cursor-active/);
-    await expect(html).not.toHaveCSS('cursor', 'none');
-    await expect(page.locator('#custom-cursor')).toHaveCSS('opacity', '1');
-  } else {
-    await expect(html).not.toHaveClass(/custom-cursor-active/);
-    await expect(html).not.toHaveCSS('cursor', 'none');
-  }
-});
-
 test('sends contact API requests through the same-origin path', async ({ page }) => {
   let interceptedUrl = '';
   await page.route('**/api/contact', async (route) => {
