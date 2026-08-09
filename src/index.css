@@ -3,30 +3,30 @@
 @variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: "Inter", "Work Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Newsreader", "Montserrat", Georgia, serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-  /* 暖单色编辑风语义色板：浅色 */
-  --color-paper: #fbf9f7; /* 页面背景 */
-  --color-paper-raised: #f5f3f1; /* 卡片与区块 */
-  --color-paper-muted: #eae8e5; /* 占位 shimmer */
-  --color-ink: #1b1c1b; /* 主文字 */
-  --color-ink-soft: #444748; /* 次级文字 */
-  --color-ink-faint: #6e7f77; /* 三级文字（大字装饰） */
-  --color-hairline: #e4e2e0; /* 边框与分隔线 */
-  --color-sage: #54615b; /* accent */
+  /* 苹果风语义色板：浅色 */
+  --color-paper: #ffffff; /* 页面背景 */
+  --color-paper-raised: #f5f5f7; /* 卡片与区块 */
+  --color-paper-muted: #e8e8ed; /* 占位 shimmer */
+  --color-ink: #1d1d1f; /* 主文字 */
+  --color-ink-soft: #86868b; /* 次级文字 */
+  --color-ink-faint: #aeaeb2; /* 三级文字 */
+  --color-hairline: #d2d2d7; /* 边框与分隔线 */
+  --color-sage: #54615b; /* 保留品牌 sage accent */
 
-  /* 暖单色编辑风语义色板：暗色 */
-  --color-night: #121212; /* 页面背景 */
-  --color-night-raised: #161716; /* 卡片与区块 */
-  --color-night-hover: #1a1b1a; /* hover 与边框 */
-  --color-night-soft: #1a1c1a; /* toast 背景 */
-  --color-night-panel: #151615; /* modal 面板 */
-  --color-night-overlay: #121312; /* modal 遮罩 */
-  --color-night-muted: #242524; /* 占位 shimmer */
-  --color-mist: #c4c7c7; /* 次级文字 */
-  --color-mint: #bbcac2; /* accent */
-  --color-mint-faint: #a7bdb5; /* 三级文字（大字装饰） */
+  /* 苹果风语义色板：暗色 */
+  --color-night: #000000; /* 页面背景 */
+  --color-night-raised: #1c1c1e; /* 卡片与区块 */
+  --color-night-hover: #2c2c2e; /* hover 与边框 */
+  --color-night-soft: #2c2c2e; /* toast 背景 */
+  --color-night-panel: #1c1c1e; /* modal 面板 */
+  --color-night-overlay: #1c1c1e; /* modal 遮罩 */
+  --color-night-muted: #3a3a3c; /* 占位 shimmer */
+  --color-mist: #98989f; /* 次级文字 */
+  --color-mint: #8fae9d; /* accent */
+  --color-mint-faint: #6b8f7a; /* 三级文字 */
 }
 
 /* Smooth anchor navigation */

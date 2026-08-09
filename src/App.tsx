@@ -170,24 +170,21 @@ export default function App({ lang, initialScreen = 'home', agentImages = [], tu
   const pageVariants: Variants = {
     initial: (direction: 'none' | 'push') => ({
       opacity: 0,
-      x: direction === 'push' ? '100%' : 0,
-      filter: direction === 'push' ? 'blur(4px)' : 'none',
+      x: direction === 'push' ? 24 : 0,
     }),
     animate: {
       opacity: 1,
       x: 0,
-      filter: 'none',
       transition: {
-        duration: transitionDirection === 'push' ? 0.6 : 0.25,
+        duration: transitionDirection === 'push' ? 0.5 : 0.3,
         ease: [0.22, 1, 0.36, 1] as const,
       },
     },
     exit: (direction: 'none' | 'push') => ({
       opacity: 0,
-      x: direction === 'push' ? '-100%' : 0,
-      filter: direction === 'push' ? 'blur(4px)' : 'none',
+      x: direction === 'push' ? -24 : 0,
       transition: {
-        duration: direction === 'push' ? 0.5 : 0.2,
+        duration: direction === 'push' ? 0.4 : 0.2,
         ease: [0.22, 1, 0.36, 1] as const,
       },
     }),

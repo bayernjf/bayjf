@@ -47,9 +47,7 @@ const xDefaultUrl = `${siteUrl}${xDefaultPath}`;
 const ogImage = `${siteUrl}/og.svg`;
 const ogLocale = lang === 'en' ? 'en_US' : 'zh_CN';
 const ogLocaleAlternate = lang === 'en' ? 'zh_CN' : 'en_US';
-// 字体以非阻塞方式加载：CDN 不可达/缓慢时不阻塞首屏与 load 事件。
-const fontHref =
-  'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,300..800;1,6..72,300..800&family=Work+Sans:wght@300;400;500;600;700&display=swap';
+// 字体：使用系统字体栈（SF Pro / PingFang / Segoe UI），无需外部字体加载。
 
 // Schema.org JSON-LD：Person / WebSite / Breadcrumb
 const personJsonLd = buildPersonSchema(lang);
@@ -120,13 +118,7 @@ const faqJsonLd =
       />
     )}
 
-    <!-- 字体：非阻塞加载（media=print + onload 切换），避免字体 CDN 不可达时阻塞 load 事件 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href={fontHref} media="print" onload="this.media='all'" />
-    <noscript>
-      <link rel="stylesheet" href={fontHref} />
-    </noscript>
+    <!-- 字体：系统字体栈，无需外部字体加载 -->
 
     <!-- 暗色主题防闪：首屏前同步写入 .dark；默认跟随系统 prefers-color-scheme，
          显式 light/dark 选择优先于系统偏好，避免 MPA 每页闪白 -->
