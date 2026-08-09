@@ -8,6 +8,7 @@ import { Sun, Moon, Monitor, Menu, X, Search } from 'lucide-react';
 import { useState, MouseEvent } from 'react';
 import { useLanguage, type Language } from '../context/LanguageContext';
 import { swapLocale } from '../i18n/routing';
+import LogoMark from './LogoMark';
 
 interface HeaderProps {
   currentScreen: ScreenType;
@@ -46,10 +47,11 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
         {/* Logo containing "BayJF" text */}
         <a
           id="nav-logo"
-          className="font-sans text-xl font-semibold text-ink dark:text-paper hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 tracking-tight"
+          className="flex items-center gap-2.5 font-sans text-xl font-semibold text-ink dark:text-paper hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 tracking-tight"
           href={lang === 'zh' ? '/zh' : '/'}
           onClick={handleLogoClick}
         >
+          <LogoMark size={26} />
           BayJF
         </a>
 

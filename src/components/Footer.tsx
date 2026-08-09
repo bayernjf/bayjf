@@ -5,6 +5,7 @@
 
 import { useLanguage } from '../context/LanguageContext';
 import { Mail } from 'lucide-react';
+import LogoMark from './LogoMark';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -15,9 +16,12 @@ export default function Footer() {
     <footer className="w-full py-10 bg-paper-raised dark:bg-night-hover border-t border-hairline/30 dark:border-white/5 transition-colors duration-500">
       <div className="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto px-6 md:px-16">
         <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6 mb-4 md:mb-0">
-          <p className="font-sans text-xs tracking-wider text-ink-soft dark:text-mist">
-            {t('footer.copyright', { year: currentYear.toString() })}
-          </p>
+          <div className="flex items-center gap-2">
+            <LogoMark size={18} />
+            <p className="font-sans text-xs tracking-wider text-ink-soft dark:text-mist">
+              {t('footer.copyright', { year: currentYear.toString() })}
+            </p>
+          </div>
           <nav className="flex items-center gap-4">
             <a
               href={`${base}/privacy`}
