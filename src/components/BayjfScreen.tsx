@@ -728,41 +728,6 @@ export default function BayjfScreen() {
                   <p className="font-sans text-sm text-ink-soft dark:text-mist mb-6 line-clamp-3 leading-relaxed flex-grow">
                     {project.description}
                   </p>
-
-                  {/* Sub-tags list */}
-                  <div className="flex flex-wrap gap-1.5 mb-6">
-                    {project.tags.slice(0, 3).map((tag) => (
-                      <span
-                        key={tag}
-                        className="font-sans text-[12px] bg-paper dark:bg-night text-ink-soft dark:text-mist px-2.5 py-1 rounded-full"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                    {project.tags.length > 3 && (
-                      <span className="font-sans text-[11px] text-ink-soft/50 dark:text-mist/50 self-center pl-1 font-medium">
-                        +{project.tags.length - 3} {t('bayjf.more')}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Action Link */}
-                  <div className="pt-4 border-t border-hairline/20 dark:border-white/5">
-                    <button
-                      id={`view-project-${project.id}`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleSelectProject(project);
-                      }}
-                      className="interactive inline-flex items-center gap-2 text-[13px] font-medium tracking-tight text-ink dark:text-paper hover:text-sage dark:hover:text-mint transition-colors group/link focus:outline-none active:scale-[0.97]"
-                    >
-                      {t('bayjf.viewCaseStudy')}
-                      <ArrowRight
-                        size={14}
-                        className="transform group-hover/link:translate-x-1 transition-transform duration-200"
-                      />
-                    </button>
-                  </div>
                 </div>
               </TiltCard>
               );
