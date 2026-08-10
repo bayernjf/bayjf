@@ -31,9 +31,9 @@ export const PROJECTS_EN: Project[] = [
     title: 'WordBase Ecosystem',
     category: 'LANGUAGE LEARNING PLATFORM',
     description: 'A contextual vocabulary-learning workspace spanning web, desktop, and mobile, paired with WordPicker for browser-based lookup and word collection.',
-    image: 'https://word-base.pages.dev/preview-en.png',
+    image: 'https://word-base-landing.pages.dev/preview-en.png',
     tags: ['Next.js', 'React Native', 'Tauri', 'Hono', 'Supabase'],
-    link: 'https://word-base.pages.dev/',
+    link: 'https://word-base-landing.pages.dev/',
     date: WORD_BASE_RELEASE_DATE
   },
   {
@@ -174,9 +174,9 @@ export const PROJECTS_ZH: Project[] = [
     title: 'WordBase 生态',
     category: '语言学习平台',
     description: '覆盖 Web、桌面端与移动端的语境化词汇学习工作台；搭配 WordPicker 浏览器扩展，完成浏览器查词与单词沉淀。',
-    image: 'https://word-base.pages.dev/preview-zh.png',
+    image: 'https://word-base-landing.pages.dev/preview-zh.png',
     tags: ['Next.js', 'React Native', 'Tauri', 'Hono', 'Supabase'],
-    link: 'https://word-base.pages.dev/',
+    link: 'https://word-base-landing.pages.dev/',
     date: WORD_BASE_RELEASE_DATE
   },
   {
