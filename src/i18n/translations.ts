@@ -136,8 +136,6 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'bayjf.title': '精选项目',
     'bayjf.desc': '这些真实产品展示了我如何将 AI Agent、自动化与产品想法，从工作流梳理推进到全栈交付。',
     'bayjf.filter': '筛选:',
-    'bayjf.viewCaseStudy': '查看案例研究',
-    'bayjf.more': '更多',
     'bayjf.projectDetails': '项目详情',
     'bayjf.overview': '项目概述',
     'bayjf.techUsed': '所用技术',
