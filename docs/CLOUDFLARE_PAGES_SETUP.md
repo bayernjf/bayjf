@@ -14,6 +14,25 @@
    - `CLOUDFLARE_API_TOKEN` — Cloudflare API Token（权限：Pages Edit）
    - `CLOUDFLARE_ACCOUNT_ID` — Cloudflare Account ID
 
+### ⚠️ 关键：GitHub App 仓库授权（API 创建项目必须手动完成）
+
+通过 API 创建 Pages 项目时，`source.type = "github"` 只是在 Cloudflare 侧记录关联的仓库，
+**不会自动建立 GitHub App 的 webhook 授权**。如果不完成下面这步，push 到 main/dev
+**不会自动触发部署**，所有部署记录的 trigger 都是 `ad_hoc`（手动触发）。
+
+**操作步骤（一次性，2 分钟）**：
+
+1. 打开 https://github.com/settings/installations
+2. 找到 **Cloudflare Pages** 应用 → 点击 **Configure**
+3. 在 Repository access 里：
+   - 选 "All repositories"（最简单）
+   - 或选 "Only select repositories"，把所有 landing 仓库加入授权列表
+4. 点击 Save
+
+> 注：通过 Dashboard "Connect to Git" 创建的项目（如 soft-desk-landing）会自动完成
+> 这一步；通过 API 创建的项目必须手动授权。
+> 验证方法：查看部署记录的 `deployment_trigger.type`，应为 `github` 而非 `ad_hoc`。
+
 ## 统一配置参数
 
 所有 13 个项目使用完全相同的配置，仅项目名和 GitHub 仓库名不同：
