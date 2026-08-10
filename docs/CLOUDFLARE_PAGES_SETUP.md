@@ -1,6 +1,6 @@
 # Cloudflare Pages 批量创建指南
 
-更新时间：2026-08-10
+更新时间：2026-08-11
 
 ## 概述
 
@@ -25,7 +25,7 @@
 | Build output directory | `dist` |
 | Production branch | `main` |
 | Preview branches | `dev` 及所有 PR 分支 |
-| Node.js version | `20`（环境变量 `NODE_VERSION`） |
+| Node.js version | `22`（环境变量 `NODE_VERSION`，Astro 7 要求 >=22.12.0） |
 | Playwright 浏览器路径 | `0`（环境变量 `PLAYWRIGHT_BROWSERS_PATH`，安装到 node_modules） |
 
 ### Build command 说明
@@ -41,7 +41,7 @@
 
 | 变量名 | 值 | 作用域 | 说明 |
 |--------|-----|--------|------|
-| `NODE_VERSION` | `20` | Production + Preview | Node.js 运行时版本 |
+| `NODE_VERSION` | `22` | Production + Preview | Node.js 运行时版本（Astro 7 要求 >=22.12.0，不要使用 20） |
 | `PLAYWRIGHT_BROWSERS_PATH` | `0` | Production + Preview | 让 Chromium 安装到 `node_modules` 而非系统目录，避免路径权限问题 |
 
 ## 需要创建的 13 个项目
@@ -112,7 +112,7 @@ Content-Type: application/json
   "deployment_configs": {
     "production": {
       "env_vars": {
-        "NODE_VERSION": { "type": "plain_text", "value": "20" },
+        "NODE_VERSION": { "type": "plain_text", "value": "22" },
         "PLAYWRIGHT_BROWSERS_PATH": { "type": "plain_text", "value": "0" }
       },
       "fail_open": true,
@@ -122,7 +122,7 @@ Content-Type: application/json
     },
     "preview": {
       "env_vars": {
-        "NODE_VERSION": { "type": "plain_text", "value": "20" },
+        "NODE_VERSION": { "type": "plain_text", "value": "22" },
         "PLAYWRIGHT_BROWSERS_PATH": { "type": "plain_text", "value": "0" }
       },
       "fail_open": true,
@@ -153,6 +153,14 @@ Content-Type: application/json
 - 首次构建会较慢（Playwright 下载 Chromium 约 2-4 分钟），后续有缓存约 10-15 秒
 - `main` 分支必须有代码（已推送 shot.mjs + package.json 改动到 dev 分支）
 - 如果 `main` 分支为空或不存在，需要先将 dev 合并到 main
+
+### 常见踩坑
+
+| 症状 | 根因 | 解决 |
+|------|------|------|
+| 站点返回 522 | 项目创建后从未触发首次部署（Cloudflare 不回溯历史代码） | 用 API `POST /pages/projects/{name}/deployments` 手动触发，或推送一次新 commit |
+| 构建失败：`npm ci` 报 lock 文件与 package.json 不同步 | 修改 package.json 加 playwright 依赖后未运行 `npm install` 更新 package-lock.json | 本地 `npm install` 后提交 lock 文件 |
+| 构建失败：`Node.js v20.x is not supported by Astro! Please upgrade Node.js to a supported version: ">=22.12.0"` | `NODE_VERSION=20`，Astro 7 要求 Node >=22.12.0 | 把环境变量 `NODE_VERSION` 改为 `22`（production + preview 都要改） |
 
 ### 分支部署映射
 
