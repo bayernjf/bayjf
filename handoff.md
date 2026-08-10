@@ -33,6 +33,14 @@ BayJF 个人品牌站，是 14 个产品落地页的 hub（中枢）。Astro 7 +
 2. 等待 tab-manager-landing 部署完成，验证 Tab Garden 卡片图片与链接。
 3. （可选）部署后抽查 14 个落地页 → bayjf → 产品页的导航闭环。
 
+## 落地页预览图自动化方案（2026-08-10）
+- bayjf 14 个产品卡片引用各自落地页的 `https://<site>.pages.dev/preview.png`；现状仅
+  soft-desk / tab-manager / word-base 三站有（手动放置），其余 11 站缺失 → 死链。
+- 14 个落地页均为 **Cloudflare Pages 平台自动部署**（push 即发，无部署 Action），故预览图
+  需在**构建命令内**用 Playwright 截图自动产出（方案 A），而非额外 GitHub Action。
+- 完整方案见 `docs/PREVIEW_IMAGE_PIPELINE.md`。bayjf 自身零改动（URL 不变）。
+- 下一步：先在 soft-desk-landing 试点，再全量推广到 14 站。
+
 ## 14 个落地页 taste-skill 设计审计（2026-08-08）
 本工作区作为编排入口，对同级目录 14 个 `-landing` 项目完成反 AI-slop
 设计 Tell 审计与修复（仅样式与文案，不动内容 IA/URL/功能）：
