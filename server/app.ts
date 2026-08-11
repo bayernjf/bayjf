@@ -163,15 +163,6 @@ export function createApp(
       return c.json({ error: 'RATE_LIMITED', message: 'Slow down a moment before toggling again.' }, 429);
     }
 
-    if (action === 'like') {
-      const turnstileToken = typeof body === 'object' && body !== null && 'turnstileToken' in body
-        ? String((body as Record<string, unknown>).turnstileToken ?? '')
-        : '';
-      if (!await verifyTurnstile(turnstileToken, c.env, remoteIp)) {
-        return c.json({ error: 'VERIFICATION_FAILED', message: 'Human verification failed.' }, 403);
-      }
-    }
-
     try {
       await likesRepositoryFactory(c.env).upsert({
         project_id: projectId,
