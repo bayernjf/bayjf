@@ -5,11 +5,13 @@
 
 import { ScreenType } from '../types';
 import { Sun, Moon, Monitor, Menu, X, Search } from 'lucide-react';
-import { useState, MouseEvent } from 'react';
+import { useState, useRef, MouseEvent } from 'react';
+import { motion, useReducedMotion } from 'motion/react';
 import { useLanguage, type Language } from '../context/LanguageContext';
 import { swapLocale } from '../i18n/routing';
 import LogoMark from './LogoMark';
 import NavTab from './NavTab';
+import SocialTreeModal from './SocialTreeModal';
 
 interface HeaderProps {
   currentScreen: ScreenType;
@@ -21,6 +23,9 @@ interface HeaderProps {
 
 export default function Header({ currentScreen, onNavigate, theme, toggleTheme, lang }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [socialOpen, setSocialOpen] = useState(false);
+  const logoButtonRef = useRef<HTMLButtonElement>(null);
+  const reduceMotion = useReducedMotion();
   const { language, t, searchQuery, setSearchQuery } = useLanguage();
 
   // 语言切换走 URL（MPA + URL 语言路由）：在同一屏路径下切换语言前缀。
@@ -28,11 +33,11 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
     window.location.href = swapLocale(window.location.pathname, next);
   };
 
-  // Logo goes to Home screen
+  // Logo opens the social tree modal (home entry is kept via the Home tab and
+  // the modal's "back home" action).
   const handleLogoClick = (e: MouseEvent) => {
     e.preventDefault();
-    onNavigate('home', 'none');
-    setMobileMenuOpen(false);
+    setSocialOpen(true);
   };
 
   const navItems: { label: string; screen: ScreenType; tooltipKey: string }[] = [
@@ -43,18 +48,38 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
   ];
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-paper/70 dark:bg-night/70 backdrop-blur-xl backdrop-saturate-150 transition-colors duration-500">
+    <>
+      <nav className="fixed top-0 w-full z-50 bg-paper/70 dark:bg-night/70 backdrop-blur-xl backdrop-saturate-150 transition-colors duration-500">
       <div className="flex justify-between items-center max-w-7xl mx-auto px-6 md:px-16 py-4 h-20">
-        {/* Logo containing "BayJF" text */}
-        <a
-          id="nav-logo"
-          className="flex items-center gap-2.5 font-sans text-xl font-semibold text-ink dark:text-paper hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 tracking-tight"
-          href={lang === 'zh' ? '/zh' : '/'}
-          onClick={handleLogoClick}
-        >
-          <LogoMark size={26} />
-          BayJF
-        </a>
+        {/* Logo: breathing glow + social tree trigger */}
+        <div className="relative flex items-center">
+          <motion.span
+            aria-hidden="true"
+            className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 ml-3 h-9 w-9 rounded-full bg-sage/40 dark:bg-mint/40 blur-[4px]"
+            animate={
+              reduceMotion
+                ? { opacity: 0.4 }
+                : socialOpen
+                  ? { opacity: 0.15 }
+                  : { opacity: [0.35, 0.75, 0.35], scale: [1, 1.18, 1] }
+            }
+            transition={reduceMotion || socialOpen ? { duration: 0.2 } : { duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+          />
+          <button
+            id="nav-logo"
+            type="button"
+            ref={logoButtonRef}
+            aria-haspopup="dialog"
+            aria-expanded={socialOpen}
+            aria-label={t('nav.tip.social')}
+            title={t('nav.tip.social')}
+            onClick={handleLogoClick}
+            className="relative flex items-center gap-2.5 font-sans text-xl font-semibold text-ink dark:text-paper hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 tracking-tight"
+          >
+            <LogoMark size={26} />
+            BayJF
+          </button>
+        </div>
 
         {/* Desktop Navigation */}
         <div className="relative hidden md:flex items-center space-x-8">
@@ -225,5 +250,14 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
         </div>
       )}
     </nav>
+
+    <SocialTreeModal
+      open={socialOpen}
+      originEl={logoButtonRef.current}
+      onClose={() => setSocialOpen(false)}
+      onHome={() => onNavigate('home', 'none')}
+      logoButtonRef={logoButtonRef}
+    />
+    </>
   );
 }
