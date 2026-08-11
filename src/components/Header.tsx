@@ -90,10 +90,10 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
             <LogoMark size={26} />
             BayJF
 
-            {/* 呼吸箭头（指向左下 logo）+ “关注我”，二者吸附并同步呼吸，整体上移 */}
+            {/* 呼吸箭头（指向左下 logo）+ “关注我”，二者吸附并同步呼吸，整体上移。弹窗打开时暂停，避免遮罩 backdrop-blur 每帧重采样背景动画导致卡顿 */}
             <motion.span
-              animate={reduceMotion ? { opacity: 0.6 } : { opacity: [0.35, 1, 0.35], scale: [0.8, 1.2, 0.8] }}
-              transition={reduceMotion ? { duration: 0.2 } : { duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+              animate={reduceMotion || socialOpen ? { opacity: 0.6 } : { opacity: [0.35, 1, 0.35], scale: [0.8, 1.2, 0.8] }}
+              transition={reduceMotion || socialOpen ? { duration: 0.2 } : { duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
               className="hidden sm:inline-flex items-start gap-0.5 ml-1 -translate-y-2"
             >
               <svg
