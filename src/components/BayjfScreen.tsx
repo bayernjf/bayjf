@@ -13,8 +13,7 @@ import {
   Grid,
   ChevronDown,
   BarChart3,
-  Tag,
-  Clock
+  Tag
 } from 'lucide-react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 import BlurUpImage from './BlurUpImage';
@@ -691,7 +690,7 @@ export default function BayjfScreen() {
                       {getProjectDate(project) && (
                         <span className="font-sans text-[8px] text-ink-soft/50 dark:text-mist/50 font-medium whitespace-nowrap shrink-0">{getProjectDate(project)}</span>
                       )}
-                      <LikeButton projectId={project.id} source="grid" />
+                      <LikeButton projectId={project.id} source="grid" enlarged />
                     </span>
                   </span>
 
@@ -761,14 +760,16 @@ export default function BayjfScreen() {
                     </div>
                     <div className="flex-grow flex flex-col justify-between">
                       <div>
-                        <div className="flex items-center gap-2 mb-1.5">
+                        <div className="flex items-center justify-between gap-2 mb-1.5">
                           <span className="font-sans text-[11px] font-medium bg-sage/10 dark:bg-white/5 text-sage dark:text-mint px-2.5 py-1 rounded-full">
                             {project.category}
                           </span>
-                          <span className="font-sans text-[7px] text-ink-soft/50 dark:text-mist/50 font-medium flex items-center gap-1 whitespace-nowrap shrink-0">
-                            <Clock size={10} /> {getProjectDate(project)}
+                          <span className="flex items-center gap-1">
+                            <span className="font-sans text-[7px] text-ink-soft/50 dark:text-mist/50 font-medium whitespace-nowrap shrink-0">
+                              {getProjectDate(project)}
+                            </span>
+                            <LikeButton projectId={project.id} source="timeline" enlarged />
                           </span>
-                          <LikeButton projectId={project.id} source="timeline" />
                         </div>
                         <h3 className="font-sans text-xl font-semibold text-ink dark:text-paper mb-2 tracking-tight group-hover:text-sage dark:group-hover:text-mint transition-colors duration-200">
                           {project.title}
