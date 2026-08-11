@@ -1,7 +1,8 @@
 # Logo 社交链接树弹窗设计方案
 
-> 状态：**设计完成，待实现**
+> 状态：**已实现（feature/20260719）**
 > 创建：2026-08-07
+> 实现更新：2026-08-11
 > 适用：BayJF 作品集站（feature/20260719）
 
 ## 一、需求
@@ -49,35 +50,43 @@
 - `prefers-reduced-motion` 时关闭动画，保留静态环。
 - 弹窗打开时暂停呼吸（opacity 降到 0.15），焦点交给弹窗。
 
-### 2. Genie 开合（核心）
-模拟 Mac 应用最小化：窗口沿曲线“吸入”图标，伴随缩放形变。
+### 2. 开合动效（核心）：缩小 + 假旋转
+> 实现说明：最初按“macOS Dock genie 锥形拉伸（clip-path 四角向 Logo 收缩）”实现，
+> 经评审改为**纯 transform 的缩小 + 旋转**（即“假旋转”）。理由：clip-path 每帧
+> 触发重绘，在浅色主题下白卡片低透明度时几乎不可见，且形变观感不像“从 Logo 飞出”。
+> 现效果是卡片整体从 Logo 位置缩放、旋转着弹入/弹回 Logo，全程 GPU 合成，更顺滑也更清晰。
 
 **打开动画：**
 - 用 `createPortal` 把弹窗挂到 `body`，坐标基于 viewport。
 - 打开瞬间用 `logoRef.current.getBoundingClientRect()` 取 Logo 实时位置作为原点。
-- `transform-origin` 动态设为 Logo 中心。
-- 从 `{ scale: 0.15, scaleY: 0.3, opacity: 0, y: logoY-centerY, x: logoX-centerX }`
-  到 `{ scale: 1, scaleY: 1, opacity: 1, y: 0, x: 0 }`。
-- 缓动 spring `{ stiffness: 260, damping: 26, mass: 0.9 }`。
-- 中段加 squash：scaleY 0.82 → 回弹 1（overshoot），增强 genie 感。
+- `transform-origin: center`，从 `{ scale: 0.25, rotate: 36°, blur(8px), opacity: 1, x/y 在 Logo 位置 }`
+  飞到 `{ scale: 1, rotate: 0, blur(0), x/y: 0 }`。
+- 缓动 spring `{ stiffness: 260, damping: 12, mass: 0.9 }`：自然过冲 + 回摆，旋转/缩放会
+  冲过 0 再回稳，产生“弹性弹出”的夸张回摆手感。
+- **全程 opacity 1**，第一帧即为不透明小卡片，清晰可见从 Logo 转出来。
 
 **关闭动画（反向）：**
-- 到 `{ scale: 0.12, scaleY: 0.25, opacity: 0, y/x 到 Logo 位置 }`。
-- tween 0.28s easeIn，模拟吸入加速。
-- 列表项反向 stagger 收起（先图标后文字）。
+- 到 `{ scale: 0.15, rotate: 36°, blur(8px), opacity: 1, x/y 回到 Logo 位置 }`。
+- tween 0.32s `easeIn`：加速旋转缩小，像被吸回 Logo（旋转方向随 Logo 方位自适应）。
+- 全程不淡化，直到停在 Logo 处已缩为小卡片再卸载。
 
 **遮罩：**
-- 打开 opacity 0→1（0.2s），关闭 1→0（0.2s）。
-- `backdrop-blur-md` + 半透明 night/paper。
+- 染色层 `bg-night/40 dark:bg-black/50` 立即淡入（0.2s）。
+- 模糊层 `backdrop-blur-md` **延迟 0.4s 才淡入**、关闭时最先淡出（0.12s）：
+  避免全屏 backdrop-filter 在卡片形变期每帧重采样背景动画导致卡顿。
+
+**旋转方向：**
+- 根据 Logo 相对卡片中心方位自适应：`spin = offset.x < 0 ? -1 : 1`，从 Logo 一侧卷出/卷入。
+- 旋转角 `ROLL = 36°`，可改 `damping`（越小回摆越夸张，实现用 12）与 `ROLL` 调手感。
 
 **列表项：**
-- 打开时图标从中心依次弹出，stagger 0.04s（spring）。
-- 关闭时反向快速收起。
+- 打开时图标在卡片落位后（延迟 0.3s）依次弹出，stagger 0.04s。
 
 **性能与降级：**
-- `will-change: transform, opacity`。
-- `useReducedMotion()` 检测：降级为简单 opacity 淡入淡出，无位移/形变。
-- 弹窗打开时 `document.body.style.overflow='hidden'` 锁定滚动，避免 Logo 位置漂移。
+- `will-change: transform, opacity, filter`。
+- `useReducedMotion()` 检测：降级为简单 opacity 淡入淡出，无位移/缩放/旋转/模糊。
+- 弹窗打开时 `document.body.style.overflow='hidden'` 锁定滚动；同时暂停 Header 呼吸箭头
+  等后台无限动画，避免遮罩 backdrop-blur 每帧重采样。
 
 ## 四、技术实现
 
@@ -113,11 +122,15 @@
 ## 五、动效参数
 
 ```text
-呼吸：2.8s ease-in-out infinite, scale 1→1.18, opacity 0.35→0.75
-打开 spring：stiffness 260, damping 26, mass 0.9
-关闭：tween 0.28s easeIn, scale to 0.12
-squash：scaleY 中段 0.82 → 1（overshoot）
-stagger：0.04s
+呼吸（Header）：3s ease-in-out infinite, scale 0.85→1.55, opacity 0.3→1, blur 7px
+                      打开时暂停（opacity 0.15），reduced-motion 静态
+打开 spring：stiffness 260, damping 12, mass 0.9（越小回摆越夸张）
+旋转：ROLL 36°，方向随 Logo 方位自适应（offset.x < 0 → 逆时针）
+关闭：tween 0.32s easeIn, scale → 0.15, rotate → 36°
+模糊：打开 8px→ (0.3s tween 收干)；关闭 0→8px
+列表 stagger：0.04s，延迟 0.3s 后弹出
+全程 opacity 1（不淡化）
+形变：纯 transform（scale + rotate + translate），无 clip-path 锥形拉伸
 ```
 
 ## 六、提交拆分（实现时）
