@@ -5,11 +5,13 @@
 
 import { ScreenType } from '../types';
 import { Sun, Moon, Monitor, Menu, X, Search, Droplets } from 'lucide-react';
-import { useState, MouseEvent } from 'react';
+import { useState, useEffect, useRef, MouseEvent } from 'react';
+import { useMotionValue } from 'motion/react';
 import { useLanguage, type Language } from '../context/LanguageContext';
 import { swapLocale } from '../i18n/routing';
 import LogoMark from './LogoMark';
 import NavTab, { type NavEffectMode } from './NavTab';
+import NavWaterTrail from './NavWaterTrail';
 
 interface HeaderProps {
   currentScreen: ScreenType;
@@ -32,6 +34,28 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
       return 'spring';
     }
   });
+
+  // 共享水珠层：跟踪鼠标在 nav 容器内的水平位置，控制显隐与降级。
+  const navRef = useRef<HTMLDivElement>(null);
+  const pointerX = useMotionValue(0);
+  const [navHovered, setNavHovered] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    if (!mq) return;
+    const update = () => setReducedMotion(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+
+  const handleNavMove = (e: MouseEvent) => {
+    const el = navRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    pointerX.set(e.clientX - rect.left);
+  };
 
   const cycleNavEffect = () => {
     setNavEffect((prev) => {
@@ -84,7 +108,13 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
         </a>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-8">
+        <div
+          ref={navRef}
+          className="relative hidden md:flex items-center space-x-8"
+          onMouseEnter={() => setNavHovered(true)}
+          onMouseLeave={() => setNavHovered(false)}
+          onMouseMove={handleNavMove}
+        >
           {navItems.map((item) => (
             <NavTab
               key={item.screen}
@@ -93,13 +123,20 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
               tooltip={t(item.tooltipKey)}
               href={item.screen === 'home' ? (lang === 'zh' ? '/zh' : '/') : `${lang === 'zh' ? '/zh' : ''}/${item.screen === 'bayjf' ? 'projects' : item.screen}`}
               isActive={currentScreen === item.screen}
-              effectMode={navEffect}
               onClick={(e) => {
                 e.preventDefault();
                 onNavigate(item.screen, 'none');
               }}
             />
           ))}
+
+          {/* 共享水珠流动层：跟随鼠标在整条导航栏范围内流动 */}
+          <NavWaterTrail
+            pointerX={pointerX}
+            visible={navHovered}
+            mode={navEffect}
+            reducedMotion={reducedMotion}
+          />
 
           {/* Search bar inside header */}
           <div className="relative flex items-center">
