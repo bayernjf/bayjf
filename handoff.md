@@ -12,21 +12,25 @@ BayJF 个人品牌站，是 14 个产品落地页的 hub（中枢）。Astro 7 +
 - bayjf 展示全部产品落地页卡片，落地页卡片链接指向各自落地页，落地页再链到真实产品；
 - 落地页之间不直接互链，必须经 bayjf 中转。
 
-## 项目卡喜欢（Like）功能设计（2026-08-07，待实现）
-- 需求：每个项目卡爱心按钮支持喜欢/取消（toggle）；防刷；记录来源；暂不展示
-  喜欢数但表结构和接口预留。
-- 防刷多层叠加：IP+UA+长效匿名 cookie `bayjf_lid` 合成 `visitor_hash`（SHA-256，
-  不存 PII）；Turnstile 仅在 like 时校验；IP 维度限流；DB `UNIQUE(project_id,
-  visitor_hash)` 兜底。
-- 数据：新增 `project_likes` 表（`is_active` 软删除，upsert toggle），RLS 全禁，
-  经 Hono service-role 代理；预留 `project_like_counts` 视图。
-- API：`POST /api/projects/like`（toggle）、`GET /api/projects/likes/mine`
-  （当前访客已喜欢列表）、预留 `GET /api/projects/likes/counts`。
-- 前端：LikeContext 管理 `likedIds`；LikeButton 乐观更新；source 记录
-  grid/timeline/blind_box/blind_box_open/detail_modal/search；盲盒封箱时不显示
-  爱心；`trackEvent('project_like_toggle', ...)` 埋点。
-- 完整方案见 `docs/LIKES_FEATURE_DESIGN.md`。尚未写代码，实现按该文档的原子 commit
-  拆分（db → api → 前端 context/button → 卡片集成 → 测试）。
+## 项目卡喜欢（Like）功能（2026-08-11，已实现并推送）
+- 需求：每个项目卡爱心按钮支持喜欢/取消（toggle）；防刷重点是防同一访客频繁
+  "点赞/取消"连点；记录来源；暂不展示喜欢数，但表结构与接口预留。
+- 防刷（已按 2026-08-11 重新定位，去掉 Turnstile）：按访客 `visitor_hash` 的 1.5s
+  toggle 冷却（拦快速连点）+ DB `UNIQUE(project_id, visitor_hash)` + 长效匿名 cookie
+  `bayjf_lid`（SHA-256，IP+UA+lid 合成，不存 PII）。前端爱心按钮不渲染 Turnstile 组件，
+  故服务端不再对 like 强制校验（否则会一律 403）。联系表单仍保留 Turnstile。
+- 数据：新增 `project_likes` 表（`is_active` 软删除，upsert on_conflict），RLS 全禁，
+  经 Hono service-role 代理；预留 `project_like_counts` 视图（前端暂不调用）。
+- API：`POST /api/projects/like`（toggle，like/unlike）、`GET /api/projects/likes/mine`
+  （当前访客已喜欢列表，挂载时初始化）、预留 `GET /api/projects/likes/counts`。
+- 前端：`LikeContext` 管理 `likedIds`，乐观更新 + 失败回滚 + Toast；`LikeButton`
+  （Heart 图标、aria-pressed、Motion 弹跳、reduced-motion 降级）；source 记录
+  grid/timeline/detail_modal（blind_box 系列因 `BlindBoxCard` 组件尚不存在而暂未接入）。
+  埋点 `trackEvent('project_like_toggle', { project_id, source, action })`（不含 PII）。
+- 完整方案见 `docs/LIKES_FEATURE_DESIGN.md`（已同步记录 Turnstile 撤销决定）。
+- 提交（分支 feature/20260719，已推送）：`d60b6ef` feat(db) / `6c556c9` feat(api) /
+  `6364a70` feat(likes) / `dc38cd0` feat(projects) / `81eb1ed` test /
+  `10b9b54` fix(api) 去 Turnstile / `feca24e` docs(likes) / `94d09c5` docs(deployment)。
 
 ## Logo 社交链接树弹窗设计（2026-08-07，待实现）
 - 需求：左上角 Logo 点击改为呼出社交链接树弹窗（不再直接回首页，首页入口保留在
@@ -43,30 +47,22 @@ BayJF 个人品牌站，是 14 个产品落地页的 hub（中枢）。Astro 7 +
   social_tree_click（只记 target，不含 PII）。
 - 完整方案见 `docs/SOCIAL_TREE_MODAL_DESIGN.md`。尚未写代码。
 
-## 导航水珠动效（2026-08-11，本次新增 + 修复）
-- 架构：水珠动效上移到**共享层**，跨导航标签连续流动，不再在单个标签内计算。
-  - 新增 `src/components/NavWaterTrail.tsx`：导航栏共享的"水珠流动"层，挂在 Header 的
-    桌面 nav 容器上。鼠标 X 由 `Header` 的 `onMouseMove` 以 px 写入共享 `pointerX`
-    `MotionValue`，`NavWaterTrail` 用 `useSpring` 驱动主水珠 + 3 颗刚度/阻尼递减的拖尾水珠，
-    通过 `motion.g` 的 `style.x`（支持 MotionValue）平移，形成滞后液体尾迹。
-    - spring：仅主水珠单颗弹簧光斑，跟手、有惯性滞后。
-    - goo：4 颗水珠重叠，经 Header 已有的 `#nav-goo-filter`（feGaussianBlur +
-      feColorMatrix）粘连成水银/水珠流动感。
-    - `prefers-reduced-motion` 时 `NavWaterTrail` 直接返回 `null` 完全降级。
-  - `NavTab.tsx`：只保留 hover tooltip（Motion AnimatePresence 进出场）+ 标签 + active 态，
-    不再渲染 per-tab 光斑、不再持有 `effectMode`。
-- 修复的严重 bug：旧版 `NavTab` 在条件渲染的 JSX 里调用 `useTransform`（违反 React
-  Rules of Hooks），hover 时直接崩溃（`Rendered more hooks than during the previous render`，
-  默认 spring 模式必崩）。现所有 Hook 都在 `NavWaterTrail` 顶层无条件调用，崩溃消失。
-- `Header.tsx`：`nav` 容器加 `ref` + `onMouseMove`/`onMouseEnter`/`onMouseLeave` 接入共享层，
-  保留 Droplets 切换按钮（Droplets 图标），`localStorage` 键名 `bayjf_nav_effect` 持久化偏好。
-- `translations.ts` 新增 `nav.tip.*` 中英双语 tooltip 文案（Home / Projects / Experience / Contact）。
-- 验证：`astro check` 0 错 0 警告（仅 1 个无关的 `FormEvent` 弃用提示，来自既有文件）；
-  `npm test` 16 passed；`npm run build` 41 页。
+## 导航水珠动效（2026-08-11，已撤销）
+- 本轮曾新增共享 `NavWaterTrail` 水珠流动层（spring/goo 双模式），但后续评审认为该动效
+  增加视觉复杂度而无明确价值，已在 `54e883e` refactor(nav): remove water-trail nav effect
+  中整体移除（同时删除 `NavWaterTrail.tsx`、`navEffect` 状态、`#nav-goo-filter`、Droplets
+  切换按钮与 `bayjf_nav_effect` localStorage）。
+- 当前导航只保留 hover tooltip（`NavTab` 内 Motion 进出场 + 标签 + active 态），无水滴/
+  光斑动效。
+- 历史记录（已删除的实现，供追溯）：水珠层挂在 Header 桌面 nav 容器，`pointerX` MotionValue
+  驱动主水珠 + 3 颗拖尾，goo 模式经 `#nav-goo-filter`（feGaussianBlur + feColorMatrix）粘连；
+  曾修复旧版 `NavTab` 在条件 JSX 内调用 `useTransform` 触发的 Rules of Hooks 崩溃。
 
 ## 已完成（已推送，分支 feature/20260719）
 - `9042452` refactor(bayjf): remove project card hover overlay
 - `019c637` refactor(projects): centralize dates and display order
+- `54e883e` refactor(nav): remove water-trail nav effect（见上方「导航水珠动效」，已撤销）
+- 点赞（Like）功能共 8 个提交 `d60b6ef`…`94d09c5`，见上方「项目卡喜欢」段。
 
 ## 落地页预览图自动化方案（2026-08-10）
 - bayjf 14 个产品卡片引用各自落地页的 `https://<site>.pages.dev/preview.png`；现状仅
