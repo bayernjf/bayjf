@@ -1,6 +1,6 @@
 # Handoff — bayjf
 
-更新时间：2026-08-08
+更新时间：2026-08-11
 
 ## 项目概况
 BayJF 个人品牌站，是 14 个产品落地页的 hub（中枢）。Astro 7 + React 19，
@@ -55,3 +55,18 @@ BayJF 个人品牌站，是 14 个产品落地页的 hub（中枢）。Astro 7 +
 
 状态：改动均在各 landing 项目工作区，尚未提交；各项目 handoff.md
 已追加审计记录。bayjf 自身代码本次未改动，编排用临时脚本已清理。
+
+## 项目卡片展示顺序集中化（2026-08-11）
+- 新增 `src/data/projectOrder.ts`：`PROJECT_ORDER` ID 列表 + `sortProjectsByOrder`
+  工具函数，en/zh 共用一份顺序表。调整卡片顺序只需挪本文件的 id，无需改
+  `LanguageContext.tsx` 的数据数组。
+- `LanguageContext.tsx` 配套改动：原 `PROJECTS_EN/ZH` 改为内部 `RAW_PROJECTS_EN/ZH`，
+  导出时经 `sortProjectsByOrder` 派生同名 `PROJECTS_EN/ZH`，下游引用方零改动。
+- 同期把 14 个项目的 release date 集中到 `PROJECT_DATES` 查找表（替换 28 处字面量），
+  与展示顺序重构同属"项目元数据集中化"主题。
+- DEV 环境 sanity check：`PROJECT_ORDER` 与 `RAW_*` 漂移会在 console 告警
+  （prod 被 Vite 静态消除）。
+- 删除项目卡片 hover 时显示的 Quick Look 磨砂浮层（含 VIEW CASE STUDY 链接）。
+- 验证：`astro check` 0 错 0 警告；`npm test` 16 passed；`npm run build` 41 页。
+- 提交：`9042452` refactor(bayjf): remove project card hover overlay；
+  `019c637` refactor(projects): centralize dates and display order。已推送 origin。
