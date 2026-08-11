@@ -28,6 +28,21 @@ BayJF 个人品牌站，是 14 个产品落地页的 hub（中枢）。Astro 7 +
 - 完整方案见 `docs/LIKES_FEATURE_DESIGN.md`。尚未写代码，实现按该文档的原子 commit
   拆分（db → api → 前端 context/button → 卡片集成 → 测试）。
 
+## Logo 社交链接树弹窗设计（2026-08-07，待实现）
+- 需求：左上角 Logo 点击改为呼出社交链接树弹窗（不再直接回首页，首页入口保留在
+  导航 Home tab 与弹窗内）；Logo 加呼吸光晕吸引点击；弹窗开合用 MacBook genie
+  最小化动效——从 Logo 位置放大出现，关闭时缩小回 Logo。
+- 动效：Logo 2.8s 呼吸光晕（scale/opacity，reduced-motion 降级）；弹窗用
+  createPortal + getBoundingClientRect 以 Logo 为 transform-origin，spring 打开
+  （stiffness 260/damping 26）+ 中段 scaleY squash overshoot；关闭 0.28s easeIn
+  吸入；列表 stagger 0.04s；打开时锁 body 滚动。
+- 内容：GitHub（github.com/bayernjf）、Email（b4yernjf@gmail.com）、复制邮箱、
+  返回首页，其他社交待补；外部链接 noopener；中英双语。
+- 可访问性：dialog/aria-modal、Esc 关闭、焦点陷阱与关闭后焦点返回 Logo、
+  aria-haspopup/aria-expanded；呼吸光晕 aria-hidden。埋点 social_tree_open /
+  social_tree_click（只记 target，不含 PII）。
+- 完整方案见 `docs/SOCIAL_TREE_MODAL_DESIGN.md`。尚未写代码。
+
 ## 导航水珠动效（2026-08-11，本次新增 + 修复）
 - 架构：水珠动效上移到**共享层**，跨导航标签连续流动，不再在单个标签内计算。
   - 新增 `src/components/NavWaterTrail.tsx`：导航栏共享的"水珠流动"层，挂在 Header 的

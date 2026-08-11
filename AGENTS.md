@@ -314,6 +314,7 @@ CLOUDFLARE_ACCOUNT_ID
 | `.github/workflows/` | CI 和双平台部署流程 |
 | `PULL_REQUEST_WORKFLOW.md` | 两阶段 PR、Actions 门禁、修复和分支回同步流程 |
 | `docs/LIKES_FEATURE_DESIGN.md` | 项目卡喜欢（like）功能设计：防刷、数据模型、API、前端 |
+| `docs/SOCIAL_TREE_MODAL_DESIGN.md` | Logo 社交链接树弹窗设计：呼吸光晕、genie 开合动效、可访问性 |
 
 ## 不要做的事
 
