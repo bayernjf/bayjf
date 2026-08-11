@@ -12,26 +12,20 @@ BayJF 个人品牌站，是 14 个产品落地页的 hub（中枢）。Astro 7 +
 - bayjf 展示全部产品落地页卡片，落地页卡片链接指向各自落地页，落地页再链到真实产品；
 - 落地页之间不直接互链，必须经 bayjf 中转。
 
-## 已完成（本地未推送，分支 feature/20260719，共 7 个提交）
-- `a945774` fix(deps): pin motion to an exact version
-- `f70ee46` chore(types): annotate Hono and event handler types
-- `db6ee57` refactor(chart): replace recharts Cell with bar shape
-- `6d76bf8` feat(legal): add privacy, terms and 404 pages
-- `90145ac` refactor(footer): add legal links and refresh icons
-- `a37aa85` feat(seo): switch canonical domain to bayjf.com
-- `d05862d` feat(projects): link Tab Garden to landing page（Tab Garden 卡片改为
-  https://tab-manager-landing.pages.dev/ 及其 preview.png；该落地页尚未部署）
+## 导航水珠动效（2026-08-11，本次新增）
+- 新增 `src/components/NavTab.tsx`：导航标签组件，spring / goo 双模式水珠跟随动效。
+  - spring：Motion `useSpring` 物理弹簧光斑，随鼠标水平移动，有惯性滞后。
+  - goo：SVG `feGaussianBlur` + `feColorMatrix` 滤镜，多圆点粘连如水银。
+  - 两种模式共用 hover tooltip（Motion AnimatePresence，进出场动画）。
+  - `prefers-reduced-motion` 时降级为纯 CSS hover 颜色变化。
+- `Header.tsx` 引入 NavTab + 水滴切换按钮（Droplets 图标），`localStorage` 键名
+  `bayjf_nav_effect` 持久化用户偏好。
+- `translations.ts` 新增 `nav.tip.*` 中英双语 tooltip 文案（Home / Projects / Experience / Contact）。
+- 验证：`astro check` 0 错 0 警告；`npm test` 16 passed；`npm run build` 41 页。
 
-## 注意点
-- 提交前必须通过 `npm run lint && npm test && npm run build`（最近一次已全部通过，41 页 + _worker.js）。
-- Tab Garden 卡片指向的 tab-manager-landing.pages.dev 目前 404（落地页未部署），部署前点击会 404。
-- 遵守 AGENTS.md：英文 Conventional Commits、只用 npm、推送前 `git pull --rebase`、
-  未经用户授权不建 PR / 不合并、向用户用中文汇报。
-
-## 下一步
-1. `git pull --rebase` 后 `git push`（分支 feature/20260719，勿动 main）。
-2. 等待 tab-manager-landing 部署完成，验证 Tab Garden 卡片图片与链接。
-3. （可选）部署后抽查 14 个落地页 → bayjf → 产品页的导航闭环。
+## 已完成（已推送，分支 feature/20260719）
+- `9042452` refactor(bayjf): remove project card hover overlay
+- `019c637` refactor(projects): centralize dates and display order
 
 ## 落地页预览图自动化方案（2026-08-10）
 - bayjf 14 个产品卡片引用各自落地页的 `https://<site>.pages.dev/preview.png`；现状仅
