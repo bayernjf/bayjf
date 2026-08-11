@@ -238,7 +238,7 @@ export default function SocialTreeModal({
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="absolute top-4 right-4 p-1.5 rounded-full text-ink-soft dark:text-mist hover:text-ink dark:hover:text-paper hover:bg-paper-raised dark:hover:bg-night-raised transition-colors"
+              className="absolute top-4 right-4 p-1.5 rounded-full text-ink-soft dark:text-mist hover:text-ink dark:hover:text-paper hover:bg-paper-raised dark:hover:bg-night-raised transition-colors cursor-pointer"
             >
               <X size={18} />
             </button>
@@ -271,7 +271,7 @@ export default function SocialTreeModal({
                     target={item.external ? '_blank' : undefined}
                     rel={item.external ? 'noopener noreferrer' : undefined}
                     onClick={item.onClick ?? handleClick(item.target)}
-                    className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-ink dark:text-paper hover:bg-paper-raised dark:hover:bg-night-raised transition-colors group"
+                    className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-ink dark:text-paper hover:bg-paper-raised dark:hover:bg-night-raised transition-colors group cursor-pointer"
                   >
                     <span className="text-sage dark:text-mint group-hover:scale-110 transition-transform duration-200">
                       {item.icon}
