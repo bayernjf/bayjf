@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useEffect, useRef, useState, MouseEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, MouseEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { Github, Mail, Copy, Home, Check, X } from 'lucide-react';
@@ -28,6 +28,53 @@ interface SocialTreeModalProps {
 const EMAIL = 'b4yernjf@gmail.com';
 const GITHUB = 'https://github.com/bayernjf';
 
+// --- Genie open/close: shrink + fake rotation --------------------------------
+// The card scales and spins out of the logo (and back into it on close).
+// Transform-only, so everything stays on the compositor; a short motion-blur
+// tween sells the speed. Open uses a spring for a natural overshoot, close a
+// tween with easeIn for the accelerating "sucked in" feel.
+
+function buildGenieFrames(offset: { x: number; y: number }) {
+  const spin = offset.x < 0 ? -1 : 1;
+  const ROLL = 36;
+
+  return {
+    initial: {
+      // Fully opaque from the first frame: the card must be clearly visible
+      // flying out of (and back into) the logo — no fading.
+      opacity: 1,
+      x: offset.x,
+      y: offset.y,
+      scale: 0.25,
+      rotate: ROLL * spin,
+      filter: 'blur(8px)',
+    },
+    animate: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      scale: 1,
+      rotate: 0,
+      filter: 'blur(0px)',
+      transition: {
+        type: 'spring' as const,
+        stiffness: 260,
+        damping: 12,
+        mass: 0.9,
+        filter: { type: 'tween' as const, duration: 0.3, ease: 'easeOut' as const },
+      },
+    },
+    exit: {
+      x: offset.x,
+      y: offset.y,
+      scale: 0.15,
+      rotate: ROLL * spin,
+      filter: 'blur(8px)',
+      transition: { type: 'tween' as const, duration: 0.32, ease: 'easeIn' as const },
+    },
+  };
+}
+
 export default function SocialTreeModal({
   open,
   originEl,
@@ -47,9 +94,8 @@ export default function SocialTreeModal({
   // server where `document`/`window` are undefined). Skip rendering until mounted.
   useEffect(() => setMounted(true), []);
 
-  // Compute the delta between the logo origin and the viewport centre so the
-  // card appears to grow out of the logo (a pragmatic genie approximation:
-  // scale + translate from the logo rect, not a true path-morph suck-in).
+  // Compute the delta between the logo origin and the viewport centre (the
+  // card is flex-centred, so its centre matches the viewport centre).
   const getOriginOffset = () => {
     if (typeof window === 'undefined' || !originEl) return { x: 0, y: 0 };
     const r = originEl.getBoundingClientRect();
@@ -57,6 +103,13 @@ export default function SocialTreeModal({
     const cy = window.innerHeight / 2;
     return { x: r.left + r.width / 2 - cx, y: r.top + r.height / 2 - cy };
   };
+
+  // Genie targets, recomputed only when the modal toggles or the logo moves.
+  const genie = useMemo(() => {
+    if (reduce || typeof window === 'undefined') return null;
+    return buildGenieFrames(getOriginOffset());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, reduce, originEl]);
 
   // Focus management + scroll lock while open.
   useEffect(() => {
@@ -142,8 +195,6 @@ export default function SocialTreeModal({
     }
   };
 
-  const offset = getOriginOffset();
-
   const items = [
     {
       target: 'github',
@@ -186,59 +237,49 @@ export default function SocialTreeModal({
   return createPortal(
     <AnimatePresence>
       {open && (
-        <motion.div
+        <div
           className="fixed inset-0 z-[200] flex items-center justify-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
           onClick={onClose}
-          aria-hidden={false}
         >
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-night/40 dark:bg-black/50 backdrop-blur-md" />
+          {/* Overlay — split into a cheap tint layer and a backdrop-blur layer.
+              Fullscreen backdrop-filter resamples the page every frame, which
+              janks the genie warp while the card is still moving, so the blur
+              only fades in after the card has settled (and leaves first). */}
+          <motion.div
+            className="absolute inset-0 bg-night/40 dark:bg-black/50"
+            aria-hidden="true"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { duration: 0.2 } }}
+            exit={{ opacity: 0, transition: { duration: 0.35, delay: 0.1 } }}
+          />
+          <motion.div
+            className="absolute inset-0 backdrop-blur-md"
+            aria-hidden="true"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { duration: 0.3, delay: 0.4 } }}
+            exit={{ opacity: 0, transition: { duration: 0.12 } }}
+          />
 
-          {/* Card — genie grow from the logo origin */}
+          {/* Card — scales + spins out of / back into the logo */}
           <motion.div
             ref={dialogRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby="social-tree-title"
-            className="relative z-10 w-[min(90vw,360px)] rounded-[24px] bg-paper dark:bg-night border border-hairline/20 dark:border-white/10 shadow-2xl p-6"
-            style={{ transformOrigin: 'center' }}
-            initial={
-              reduce
-                ? { opacity: 0 }
-                : { opacity: 0, scale: 0.15, scaleY: 0.3, x: offset.x, y: offset.y }
-            }
+            className="relative z-10 w-[min(90vw,360px)] rounded-[24px] bg-paper dark:bg-night-panel border border-hairline/60 dark:border-white/10 shadow-2xl p-6"
+            style={{ transformOrigin: 'center', willChange: 'transform, opacity, filter' }}
+            initial={genie ? genie.initial : { opacity: 0 }}
             animate={
-              reduce
-                ? { opacity: 1 }
-                : {
-                    opacity: 1,
-                    scale: [0.15, 1, 1],
-                    scaleY: [0.3, 0.82, 1],
-                    x: [offset.x, 0, 0],
-                    y: [offset.y, 0, 0],
-                  }
+              genie ? genie.animate : { opacity: 1, transition: { duration: 0.2 } }
             }
-            exit={
-              reduce
-                ? { opacity: 0 }
-                : { opacity: 0, scale: 0.12, scaleY: 0.25, x: offset.x, y: offset.y }
-            }
-            transition={{
-              duration: reduce ? 0.2 : 0.42,
-              ease: [0.22, 1, 0.36, 1],
-              times: reduce ? undefined : [0, 0.6, 1],
-            }}
+            exit={genie ? genie.exit : { opacity: 0, transition: { duration: 0.2 } }}
             onClick={(e) => e.stopPropagation()}
           >
             <button
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="absolute top-4 right-4 p-1.5 rounded-full text-ink-soft dark:text-mist hover:text-ink dark:hover:text-paper hover:bg-paper-raised dark:hover:bg-night-raised transition-colors cursor-pointer"
+              className="absolute top-4 right-4 p-1.5 rounded-full text-ink-soft dark:text-mist hover:text-ink dark:hover:text-paper hover:bg-paper-raised dark:hover:bg-night-hover transition-colors cursor-pointer"
             >
               <X size={18} />
             </button>
@@ -261,7 +302,7 @@ export default function SocialTreeModal({
                   key={item.target}
                   initial={reduce ? false : { opacity: 0, y: 8 }}
                   animate={reduce ? {} : { opacity: 1, y: 0 }}
-                  transition={{ delay: 0.06 + i * 0.04, duration: 0.25 }}
+                  transition={{ delay: 0.3 + i * 0.04, duration: 0.25 }}
                 >
                   <a
                     {...(item.target === 'github'
@@ -271,7 +312,7 @@ export default function SocialTreeModal({
                     target={item.external ? '_blank' : undefined}
                     rel={item.external ? 'noopener noreferrer' : undefined}
                     onClick={item.onClick ?? handleClick(item.target)}
-                    className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-ink dark:text-paper hover:bg-paper-raised dark:hover:bg-night-raised transition-colors group cursor-pointer"
+                    className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-ink dark:text-paper hover:bg-paper-raised dark:hover:bg-night-hover transition-colors group cursor-pointer"
                   >
                     <span className="text-sage dark:text-mint group-hover:scale-110 transition-transform duration-200">
                       {item.icon}
@@ -282,7 +323,7 @@ export default function SocialTreeModal({
               ))}
             </ul>
           </motion.div>
-        </motion.div>
+        </div>
       )}
     </AnimatePresence>,
     document.body
