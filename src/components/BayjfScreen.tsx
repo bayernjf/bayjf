@@ -19,6 +19,7 @@ import {
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 import BlurUpImage from './BlurUpImage';
 import TiltCard from './TiltCard';
+import LikeButton from './LikeButton';
 import { useLanguage, Language } from '../context/LanguageContext';
 import { Project } from '../types';
 import ProjectDetailModal from './ProjectDetailModal';
@@ -686,9 +687,12 @@ export default function BayjfScreen() {
                   {/* Category tag */}
                   <span className="font-sans text-[11px] font-medium tracking-wider text-sage dark:text-mint mb-2 uppercase flex items-center justify-between">
                     <span>{project.category}</span>
-                    {getProjectDate(project) && (
-                      <span className="font-sans text-[8px] text-ink-soft/50 dark:text-mist/50 font-medium whitespace-nowrap shrink-0">{getProjectDate(project)}</span>
-                    )}
+                    <span className="flex items-center gap-1">
+                      {getProjectDate(project) && (
+                        <span className="font-sans text-[8px] text-ink-soft/50 dark:text-mist/50 font-medium whitespace-nowrap shrink-0">{getProjectDate(project)}</span>
+                      )}
+                      <LikeButton projectId={project.id} source="grid" />
+                    </span>
                   </span>
 
                   {/* Project Title */}
@@ -764,6 +768,7 @@ export default function BayjfScreen() {
                           <span className="font-sans text-[7px] text-ink-soft/50 dark:text-mist/50 font-medium flex items-center gap-1 whitespace-nowrap shrink-0">
                             <Clock size={10} /> {getProjectDate(project)}
                           </span>
+                          <LikeButton projectId={project.id} source="timeline" />
                         </div>
                         <h3 className="font-sans text-xl font-semibold text-ink dark:text-paper mb-2 tracking-tight group-hover:text-sage dark:group-hover:text-mint transition-colors duration-200">
                           {project.title}

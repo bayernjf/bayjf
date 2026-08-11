@@ -11,6 +11,7 @@ import ScrollProgress from './components/ScrollProgress';
 import BackToTop from './components/BackToTop';
 import { AnimatePresence, motion, type Variants } from 'motion/react';
 import { useLanguage, type Language } from './context/LanguageContext';
+import { LikeProvider } from './context/LikeContext';
 import { playThemeToggleSound } from './utils/sound';
 import { trackPageView } from './utils/analytics';
 import type { AgentImage } from './components/SiteIsland';
@@ -191,7 +192,8 @@ export default function App({ lang, initialScreen = 'home', agentImages = [], tu
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-500 bg-paper text-ink dark:bg-night dark:text-paper selection:bg-sage/20 dark:selection:bg-mint/25`}>
+    <LikeProvider>
+      <div className={`min-h-screen transition-colors duration-500 bg-paper text-ink dark:bg-night dark:text-paper selection:bg-sage/20 dark:selection:bg-mint/25`}>
       {/* Subtle Scroll Progress Bar */}
       <ScrollProgress currentScreen={currentScreen} />
 
@@ -234,6 +236,7 @@ export default function App({ lang, initialScreen = 'home', agentImages = [], tu
 
       {/* Persistent Footer */}
       <Footer />
-    </div>
+      </div>
+    </LikeProvider>
   );
 }

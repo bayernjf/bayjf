@@ -7,6 +7,7 @@ import { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { X, ExternalLink, ShieldCheck, Target, Lightbulb, Link } from 'lucide-react';
 import BlurUpImage from './BlurUpImage';
+import LikeButton from './LikeButton';
 import { useLanguage, Language } from '../context/LanguageContext';
 import { useToast } from '../context/ToastContext';
 import { Project } from '../types';
@@ -254,14 +255,21 @@ export default function ProjectDetailModal({ project, onClose }: ProjectDetailMo
                     <ExternalLink size={13} />
                   </a>
                 )}
-                <button
-                  id={`modal-share-link-${project.id}`}
-                  onClick={handleCopyShareLink}
-                  className="interactive flex items-center justify-center gap-2 py-2.5 px-4 w-full rounded-xl bg-hairline/40 hover:bg-hairline/85 dark:bg-white/5 dark:hover:bg-white/10 text-ink dark:text-paper font-sans text-xs font-bold tracking-wider transition-all duration-300 border border-hairline/55 dark:border-white/5 shadow-sm"
-                >
-                  <span>{language === 'en' ? 'Copy Share Link' : '复制分享链接'}</span>
-                  <Link size={13} />
-                </button>
+                <div className="flex items-stretch gap-2">
+                  <button
+                    id={`modal-share-link-${project.id}`}
+                    onClick={handleCopyShareLink}
+                    className="interactive flex items-center justify-center gap-2 py-2.5 px-4 flex-1 rounded-xl bg-hairline/40 hover:bg-hairline/85 dark:bg-white/5 dark:hover:bg-white/10 text-ink dark:text-paper font-sans text-xs font-bold tracking-wider transition-all duration-300 border border-hairline/55 dark:border-white/5 shadow-sm"
+                  >
+                    <span>{language === 'en' ? 'Copy Share Link' : '复制分享链接'}</span>
+                    <Link size={13} />
+                  </button>
+                  <LikeButton
+                    projectId={project.id}
+                    source="detail_modal"
+                    className="shrink-0 border border-hairline/55 dark:border-white/5 bg-hairline/40 dark:bg-white/5 hover:bg-hairline/85 dark:hover:bg-white/10"
+                  />
+                </div>
               </div>
             </div>
 
