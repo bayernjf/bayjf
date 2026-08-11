@@ -21,10 +21,11 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'nav.soundOn': 'Mute toggle sound',
     'nav.soundOff': 'Unmute toggle sound',
     'nav.tip.home': 'Back to home',
-    'nav.tip.bayjf': 'View project cases',
+    'nav.tip.bayjf': 'See what you like',
     'nav.tip.experience': 'Career experience',
     'nav.tip.contact': 'Get in touch',
     'nav.tip.social': 'Open social links',
+    'nav.follow': 'Follow me',
 
     // Likes
     'like.liked': 'Liked',
@@ -133,10 +134,11 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'nav.soundOn': '静音开关提示音',
     'nav.soundOff': '开启开关提示音',
     'nav.tip.home': '返回首页',
-    'nav.tip.bayjf': '查看项目案例',
+    'nav.tip.bayjf': '来点喜欢的',
     'nav.tip.experience': '职业履历',
     'nav.tip.contact': '联系我',
     'nav.tip.social': '打开社交链接',
+    'nav.follow': '关注我',
 
     // 喜欢
     'like.liked': '已喜欢',
