@@ -17,7 +17,7 @@
 
 1. **身份指纹（不存 PII，只存哈希）**
    组合 `CF-Connecting-IP` + `User-Agent` + 长效匿名 cookie（`bayjf_lid`，UUID，365 天）做 SHA-256，得 `visitor_hash`。与现有 contact 表的 `ip_hash` 模式一致，只存哈希不存明文。
-2. **Turnstile 人机验证**：复用现有 Cloudflare Turnstile。首次喜欢要求 token；取消喜欢不要求；已验证会话 5 分钟内短期放行。
+2. **Turnstile 人机验证**：~~复用现有 Cloudflare Turnstile，首次喜欢要求 token~~。**已撤销**：2026-08-11 实现时决定点赞不再要求 Turnstile（前端爱心按钮无验证组件，强制校验会导致所有 like 一律 403）。点赞防刷改由「按访客 1.5s toggle 冷却 + `UNIQUE(project_id, visitor_hash)` + `bayjf_lid` cookie 指纹」三层兜底，契合「防频繁点赞/取消」的重新定位。联系表单仍保留 Turnstile。
 3. **服务端限流**：单 IP 每分钟最多 10 次喜欢；每小时最多对 30 个不同项目喜欢。先用内存 LRU，后续可迁 Cloudflare KV。
 4. **数据库唯一约束兜底**：`UNIQUE(project_id, visitor_hash)`，一人一项目仅一条记录。
 5. **审计字段**：`created_at`、`updated_at`、`source`、`user_agent`、`ip_hash`，便于识别异常。
@@ -78,7 +78,7 @@ group by project_id;
 
 逻辑：
 1. 校验 `projectId`（必须是已知项目）、`source`、`action`（`like`/`unlike`）。
-2. `like` 校验 Turnstile；`unlike` 跳过。
+2. 按访客 `visitor_hash` 的 1.5s toggle 冷却（拦掉快速连点）；`like`/`unlike` 同等适用。
 3. 合成 `visitor_hash`（IP + UA + `bayjf_lid` cookie）。
 4. IP 限流检查。
 5. upsert（like → `is_active=true`；unlike → `is_active=false`）。
