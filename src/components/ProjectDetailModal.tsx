@@ -57,22 +57,50 @@ export default function ProjectDetailModal({ project, onClose }: ProjectDetailMo
   const { showToast } = useToast();
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const handleCopyShareLink = () => {
+  const handleCopyShareLink = async () => {
     if (!project) return;
     const shareUrl = `${window.location.origin}${window.location.pathname}#project-${project.id}`;
-    navigator.clipboard.writeText(shareUrl)
-      .then(() => {
-        showToast(
-          language === 'en' ? 'Project link copied to clipboard!' : '项目链接已复制到剪贴板！',
-          'success'
-        );
-      })
-      .catch(() => {
-        showToast(
-          language === 'en' ? 'Failed to copy project link.' : '复制链接失败。',
-          'error'
-        );
-      });
+
+    // 非安全上下文（如局域网 http://IP:3000 访问）下 navigator.clipboard 不可用，
+    // 回退到 document.execCommand('copy')，否则点击复制会无反应。
+    const fallbackCopy = () => {
+      try {
+        const textarea = document.createElement('textarea');
+        textarea.value = shareUrl;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.top = '-9999px';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(textarea);
+        return ok;
+      } catch {
+        return false;
+      }
+    };
+
+    try {
+      let copied = false;
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(shareUrl);
+        copied = true;
+      }
+      if (!copied) copied = fallbackCopy();
+      if (!copied) throw new Error('copy failed');
+
+      showToast(
+        language === 'en' ? 'Project link copied to clipboard!' : '项目链接已复制到剪贴板！',
+        'success'
+      );
+    } catch {
+      showToast(
+        language === 'en' ? 'Failed to copy project link.' : '复制链接失败。',
+        'error'
+      );
+    }
   };
 
   useEffect(() => {

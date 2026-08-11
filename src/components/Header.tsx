@@ -4,12 +4,12 @@
  */
 
 import { ScreenType } from '../types';
-import { Sun, Moon, Monitor, Menu, X, Search, Droplets } from 'lucide-react';
+import { Sun, Moon, Monitor, Menu, X, Search } from 'lucide-react';
 import { useState, MouseEvent } from 'react';
 import { useLanguage, type Language } from '../context/LanguageContext';
 import { swapLocale } from '../i18n/routing';
 import LogoMark from './LogoMark';
-import NavTab, { type NavEffectMode } from './NavTab';
+import NavTab from './NavTab';
 
 interface HeaderProps {
   currentScreen: ScreenType;
@@ -22,24 +22,6 @@ interface HeaderProps {
 export default function Header({ currentScreen, onNavigate, theme, toggleTheme, lang }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { language, t, searchQuery, setSearchQuery } = useLanguage();
-
-  // 导航水珠动效模式：spring（弹簧光斑）或 goo（SVG 粘连水珠），localStorage 持久化。
-  const [navEffect, setNavEffect] = useState<NavEffectMode>(() => {
-    try {
-      const saved = localStorage.getItem('bayjf_nav_effect');
-      return saved === 'goo' ? 'goo' : 'spring';
-    } catch {
-      return 'spring';
-    }
-  });
-
-  const cycleNavEffect = () => {
-    setNavEffect((prev) => {
-      const next = prev === 'spring' ? 'goo' : 'spring';
-      try { localStorage.setItem('bayjf_nav_effect', next); } catch {}
-      return next;
-    });
-  };
 
   // 语言切换走 URL（MPA + URL 语言路由）：在同一屏路径下切换语言前缀。
   const switchLocale = (next: Language) => {
@@ -62,15 +44,6 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-paper/70 dark:bg-night/70 backdrop-blur-xl backdrop-saturate-150 transition-colors duration-500">
-      {/* SVG goo 滤镜：NavTab goo 模式共享，只定义一次 */}
-      <svg className="absolute w-0 h-0" aria-hidden="true">
-        <defs>
-          <filter id="nav-goo-filter">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
-            <feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 16 -7" />
-          </filter>
-        </defs>
-      </svg>
       <div className="flex justify-between items-center max-w-7xl mx-auto px-6 md:px-16 py-4 h-20">
         {/* Logo containing "BayJF" text */}
         <a
@@ -84,7 +57,7 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
         </a>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-8">
+        <div className="relative hidden md:flex items-center space-x-8">
           {navItems.map((item) => (
             <NavTab
               key={item.screen}
@@ -93,7 +66,6 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
               tooltip={t(item.tooltipKey)}
               href={item.screen === 'home' ? (lang === 'zh' ? '/zh' : '/') : `${lang === 'zh' ? '/zh' : ''}/${item.screen === 'bayjf' ? 'projects' : item.screen}`}
               isActive={currentScreen === item.screen}
-              effectMode={navEffect}
               onClick={(e) => {
                 e.preventDefault();
                 onNavigate(item.screen, 'none');
@@ -156,16 +128,6 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
             onClick={toggleTheme}
           >
             {theme === 'light' ? <Moon size={18} /> : theme === 'dark' ? <Sun size={18} /> : <Monitor size={18} />}
-          </button>
-
-          <button
-            id="nav-effect-btn"
-            aria-label="Toggle Nav Effect"
-            title={navEffect === 'spring' ? 'Nav effect: Spring' : 'Nav effect: Goo'}
-            className="p-2 text-ink dark:text-paper hover:scale-105 active:scale-[0.97] transition-all duration-200"
-            onClick={cycleNavEffect}
-          >
-            <Droplets size={16} />
           </button>
 
           <button
