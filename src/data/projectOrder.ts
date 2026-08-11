@@ -13,19 +13,23 @@
  */
 export const PROJECT_ORDER: readonly string[] = [
   'soft-desk',
+  'word-picker',
   'word-base',
-  'tab-garden',
+  
   'agent-dev',
+  'pr-helper',
+  'tab-garden',
+  
+  'termana',
+  'vfx-todo',
+  'toclick',
+
   'know-collect',
   'one-code',
   'one-world',
-  'pr-helper',
+  
   'shareit',
   'splity',
-  'termana',
-  'toclick',
-  'vfx-todo',
-  'word-picker',
 ];
 
 /**
