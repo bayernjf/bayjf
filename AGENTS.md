@@ -296,6 +296,7 @@ CLOUDFLARE_ACCOUNT_ID
 | `src/context/LanguageContext.tsx` | 中英文内容、项目数据（`PROJECTS_EN/ZH`、`PROJECT_DATES`）与全局搜索状态 |
 | `src/data/projectOrder.ts` | 项目卡片展示顺序单一来源；调整顺序只改本文件 |
 | `src/components/ContactScreen.tsx` | 联系表单 UI、校验和提交状态 |
+| `src/components/BottomNav.tsx` | 桌面端底部悬浮导航：滚动到底部时浮现，复用 `NavTab`，动态定位在页脚上方避免遮挡 |
 | `src/api/contact.ts` | 浏览器端联系 API client |
 | `src/utils/analytics.ts` | GA4 与 Clarity 初始化和事件上报 |
 | `src/i18n/translations.ts` | 中英文字典与翻译函数 |
