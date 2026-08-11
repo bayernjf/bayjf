@@ -36,6 +36,8 @@ pr-helper、tab-manager、termana 等），形成品牌家族。
 - Astro 5 静态输出 + React island；纯系统字体栈（无 Web Font）。
 - 品牌 accent 根源色为 sage 绿（light `#54615b` / dark `#8fae9d`），
   页面主色为纯黑白。
+- 导航栏标签支持 spring / goo 双模式水珠动效（`motion/react`），
+  用户可通过水滴按钮切换，`localStorage` 持久化，`prefers-reduced-motion` 自动降级。
 - 联系表单经 Hono API 写入 Supabase，浏览器不持有密钥。
 
 ## Brand Commitments

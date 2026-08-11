@@ -679,34 +679,6 @@ export default function BayjfScreen() {
                     alt={project.title}
                     className="transition-transform duration-700 ease-out group-hover:scale-105"
                   />
-
-                  {/* Quick Look overlay: frosted panel with key facts on hover/focus */}
-                  <div className="pointer-events-none absolute inset-0 z-20 flex items-end p-3 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300">
-                    <div className="w-full rounded-2xl bg-white/75 dark:bg-night/70 backdrop-blur-xl backdrop-saturate-150 p-4 translate-y-2 group-hover:translate-y-0 group-focus-within:translate-y-0 transition-transform duration-300 shadow-lg">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-sans text-[11px] font-medium tracking-wider uppercase text-sage dark:text-mint">
-                          {project.category}
-                        </span>
-                        {getProjectDate(project) && (
-                          <span className="font-sans text-[11px] text-ink-soft/70 dark:text-mist/70 font-medium">{getProjectDate(project)}</span>
-                        )}
-                      </div>
-                      <div className="flex flex-wrap gap-1 mb-2">
-                        {project.tags.slice(0, 6).map((tag) => (
-                          <span
-                            key={tag}
-                            className="font-sans text-[11px] bg-ink/5 dark:bg-white/10 text-ink-soft dark:text-mist px-2 py-0.5 rounded-full"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                      <span className="inline-flex items-center gap-1 font-sans text-[12px] font-medium text-ink dark:text-paper">
-                        {t('bayjf.viewCaseStudy')}
-                        <ArrowRight size={12} />
-                      </span>
-                    </div>
-                  </div>
                 </div>
 
                 {/* Card Body */}
