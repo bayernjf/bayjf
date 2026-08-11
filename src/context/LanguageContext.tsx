@@ -6,16 +6,30 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 import { Project, ExperienceItem } from '../types';
 import { TRANSLATIONS, type Language } from '../i18n/translations';
+import { sortProjectsByOrder, PROJECT_ORDER } from '../data/projectOrder';
 
 export type { Language };
 
-const SOFT_DESK_RELEASE_DATE = '2026-06-22';
-const WORD_BASE_RELEASE_DATE = '2026-06-02';
-const TAB_GARDEN_RELEASE_DATE = '2026-07-19';
-// 以下 11 个产品落地页统一于 2026-08-05 上线
-const LANDING_BATCH_DATE = '2026-08-05';
+// 14 个产品的 GitHub 仓库创建日期查找表；PROJECTS_EN / PROJECTS_ZH 中
+// 每个项目的 date 字段通过 id 引用本表，避免 28 处字面量分散。
+export const PROJECT_DATES: Record<string, string> = {
+  'soft-desk':    '2026-06-22',
+  'word-base':    '2026-06-04',
+  'tab-garden':   '2026-07-19',
+  'pr-helper':    '2026-07-22',
+  'vfx-todo':     '2026-07-29',
+  'toclick':      '2026-07-29',
+  'know-collect': '2026-08-01',
+  'one-code':     '2026-08-01',
+  'one-world':    '2026-08-01',
+  'shareit':      '2026-08-01',
+  'splity':       '2026-08-01',
+  'agent-dev':    '2026-08-02',
+  'termana':      '2026-08-02',
+  'word-picker':  '2026-06-02'
+};
 
-export const PROJECTS_EN: Project[] = [
+const RAW_PROJECTS_EN: Project[] = [
   {
     id: 'soft-desk',
     title: 'SoftDesk',
@@ -24,7 +38,7 @@ export const PROJECTS_EN: Project[] = [
     image: 'https://soft-desk-landing.pages.dev/preview-en.png',
     tags: ['Electron', 'React', 'TypeScript', 'SQLite', 'Supabase'],
     link: 'https://soft-desk-landing.pages.dev/',
-    date: SOFT_DESK_RELEASE_DATE
+    date: PROJECT_DATES['soft-desk']
   },
   {
     id: 'word-base',
@@ -34,7 +48,7 @@ export const PROJECTS_EN: Project[] = [
     image: 'https://word-base-landing.pages.dev/preview-en.png',
     tags: ['Next.js', 'React Native', 'Tauri', 'Hono', 'Supabase'],
     link: 'https://word-base-landing.pages.dev/',
-    date: WORD_BASE_RELEASE_DATE
+    date: PROJECT_DATES['word-base']
   },
   {
     id: 'tab-garden',
@@ -44,7 +58,7 @@ export const PROJECTS_EN: Project[] = [
     image: 'https://tab-manager-landing.pages.dev/preview-en.png',
     tags: ['Chrome Extension', 'TypeScript', 'Manifest V3', 'Supabase'],
     link: 'https://tab-manager-landing.pages.dev/',
-    date: TAB_GARDEN_RELEASE_DATE
+    date: PROJECT_DATES['tab-garden']
   },
   {
     id: 'agent-dev',
@@ -54,7 +68,7 @@ export const PROJECTS_EN: Project[] = [
     image: 'https://agent-dev-landing.pages.dev/preview-en.png',
     tags: ['AI Agent', 'Astro', 'TypeScript', 'Tailwind CSS'],
     link: 'https://agent-dev-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['agent-dev']
   },
   {
     id: 'know-collect',
@@ -64,7 +78,7 @@ export const PROJECTS_EN: Project[] = [
     image: 'https://know-collect-landing.pages.dev/preview-en.png',
     tags: ['Astro', 'TypeScript', 'Tailwind CSS'],
     link: 'https://know-collect-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['know-collect']
   },
   {
     id: 'one-code',
@@ -74,7 +88,7 @@ export const PROJECTS_EN: Project[] = [
     image: 'https://one-code-landing.pages.dev/preview-en.png',
     tags: ['VS Code Extension', 'TypeScript', 'Astro', 'Tailwind CSS'],
     link: 'https://one-code-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['one-code']
   },
   {
     id: 'one-world',
@@ -84,7 +98,7 @@ export const PROJECTS_EN: Project[] = [
     image: 'https://one-world-landing.pages.dev/preview-en.png',
     tags: ['Game', 'Astro', 'TypeScript', 'Tailwind CSS'],
     link: 'https://one-world-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['one-world']
   },
   {
     id: 'pr-helper',
@@ -94,7 +108,7 @@ export const PROJECTS_EN: Project[] = [
     image: 'https://pr-helper-landing.pages.dev/preview-en.png',
     tags: ['GitHub', 'Astro', 'TypeScript', 'Tailwind CSS'],
     link: 'https://pr-helper-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['pr-helper']
   },
   {
     id: 'shareit',
@@ -104,7 +118,7 @@ export const PROJECTS_EN: Project[] = [
     image: 'https://shareit-landing.pages.dev/preview-en.png',
     tags: ['Astro', 'TypeScript', 'Tailwind CSS'],
     link: 'https://shareit-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['shareit']
   },
   {
     id: 'splity',
@@ -114,7 +128,7 @@ export const PROJECTS_EN: Project[] = [
     image: 'https://splity-landing.pages.dev/preview-en.png',
     tags: ['Astro', 'TypeScript', 'Tailwind CSS'],
     link: 'https://splity-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['splity']
   },
   {
     id: 'termana',
@@ -124,7 +138,7 @@ export const PROJECTS_EN: Project[] = [
     image: 'https://termana-landing.pages.dev/preview-en.png',
     tags: ['Tauri', 'Rust', 'TypeScript', 'macOS', 'Windows'],
     link: 'https://termana-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['termana']
   },
   {
     id: 'toclick',
@@ -134,7 +148,7 @@ export const PROJECTS_EN: Project[] = [
     image: 'https://toclick-landing.pages.dev/preview-en.png',
     tags: ['AI', 'Astro', 'TypeScript', 'Tailwind CSS'],
     link: 'https://toclick-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['toclick']
   },
   {
     id: 'vfx-todo',
@@ -144,7 +158,7 @@ export const PROJECTS_EN: Project[] = [
     image: 'https://vfx-todo-landing.pages.dev/preview-en.png',
     tags: ['Tauri', 'Rust', 'TypeScript', 'WebGL'],
     link: 'https://vfx-todo-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['vfx-todo']
   },
   {
     id: 'word-picker',
@@ -154,11 +168,11 @@ export const PROJECTS_EN: Project[] = [
     image: 'https://word-picker-landing.pages.dev/preview-en.png',
     tags: ['Chrome Extension', 'TypeScript', 'Astro', 'Tailwind CSS'],
     link: 'https://word-picker-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['word-picker']
   }
 ];
 
-export const PROJECTS_ZH: Project[] = [
+const RAW_PROJECTS_ZH: Project[] = [
   {
     id: 'soft-desk',
     title: 'SoftDesk',
@@ -167,7 +181,7 @@ export const PROJECTS_ZH: Project[] = [
     image: 'https://soft-desk-landing.pages.dev/preview-zh.png',
     tags: ['Electron', 'React', 'TypeScript', 'SQLite', 'Supabase'],
     link: 'https://soft-desk-landing.pages.dev/',
-    date: SOFT_DESK_RELEASE_DATE
+    date: PROJECT_DATES['soft-desk']
   },
   {
     id: 'word-base',
@@ -177,7 +191,7 @@ export const PROJECTS_ZH: Project[] = [
     image: 'https://word-base-landing.pages.dev/preview-zh.png',
     tags: ['Next.js', 'React Native', 'Tauri', 'Hono', 'Supabase'],
     link: 'https://word-base-landing.pages.dev/',
-    date: WORD_BASE_RELEASE_DATE
+    date: PROJECT_DATES['word-base']
   },
   {
     id: 'tab-garden',
@@ -187,7 +201,7 @@ export const PROJECTS_ZH: Project[] = [
     image: 'https://tab-manager-landing.pages.dev/preview-zh.png',
     tags: ['Chrome 扩展', 'TypeScript', 'Manifest V3', 'Supabase'],
     link: 'https://tab-manager-landing.pages.dev/',
-    date: TAB_GARDEN_RELEASE_DATE
+    date: PROJECT_DATES['tab-garden']
   },
   {
     id: 'agent-dev',
@@ -197,7 +211,7 @@ export const PROJECTS_ZH: Project[] = [
     image: 'https://agent-dev-landing.pages.dev/preview-zh.png',
     tags: ['AI Agent', 'Astro', 'TypeScript', 'Tailwind CSS'],
     link: 'https://agent-dev-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['agent-dev']
   },
   {
     id: 'know-collect',
@@ -207,7 +221,7 @@ export const PROJECTS_ZH: Project[] = [
     image: 'https://know-collect-landing.pages.dev/preview-zh.png',
     tags: ['Astro', 'TypeScript', 'Tailwind CSS'],
     link: 'https://know-collect-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['know-collect']
   },
   {
     id: 'one-code',
@@ -217,7 +231,7 @@ export const PROJECTS_ZH: Project[] = [
     image: 'https://one-code-landing.pages.dev/preview-zh.png',
     tags: ['VS Code 扩展', 'TypeScript', 'Astro', 'Tailwind CSS'],
     link: 'https://one-code-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['one-code']
   },
   {
     id: 'one-world',
@@ -227,7 +241,7 @@ export const PROJECTS_ZH: Project[] = [
     image: 'https://one-world-landing.pages.dev/preview-zh.png',
     tags: ['Game', 'Astro', 'TypeScript', 'Tailwind CSS'],
     link: 'https://one-world-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['one-world']
   },
   {
     id: 'pr-helper',
@@ -237,7 +251,7 @@ export const PROJECTS_ZH: Project[] = [
     image: 'https://pr-helper-landing.pages.dev/preview-zh.png',
     tags: ['GitHub', 'Astro', 'TypeScript', 'Tailwind CSS'],
     link: 'https://pr-helper-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['pr-helper']
   },
   {
     id: 'shareit',
@@ -247,7 +261,7 @@ export const PROJECTS_ZH: Project[] = [
     image: 'https://shareit-landing.pages.dev/preview-zh.png',
     tags: ['Astro', 'TypeScript', 'Tailwind CSS'],
     link: 'https://shareit-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['shareit']
   },
   {
     id: 'splity',
@@ -257,7 +271,7 @@ export const PROJECTS_ZH: Project[] = [
     image: 'https://splity-landing.pages.dev/preview-zh.png',
     tags: ['Astro', 'TypeScript', 'Tailwind CSS'],
     link: 'https://splity-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['splity']
   },
   {
     id: 'termana',
@@ -267,7 +281,7 @@ export const PROJECTS_ZH: Project[] = [
     image: 'https://termana-landing.pages.dev/preview-zh.png',
     tags: ['Tauri', 'Rust', 'TypeScript', 'macOS', 'Windows'],
     link: 'https://termana-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['termana']
   },
   {
     id: 'toclick',
@@ -277,7 +291,7 @@ export const PROJECTS_ZH: Project[] = [
     image: 'https://toclick-landing.pages.dev/preview-zh.png',
     tags: ['AI', 'Astro', 'TypeScript', 'Tailwind CSS'],
     link: 'https://toclick-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['toclick']
   },
   {
     id: 'vfx-todo',
@@ -287,7 +301,7 @@ export const PROJECTS_ZH: Project[] = [
     image: 'https://vfx-todo-landing.pages.dev/preview-zh.png',
     tags: ['Tauri', 'Rust', 'TypeScript', 'WebGL'],
     link: 'https://vfx-todo-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['vfx-todo']
   },
   {
     id: 'word-picker',
@@ -297,9 +311,28 @@ export const PROJECTS_ZH: Project[] = [
     image: 'https://word-picker-landing.pages.dev/preview-zh.png',
     tags: ['Chrome 扩展', 'TypeScript', 'Astro', 'Tailwind CSS'],
     link: 'https://word-picker-landing.pages.dev/',
-    date: LANDING_BATCH_DATE
+    date: PROJECT_DATES['word-picker']
   }
 ];
+
+// 展示顺序由 src/data/projectOrder.ts 统一控制；原数据数组里写啥顺序无所谓。
+export const PROJECTS_EN: Project[] = sortProjectsByOrder(RAW_PROJECTS_EN);
+export const PROJECTS_ZH: Project[] = sortProjectsByOrder(RAW_PROJECTS_ZH);
+
+// 开发期 sanity check：PROJECT_ORDER 漏配 / 多配都会在 console 告警。
+// Vite 会在 prod 构建时把 import.meta.env.DEV 静态替换为 false，整段被消除。
+if (import.meta.env.DEV) {
+  const declared = new Set<string>(PROJECT_ORDER);
+  const checkDrift = (raw: Project[], lang: 'en' | 'zh') => {
+    const present = new Set(raw.map((p) => p.id));
+    const missing = [...declared].filter((id) => !present.has(id));
+    const extra = [...present].filter((id) => !declared.has(id));
+    if (missing.length) console.warn(`[projectOrder] PROJECTS_${lang.toUpperCase()} missing:`, missing);
+    if (extra.length) console.warn(`[projectOrder] PROJECTS_${lang.toUpperCase()} extra:`, extra);
+  };
+  checkDrift(RAW_PROJECTS_EN, 'en');
+  checkDrift(RAW_PROJECTS_ZH, 'zh');
+}
 
 const EXPERIENCE_EN: ExperienceItem[] = [
   {
