@@ -35,7 +35,7 @@ export default function LogoMark({ size = 26, className }: LogoMarkProps) {
         </linearGradient>
       </defs>
       <rect width="32" height="32" rx="7" fill={`url(#${bgId})`} />
-      <rect x="0.5" y="0.5" width="31" height="31" rx="6.5" fill="none" stroke="#ffffff" strokeOpacity="0.08" />
+      <rect x="0.5" y="0.5" width="31" height="31" rx="6.5" fill="none" className="stroke-ink/15 dark:stroke-white/10" />
       <g fill="none" stroke={`url(#${inkId})`} strokeWidth="3.4" strokeLinecap="round">
         <path d="M11.5 6.5 C 11 13, 11 19, 10 22.6 C 9.2 25.4, 5.6 26.2, 4.4 24" />
         <path d="M11.3 9.5 C 16.5 7.3, 22.5 7.5, 27.3 9.8" />

@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import type { ComponentProps } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { LanguageProvider } from '../context/LanguageContext';
+import { ToastProvider } from '../context/ToastContext';
 import { swapLocale } from '../i18n/routing';
 import Header from './Header';
 
@@ -17,7 +18,9 @@ function renderHeader(overrides: Partial<ComponentProps<typeof Header>> = {}) {
 
   render(
     <LanguageProvider>
-      <Header {...props} />
+      <ToastProvider>
+        <Header {...props} />
+      </ToastProvider>
     </LanguageProvider>,
   );
 
