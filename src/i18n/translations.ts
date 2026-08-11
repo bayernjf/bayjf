@@ -26,6 +26,11 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'nav.tip.contact': 'Get in touch',
     'nav.tip.social': 'Open social links',
 
+    // Likes
+    'like.liked': 'Liked',
+    'like.notLiked': 'Like',
+    'like.toggleError': 'Could not update like.',
+
     // Social Tree Modal
     'social.title': 'Find me elsewhere',
     'social.subtitle': 'These are the places I hang out online.',
@@ -132,6 +137,11 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'nav.tip.experience': '职业履历',
     'nav.tip.contact': '联系我',
     'nav.tip.social': '打开社交链接',
+
+    // 喜欢
+    'like.liked': '已喜欢',
+    'like.notLiked': '喜欢',
+    'like.toggleError': '更新喜欢状态失败。',
 
     // Social Tree Modal
     'social.title': '在这些地方找到我',
