@@ -1,12 +1,30 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+
+// Astro 以 client:load 做 SSR，按钮在 hydrate 前就已存在于 DOM。
+// 点击需在 React 挂载事件处理器之后进行，否则点击会是空操作。
+// 应用会在 hydrate 完成后在 <html> 上写入 data-app-hydrated 作为信号。
+async function waitForHydration(page: Page) {
+  await page.waitForFunction(
+    // 整页导航（如语言切换）瞬间 documentElement 可能为 null，
+    // 用可选链返回 false 让 waitForFunction 继续轮询而不是抛错。
+    () => document.documentElement?.dataset.appHydrated === 'true',
+    undefined,
+    { timeout: 15000 },
+  );
+}
 
 test.beforeEach(async ({ page }) => {
+  // 中止非本地请求（外部字体/图片 CDN），避免在无法访问这些 CDN 的环境里
+  // load 事件一直挂起导致超时。同源 /api 请求不受影响（测试 5 仍会拦截）。
+  await page.route(/^https?:\/\/(?!127\.0\.0\.1|localhost)/, (route) => route.abort());
+
   await page.goto('/');
   await page.evaluate(() => {
     localStorage.clear();
     localStorage.setItem('bayjf_sound', 'false');
   });
   await page.reload();
+  await waitForHydration(page);
 });
 
 test('navigates between the primary bayjf screens', async ({ page, isMobile }) => {
@@ -24,6 +42,11 @@ test('navigates between the primary bayjf screens', async ({ page, isMobile }) =
 });
 
 test('searches projects and can switch to Chinese', async ({ page, isMobile }) => {
+  // Language is URL-routed (MPA): start from the projects route so the
+  // Chinese locale lands on /zh/projects with the projects screen visible.
+  await page.goto('/projects');
+  await waitForHydration(page);
+
   if (isMobile) {
     await page.locator('#mobile-menu-btn').click();
     await page.locator('#header-search-input-mobile').fill('WordBase');
@@ -35,8 +58,9 @@ test('searches projects and can switch to Chinese', async ({ page, isMobile }) =
   await expect(page.getByText('SoftDesk', { exact: true })).toHaveCount(0);
 
   await page.locator(isMobile ? '#lang-btn-mobile-zh' : '#lang-btn-zh').click();
+  await expect(page).toHaveURL(/\/zh\/projects$/);
+  await waitForHydration(page);
   await expect(page.getByRole('heading', { name: '精选项目' })).toBeVisible();
-  await expect.poll(() => page.evaluate(() => localStorage.getItem('bayjf_lang'))).toBe('zh');
 });
 
 test('persists a selected light theme after reload', async ({ page }) => {
@@ -44,32 +68,24 @@ test('persists a selected light theme after reload', async ({ page }) => {
   await expect(page.locator('html')).not.toHaveClass(/dark/);
 
   await page.reload();
+  await waitForHydration(page);
 
   await expect(page.locator('html')).not.toHaveClass(/dark/);
   await expect.poll(() => page.evaluate(() => localStorage.getItem('bayjf_theme'))).toBe('light');
 });
 
-test('keeps a native cursor until the custom cursor is ready', async ({ page }) => {
-  const html = page.locator('html');
-  const hasFinePointer = await page.evaluate(() =>
-    window.matchMedia('(pointer: fine) and (min-width: 768px)').matches,
-  );
+test('follows the system color scheme by default', async ({ page }) => {
+  // 无显式选择时，防闪脚本与运行时都跟随 prefers-color-scheme。
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.reload();
+  await waitForHydration(page);
 
-  await page.evaluate(() => document.documentElement.classList.remove('custom-cursor-active'));
-  await expect(html).not.toHaveClass(/custom-cursor-active/);
-  await expect(html).not.toHaveCSS('cursor', 'none');
-  await expect(page.locator('#custom-cursor')).toHaveCSS('opacity', '0');
+  await expect(page.locator('html')).toHaveClass(/dark/);
 
-  await page.mouse.move(120, 80);
-
-  if (hasFinePointer) {
-    await expect(html).toHaveClass(/custom-cursor-active/);
-    await expect(html).not.toHaveCSS('cursor', 'none');
-    await expect(page.locator('#custom-cursor')).toHaveCSS('opacity', '1');
-  } else {
-    await expect(html).not.toHaveClass(/custom-cursor-active/);
-    await expect(html).not.toHaveCSS('cursor', 'none');
-  }
+  // 切回浅色系统偏好后应实时跟随（无需刷新）。
+  await page.emulateMedia({ colorScheme: 'light' });
+  await expect(page.locator('html')).not.toHaveClass(/dark/);
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('bayjf_theme'))).toBeNull();
 });
 
 test('sends contact API requests through the same-origin path', async ({ page }) => {

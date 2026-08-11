@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import IslandRoot from '../components/IslandRoot.astro';
+import type { Language, ScreenKey } from '../i18n/routing';
+
+const lang = (Astro.currentLocale as Language) || 'en';
+const screen: ScreenKey = 'home';
+---
+
+<BaseLayout lang={lang} screen={screen}>
+  <IslandRoot lang={lang} screen={screen} />
+</BaseLayout>

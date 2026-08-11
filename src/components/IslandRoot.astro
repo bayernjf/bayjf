@@ -1,0 +1,60 @@
+---
+/**
+ * 单点优化入口：在 Astro 层（只有这里能用 astro:assets）对 19 张本地
+ * ai-agent 图片做构建期压缩与 WebP 转换，再把优化后的 URL 数组作为 prop
+ * 传给 React island。避免在 .tsx 内直接 import 原始大图（会被原样拷贝，
+ * 单张 2.7–4.2MB）。远程 project.image 仍由 BlurUpImage 处理，不在本处优化。
+ */
+import SiteIsland from './SiteIsland';
+import { getImage } from 'astro:assets';
+import type { Language, ScreenKey } from '../i18n/routing';
+
+import agent01 from '../assets/ai-agent/01-ai-agent.png';
+import agent02 from '../assets/ai-agent/02-agent-orbit.png';
+import agent03 from '../assets/ai-agent/03-agent-cubes.png';
+import agent04 from '../assets/ai-agent/04-agent-flow.png';
+import agent05 from '../assets/ai-agent/05-agent-hand.png';
+import agent06 from '../assets/ai-agent/06-agent-network.jpg';
+import agent07 from '../assets/ai-agent/07-agent-data.jpg';
+import agent08 from '../assets/ai-agent/08-agent-graph.jpg';
+import agent09 from '../assets/ai-agent/09-agent-mesh.jpg';
+import agent10 from '../assets/ai-agent/10-agent-brain.jpg';
+import agent11 from '../assets/ai-agent/11-agent-shards.jpg';
+import agent12 from '../assets/ai-agent/12-agent-rings.jpg';
+import agent13 from '../assets/ai-agent/13-agent-grid.jpg';
+import agent14 from '../assets/ai-agent/14-agent-brain.jpg';
+import agent15 from '../assets/ai-agent/15-agent-tower.png';
+import agent16 from '../assets/ai-agent/16-agent-cube.png';
+import agent17 from '../assets/ai-agent/17-agent-vault.png';
+import agent18 from '../assets/ai-agent/18-agent-chip.png';
+import agent19 from '../assets/ai-agent/19-agent-core.png';
+
+interface Props {
+  lang: Language;
+  screen: ScreenKey;
+}
+
+const { lang, screen } = Astro.props;
+
+// `import.meta.env.VITE_*` 在 astro dev 的客户端 bundle 中不会被注入（生产构建会内联），
+// 故在 Astro 层读取后作为 prop 下发，保证本地预览时 Turnstile 组件能拿到 sitekey。
+const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY ?? '';
+
+const sources = [
+  agent01, agent02, agent03, agent04, agent05, agent06, agent07, agent08, agent09, agent10,
+  agent11, agent12, agent13, agent14, agent15, agent16, agent17, agent18, agent19,
+];
+
+// 轮播列宽 + 2x DPR 上限约 1000px；统一转 WebP 以大幅压缩体积。
+const agentImages = await Promise.all(
+  sources.map(async (src, index) => {
+    const optimized = await getImage({ src, format: 'webp', width: 1000 });
+    return {
+      src: optimized.src,
+      alt: `AI Agent concept visual ${index + 1}`,
+    };
+  })
+);
+---
+
+<SiteIsland lang={lang} screen={screen} agentImages={agentImages} turnstileSiteKey={turnstileSiteKey} client:load />

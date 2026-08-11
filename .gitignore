@@ -10,3 +10,18 @@ coverage/
 .vercel/
 playwright-report/
 test-results/
+.playwright-cli/
+.astro/
+.codex/
+
+# Local IDE plugin assets and ad-hoc tooling
+/_gitstatus.*
+taste-skill/
+
+# Installed AI design/design-engineering skills (local-only, not committed)
+.codebuddy/
+skills-lock.json
+.github/agents/
+.github/hooks/
+.github/skills/
+.trae/skills/

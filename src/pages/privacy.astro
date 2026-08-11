@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const lang = 'en';
+---
+
+<BaseLayout
+  lang={lang}
+  screen="home"
+  pathOverride="/privacy"
+  seoTitle="Privacy Policy | BayJF"
+  seoDescription="Privacy Policy of BayJF: how the contact form, analytics, and local preferences handle your information."
+>
+  <main class="mx-auto max-w-3xl px-6 py-20 md:py-28">
+    <a href="/" class="text-sm text-sage dark:text-mint hover:underline">← Back to Home</a>
+    <h1 class="mt-6 font-serif text-3xl font-bold md:text-4xl">Privacy Policy</h1>
+    <p class="mt-2 text-sm text-ink-soft dark:text-mist">Last updated: August 7, 2026</p>
+
+    <div class="mt-10 space-y-10 text-sm leading-7 text-ink-soft dark:text-mist">
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-ink dark:text-paper">1. Overview</h2>
+        <p class="mt-2">
+          BayJF (bayjf.com) is a personal portfolio website. This policy explains what information is processed when you visit the site or use its contact form, and how it is handled.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-ink dark:text-paper">2. Contact Form</h2>
+        <ul class="mt-2 list-disc space-y-1 pl-5">
+          <li>When you submit the contact form, the name, email address, and message you provide are stored in a Supabase Postgres database for the purpose of replying to you.</li>
+          <li>A SHA-256 hash of your IP address and a truncated User-Agent string may be stored alongside the message for abuse prevention. The raw IP is not stored.</li>
+          <li>Submissions are protected by Cloudflare Turnstile human verification and rate limiting.</li>
+          <li>Contact data is not sold, shared with third parties, or used for marketing without your consent.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-ink dark:text-paper">3. Analytics</h2>
+        <p class="mt-2">
+          If enabled, this site uses Google Analytics 4 and Microsoft Clarity to understand aggregate usage (page views, approximate location, device type). These providers may set cookies. Analytics events never include names, email addresses, or message content. Where analytics IDs are not configured, no analytics scripts are loaded.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-ink dark:text-paper">4. Local Preferences</h2>
+        <p class="mt-2">
+          The site stores your light/dark theme choice in your browser's localStorage. This stays on your device and is never transmitted.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-ink dark:text-paper">5. Hosting & Logs</h2>
+        <p class="mt-2">
+          The site is hosted on Cloudflare Pages with an API on Vercel. These platforms may keep standard access logs (IP, User-Agent) under their own privacy policies, outside the control of this site.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-ink dark:text-paper">6. Third-Party Links</h2>
+        <p class="mt-2">
+          The site links to third-party services such as GitHub. Their privacy practices are governed by their own policies.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-ink dark:text-paper">7. Your Rights & Contact</h2>
+        <p class="mt-2">
+          You may request access to or deletion of any contact-form data associated with your email address by writing to
+          <a href="mailto:hello@bayjf.com" class="text-sage dark:text-mint hover:underline">hello@bayjf.com</a>.
+          Changes to this policy will be posted on this page with an updated revision date.
+        </p>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import type { ComponentProps } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { LanguageProvider } from '../context/LanguageContext';
+import { swapLocale } from '../i18n/routing';
 import Header from './Header';
 
 function renderHeader(overrides: Partial<ComponentProps<typeof Header>> = {}) {
@@ -10,6 +11,7 @@ function renderHeader(overrides: Partial<ComponentProps<typeof Header>> = {}) {
     onNavigate: vi.fn(),
     theme: 'dark',
     toggleTheme: vi.fn(),
+    lang: 'en',
     ...overrides,
   };
 
@@ -43,12 +45,14 @@ describe('Header', () => {
     expect(props.onNavigate).toHaveBeenCalledWith('bayjf', 'none');
   });
 
-  it('changes the displayed navigation language', () => {
+  it('switches locale via a URL navigation to the zh route', () => {
     renderHeader();
-
+    // 语言切换改为 URL 路由：点击 lang 按钮会跳转到同屏的对应语言路径。
+    // jsdom 不执行真实导航，这里直接校验按钮所用的 swapLocale 映射逻辑。
     fireEvent.click(document.querySelector('#lang-btn-zh')!);
-
-    expect(document.querySelector('#nav-experience')).toHaveTextContent('履历');
-    expect(localStorage.getItem('bayjf_lang')).toBe('zh');
+    expect(swapLocale('/', 'zh')).toBe('/zh');
+    expect(swapLocale('/projects', 'zh')).toBe('/zh/projects');
+    expect(swapLocale('/zh', 'en')).toBe('/');
+    expect(swapLocale('/zh/projects', 'en')).toBe('/projects');
   });
 });

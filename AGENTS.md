@@ -12,7 +12,7 @@
 BayJF 是一个双语个人作品集网站，包含作品展示、职业经历、技能和
 联系表单。前后端独立部署：
 
-- 前端：React 19、TypeScript、Vite 6、Tailwind CSS 4
+- 前端：Astro 5（静态输出）、React 19、TypeScript、Tailwind CSS 4
 - 动效：Motion
 - 图表：Recharts
 - 图标：Lucide React
@@ -32,22 +32,29 @@ bayjf/
 ├── .github/workflows/       # CI、Vercel API、Cloudflare Pages 部署
 ├── .trae/rules/             # Git 与提交规则
 ├── api/index.ts             # Vercel Function 入口
+├── astro.config.mjs         # Astro 配置（i18n、React 集成、Tailwind、vendor chunk、/api proxy）
 ├── e2e/                     # Playwright 端到端测试
+├── public/                  # 静态资源（favicon 等，原样拷贝）
 ├── server/                  # Hono API、校验和 Supabase repository
 ├── src/
 │   ├── api/                 # 浏览器 API client
-│   ├── components/          # 页面与共享组件
+│   ├── assets/              # 图片等静态资源（经 Astro 资源管线处理）
+│   ├── components/          # 页面与共享组件（含 SiteIsland）
 │   ├── context/             # Language、Toast context
+│   ├── i18n/                # 翻译字典与 URL 语言路由工具
+│   ├── layouts/             # Astro 布局（BaseLayout：SEO、主题防闪、埋点）
+│   ├── pages/               # Astro 路由：en 顶层 + [lang] 仅 zh
 │   ├── test/                # Vitest 全局测试设置
 │   ├── utils/               # Analytics、声音工具
-│   ├── App.tsx
-│   └── main.tsx
+│   ├── App.tsx              # 路由感知的屏幕切换（client:load island 内）
+│   └── vite-env.d.ts        # 仅前端 VITE_* 变量类型声明
 ├── supabase/migrations/     # 数据库迁移
+├── worker/                  # Cloudflare Pages _worker.js（同源代理到 Vercel Hono）
 ├── DEPLOYMENT.md            # 发布配置说明
 ├── PULL_REQUEST_WORKFLOW.md # PR、Actions 和分支同步强制流程
 ├── playwright.config.ts
+├── tsconfig.json            # 继承 astro/tsconfigs/base
 ├── vercel.json
-├── vite.config.ts
 ├── vitest.config.ts
 └── wrangler.toml
 ```
@@ -58,13 +65,13 @@ bayjf/
 
 ```bash
 npm ci                     # 按锁文件安装依赖
-npm run dev                # Vite 前端：http://localhost:3000
+npm run dev                # Astro 前端：http://localhost:3000
 npm run dev:api            # Vercel 本地 API：http://localhost:8787
-npm run lint               # TypeScript 类型检查
+npm run lint               # astro check + tsc 类型检查
 npm test                   # 单元、组件和 API 测试
 npm run test:coverage      # 覆盖率报告
 npm run test:e2e           # Playwright 桌面和移动端测试
-npm run build              # Vite 生产构建
+npm run build              # astro build + 构建 _worker.js 到 dist
 npm run deploy:frontend    # 发布 dist 到 Cloudflare Pages
 ```
 
@@ -84,11 +91,27 @@ Playwright（或说明当前环境无法执行的原因）。任一必需检查�
 
 ## 前端约定
 
+- 前端由 Astro 驱动（静态输出），交互式应用作为单一 `client:load` island
+  （`src/components/SiteIsland.tsx`）挂载到各路由页面；不要移除该 island 或
+  把整站重新改回纯 SPA。
 - 当前应用使用内部 `ScreenType` 状态切换页面，不使用 React Router。
 - 页面组件通过 `React.lazy` 按需加载；不要重新改为同步静态导入。
-- Recharts、Motion、Lucide 和 React 已配置独立 vendor chunk。
-- 用户可见文本应同时维护中英文翻译。
+- Recharts、Motion、Lucide 和 React 已配置独立 vendor chunk（见
+  `astro.config.mjs` 的 `manualChunks`）。
+- 语言通过 URL 路由：en 在根路径（`/`、`/projects` 等），zh 在 `/zh/*`。
+  语言切换走整页导航（`Header` 的 `swapLocale`），不依赖 `localStorage`。
+- 用户可见文本应同时维护中英文翻译，统一放在 `src/i18n/translations.ts`。
 - 新增交互应考虑键盘操作、ARIA、移动端和深色模式。
+- 本地图片必须经 `astro:assets` 优化（构建期压缩 + WebP 转换）。`astro:assets`
+  只能在 `.astro` 中调用，因此首页轮播的 19 张 `src/assets/ai-agent/*` 图片在
+  `src/components/IslandRoot.astro` 里用 `getImage()` 生成优化 URL，再作为
+  `agentImages` prop 经 `SiteIsland → App → HomeScreen` 下发；不要在 `.tsx` 里
+  直接 `import` 这些原始大图。远程 `project.image` 仍由 `BlurUpImage` 处理。
+- **客户端组件不要直接读取 `import.meta.env.VITE_*`**：`astro dev` 不会把这些变量
+  注入到 React island 的客户端 bundle（生产构建会内联，故仅 dev 受影响），直接在
+  `.tsx` 里读取会得到 `undefined`，导致 Turnstile 组件不渲染、埋点 ID 缺失，并引发
+  hydrate 不匹配。需要在客户端使用的 `VITE_*` 变量（如 `VITE_TURNSTILE_SITE_KEY`）
+  应在 `.astro` 层读取后经 prop 下发（参考 `turnstileSiteKey` 的传递链）。
 - 不要将 Supabase service-role key 或其他服务端密钥引入浏览器代码。
 
 ## Hono 与 Supabase 约定
@@ -160,8 +183,8 @@ CLOUDFLARE_ACCOUNT_ID
 ## 部署架构
 
 - Hono API：Vercel 项目 `bayjf`，正式地址 `https://bayjf.vercel.app/api`。
-- React 前端：Cloudflare Pages 项目 `bayjf`，正式地址
-  `https://bayjf.pages.dev`。
+- Astro 前端（静态）：Cloudflare Pages 项目 `bayjf`，自定义域名
+  `https://bayjf.com`（alias `bayjf.pages.dev`）。
 - GitHub Environment：`production-vercel-api`、`preview-vercel-api`、
   `production-cloudflare-pages`、`preview-cloudflare-pages`。
 - PR 到 `dev`/`main`：只运行验证和构建，不部署。
@@ -254,7 +277,7 @@ CLOUDFLARE_ACCOUNT_ID
 
 - TypeScript 类型检查通过。
 - Vitest 单元、组件和 API 测试通过。
-- Vite 生产构建无大包警告。
+- Astro 生产构建无大包警告。
 - 前端 Cloudflare Pages 和后端 Vercel 配置保持独立。
 - Supabase service-role key 永不进入客户端或 Git。
 
@@ -262,17 +285,24 @@ CLOUDFLARE_ACCOUNT_ID
 
 | 文件 | 用途 |
 |------|------|
-| `src/App.tsx` | 页面切换、懒加载和全局页面访问埋点 |
+| `src/App.tsx` | 路由感知的屏幕切换、懒加载和全局页面访问埋点 |
+| `src/components/SiteIsland.tsx` | 挂载到各路由的 client:load 交互 island |
+| `src/components/IslandRoot.astro` | 在 Astro 层用 `astro:assets` 优化本地图片并下发 `agentImages` prop |
 | `src/context/LanguageContext.tsx` | 中英文内容、项目数据与全局搜索状态 |
 | `src/components/ContactScreen.tsx` | 联系表单 UI、校验和提交状态 |
 | `src/api/contact.ts` | 浏览器端联系 API client |
 | `src/utils/analytics.ts` | GA4 与 Clarity 初始化和事件上报 |
+| `src/i18n/translations.ts` | 中英文字典与翻译函数 |
+| `src/i18n/routing.ts` | URL 语言切换与屏幕↔路径映射 |
+| `src/layouts/BaseLayout.astro` | SEO、主题防闪脚本与埋点注入 |
+| `src/pages/*.astro` | Astro 路由（en 顶层 + `[lang]` 仅 zh） |
+| `astro.config.mjs` | Astro 配置、i18n、vendor chunk、本地 `/api` proxy |
 | `server/app.ts` | Hono 中间件、CORS 和 API 路由 |
 | `server/contact.ts` | 联系表单服务端校验 |
 | `server/supabase.ts` | Supabase REST repository |
 | `api/index.ts` | Vercel Edge Function 适配入口 |
+| `worker/index.ts` | Cloudflare Pages `_worker.js` 同源代理到 Vercel Hono |
 | `supabase/migrations/` | 已部署数据库 schema 的增量迁移 |
-| `vite.config.ts` | 本地 API proxy 与生产拆包配置 |
 | `vercel.json` | Vercel `/api/*` rewrite |
 | `wrangler.toml` | Cloudflare Pages 项目配置 |
 | `.github/workflows/` | CI 和双平台部署流程 |

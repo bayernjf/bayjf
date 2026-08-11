@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import IslandRoot from '../../components/IslandRoot.astro';
+import type { Language, ScreenKey } from '../../i18n/routing';
+
+export const getStaticPaths = () => [{ params: { lang: 'zh' } }];
+const lang: Language = 'zh';
+const screen: ScreenKey = 'bayjf';
+---
+
+<BaseLayout lang={lang} screen={screen}>
+  <IslandRoot lang={lang} screen={screen} />
+</BaseLayout>

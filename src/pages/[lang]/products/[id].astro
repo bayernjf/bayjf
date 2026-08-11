@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { PROJECTS_ZH } from '../../../context/LanguageContext';
+
+export function getStaticPaths() {
+  return PROJECTS_ZH.map((project) => ({ params: { lang: 'zh', id: project.id }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const path = `/zh/products/${project.id}`;
+const productSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: project.title,
+  description: project.description,
+  applicationCategory: project.category,
+  url: project.link,
+  image: project.image,
+  author: { '@type': 'Person', name: 'Jiang Feng (BayJF)', url: 'https://bayjf.com/zh' },
+};
+---
+
+<BaseLayout lang="zh" screen="bayjf" pathOverride={path} seoTitle={`${project.title} | BayJF`} seoDescription={project.description}>
+  <main class="min-h-screen px-6 pb-24 pt-32 md:px-16">
+    <article class="mx-auto max-w-5xl">
+      <a class="text-sm text-sage dark:text-mint" href="/zh/projects">← 返回案例</a>
+      <div class="mt-8 grid gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-start">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sage dark:text-mint">{project.category}</p>
+          <h1 class="mt-4 font-serif text-5xl font-bold tracking-tight md:text-7xl">{project.title}</h1>
+          <p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft dark:text-mist">{project.description}</p>
+          <div class="mt-8 flex flex-wrap gap-2">
+            {project.tags.map((tag) => <span class="rounded-md border border-black/10 px-3 py-1 text-xs dark:border-white/10">{tag}</span>)}
+          </div>
+          <a class="mt-10 inline-flex rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white dark:bg-paper dark:text-ink" href={project.link} target="_blank" rel="noopener noreferrer">打开产品</a>
+        </div>
+        <img class="aspect-video w-full rounded-2xl object-cover shadow-xl" src={project.image} alt={`${project.title} 产品预览`} loading="eager" />
+      </div>
+    </article>
+  </main>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(productSchema)} />
+</BaseLayout>

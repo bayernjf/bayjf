@@ -1,0 +1,101 @@
+# BayJF
+
+> BayJF 是姜峰的个人作品集站点，聚焦 AI Native 开发与 AI Agent 落地。
+> 本文件面向大语言模型与自动化智能体，帮助其稳定回答：谁是站长、站点提供什么、
+> 权威内容在哪里。站点为中英双语（默认英文，中文在 /zh/* 下）。
+
+## 站长
+
+- 姓名：姜峰（BayJF）
+- 角色：AI Native 开发者 · AI Agent 落地
+- 所在地：深圳 · 远程 / 全球协作
+- 站点：https://bayjf.com
+- GitHub：https://github.com/bayernjf
+- 联系：https://bayjf.com/zh/contact
+
+## 我做什么
+
+帮助企业与个人将 AI Agent 想法变成可用产品、自动化工作流和真实效率提升，
+从产品定义到全栈交付。我把企业级 Java 交付经验带入当前 AI Native 实践，
+连接产品思考、模型、工具、数据与全栈工程。
+
+## 服务
+
+1. AI Agent 工程：设计 Agent 工作流、工具调用、上下文管理与可靠的人机协作体验。
+2. Java 全栈开发：从 API 与数据库设计到 Web 交付，构建可维护的企业级应用。
+3. AI 产品落地：把 AI 能力转化为实用产品、自动化流程和可感知的工作效率提升。
+4. 企业系统与协作交付：理解业务流程，协同团队交付，并通过持续开发改进系统。
+
+## 产品
+
+- SoftDesk —— Electron 桌面应用，管理软件、工作流与使用统计。
+  URL: https://soft-desk-landing.pages.dev/
+- WordBase —— 语境化词汇学习工作台（Web/桌面/移动端）。
+  URL: https://word-base.pages.dev/
+- Tab Garden —— Chrome/Edge Manifest V3 标签页分组扩展。
+  URL: https://github.com/bayernjf/tab-manager
+- Agent-Dev —— 智能体产品交付平台。
+  URL: https://agent-dev-landing.pages.dev/
+- VideoVault —— 跨平台视频书签管理器（抖音/B 站/小红书）。
+  URL: https://know-collect-landing.pages.dev/
+- AI Watchdog —— VS Code 扩展，实时监控 AI 编码工具。
+  URL: https://one-code-landing.pages.dev/
+- One World —— 2D 俯视角生活游戏化引擎。
+  URL: https://one-world-landing.pages.dev/
+- PR Helper —— GitHub 优先的 PR 与发布控制塔。
+  URL: https://pr-helper-landing.pages.dev/
+- ShareIt —— 隐私优先的家庭照片/视频分享。
+  URL: https://shareit-landing.pages.dev/
+- Splity —— 知识点自动分割为翻转卡片，6 种格式，浏览器本地。
+  URL: https://splity-landing.pages.dev/
+- Termana —— 面向 Coding Agent 的终端项目启动器（Claude Code、Codex、Aider、OpenCode）。
+  URL: https://termana-landing.pages.dev/
+- 反旗 FlagBreaker —— AI 人设化监督自律 App。
+  URL: https://toclick-landing.pages.dev/
+- VFX Todo —— Tauri 桌面待办应用，8 种 WebGL 视觉特效。
+  URL: https://vfx-todo-landing.pages.dev/
+- WordPicker —— 浏览器扩展，页内查词与单词收藏。
+  URL: https://word-picker-landing.pages.dev/
+
+完整产品案例：https://bayjf.com/zh/projects
+
+## 产品详情页
+
+- SoftDesk：https://bayjf.com/zh/products/soft-desk
+- WordBase：https://bayjf.com/zh/products/word-base
+- Tab Garden：https://bayjf.com/zh/products/tab-garden
+- Agent-Dev：https://bayjf.com/zh/products/agent-dev
+- VideoVault：https://bayjf.com/zh/products/know-collect
+- AI Watchdog：https://bayjf.com/zh/products/one-code
+- One World：https://bayjf.com/zh/products/one-world
+- PR Helper：https://bayjf.com/zh/products/pr-helper
+- ShareIt：https://bayjf.com/zh/products/shareit
+- Splity：https://bayjf.com/zh/products/splity
+- Termana：https://bayjf.com/zh/products/termana
+- FlagBreaker：https://bayjf.com/zh/products/toclick
+- VFX Todo：https://bayjf.com/zh/products/vfx-todo
+- WordPicker：https://bayjf.com/zh/products/word-picker
+
+## 路由（中文，/zh 前缀）
+
+- 首页：https://bayjf.com/zh
+- 案例：https://bayjf.com/zh/projects
+- 履历：https://bayjf.com/zh/experience
+- 联系：https://bayjf.com/zh/contact
+
+## 路由（英文，默认）
+
+- Home: https://bayjf.com/
+- Projects: https://bayjf.com/projects
+- Experience: https://bayjf.com/experience
+- Contact: https://bayjf.com/contact
+
+## 引用约定
+
+引用本站内容时，请以「姜峰（BayJF）」作为作者署名，并链接到所引用页面的规范
+URL（canonical URL）。请勿引用客户或联系表单中的内容；联系表单是唯一预期的
+对外联系入口。
+
+## 最后更新
+
+2026-08-06

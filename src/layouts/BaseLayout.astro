@@ -1,0 +1,165 @@
+---
+import '../index.css';
+import { translate, SEO_KEYS, type Language, type ScreenKey } from '../i18n/translations';
+import { baseForLang } from '../i18n/routing';
+import {
+  buildWebSiteSchema,
+  buildPersonSchema,
+  buildBreadcrumbSchema,
+  buildHomeFaqSchema,
+  buildContactFaqSchema,
+} from '../i18n/schema';
+
+interface Props {
+  lang: Language;
+  screen: ScreenKey;
+  pathOverride?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+}
+
+const { lang, screen, pathOverride, seoTitle, seoDescription } = Astro.props;
+
+const gaId = import.meta.env.VITE_GA_MEASUREMENT_ID?.trim();
+const clarityId = import.meta.env.VITE_CLARITY_PROJECT_ID?.trim();
+
+const title = seoTitle || translate(lang, SEO_KEYS[screen].title);
+const description = seoDescription || translate(lang, SEO_KEYS[screen].desc);
+const siteUrl = 'https://bayjf.com';
+
+// 路径辅助：screen → URL 子路径（bayjf 屏对应 /projects）
+function pathFor(lang: Language, screen: ScreenKey): string {
+  const base = baseForLang(lang);
+  if (screen === 'home') return base || '/';
+  const sub = screen === 'bayjf' ? 'projects' : screen;
+  return `${base}/${sub}`;
+}
+
+const canonical = `${siteUrl}${pathOverride || pathFor(lang, screen)}`;
+// 同一页面在另一种语言下的对应 URL，用于 hreflang 互指
+const otherLang: Language = lang === 'en' ? 'zh' : 'en';
+const productPath = pathOverride ? pathOverride.replace(/^\/zh(?=\/|$)/, '') : null;
+const alternatePath = productPath ? (lang === 'zh' ? productPath : `/zh${productPath}`) : pathFor(otherLang, screen);
+const xDefaultPath = productPath || pathFor('en', screen);
+const alternateUrl = `${siteUrl}${alternatePath}`;
+const xDefaultUrl = `${siteUrl}${xDefaultPath}`;
+
+const ogImage = `${siteUrl}/og.svg`;
+const ogLocale = lang === 'en' ? 'en_US' : 'zh_CN';
+const ogLocaleAlternate = lang === 'en' ? 'zh_CN' : 'en_US';
+// 字体：使用系统字体栈（SF Pro / PingFang / Segoe UI），无需外部字体加载。
+
+// Schema.org JSON-LD：Person / WebSite / Breadcrumb
+const personJsonLd = buildPersonSchema(lang);
+const websiteJsonLd = buildWebSiteSchema(lang);
+const breadcrumbJsonLd = buildBreadcrumbSchema(lang, screen);
+// FAQ JSON-LD：只在 home 与 contact 页注入，对应 AI 引用站点的高频问题
+const faqJsonLd =
+  screen === 'home'
+    ? buildHomeFaqSchema(lang)
+    : screen === 'contact'
+      ? buildContactFaqSchema(lang)
+      : null;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- 多语言 hreflang：当前语言 → 对应语言 → x-default -->
+    <link rel="alternate" hreflang={lang === 'en' ? 'en-US' : 'zh-CN'} href={canonical} />
+    <link rel="alternate" hreflang={otherLang === 'en' ? 'en-US' : 'zh-CN'} href={alternateUrl} />
+    <link rel="alternate" hreflang="x-default" href={xDefaultUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={ogLocaleAlternate} />
+    <meta property="og:site_name" content="BayJF" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml" />
+
+    <!-- Schema.org JSON-LD：让传统搜索引擎与生成式引擎都能稳定解析站点与作者身份 -->
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(personJsonLd)}
+    />
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(websiteJsonLd)}
+    />
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(breadcrumbJsonLd)}
+    />
+    {faqJsonLd && (
+      <script
+        is:inline
+        type="application/ld+json"
+        set:html={JSON.stringify(faqJsonLd)}
+      />
+    )}
+
+    <!-- 字体：系统字体栈，无需外部字体加载 -->
+
+    <!-- 暗色主题防闪：首屏前同步写入 .dark；默认跟随系统 prefers-color-scheme，
+         显式 light/dark 选择优先于系统偏好，避免 MPA 每页闪白 -->
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem('bayjf_theme');
+          var dark =
+            saved === 'dark' ||
+            (saved !== 'light' &&
+              window.matchMedia &&
+              window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (dark) document.documentElement.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- 埋点：GA4 + Clarity，ID 缺失时不注入脚本 -->
+    {gaId && (
+      <script is:inline src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+    )}
+    <script is:inline define:vars={{ gaId, clarityId }}>
+      if (gaId) {
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () { window.dataLayer.push(arguments); };
+        window.gtag('js', new Date());
+        window.gtag('config', gaId, { send_page_view: false });
+      }
+      if (clarityId && !window.clarity) {
+        window.clarity = function () {
+          var q = (window.clarity.q = window.clarity.q || []);
+          q.push(arguments);
+        };
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.clarity.ms/tag/' + encodeURIComponent(clarityId);
+        document.head.appendChild(s);
+      }
+    </script>
+  </head>
+  <body class="min-h-screen bg-paper text-ink dark:bg-night dark:text-paper selection:bg-sage/20 dark:selection:bg-mint/25">
+    <slot />
+  </body>
+</html>
