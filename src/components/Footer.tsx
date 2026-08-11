@@ -50,7 +50,7 @@ export default function Footer() {
           </a>
           <a
             id="footer-email"
-            href="mailto:hello@bayjf.com"
+            href="mailto:b4yernjf@gmail.com"
             aria-label="Email"
             className="interactive group flex items-center justify-center w-9 h-9 rounded-full bg-hairline/30 dark:bg-white/5 hover:bg-sage dark:hover:bg-mint border border-hairline/40 dark:border-white/5 hover:border-transparent dark:hover:border-transparent text-ink-soft dark:text-mist hover:text-paper dark:hover:text-ink transition-all duration-300 transform hover:scale-105"
           >

@@ -12,16 +12,26 @@ BayJF 个人品牌站，是 14 个产品落地页的 hub（中枢）。Astro 7 +
 - bayjf 展示全部产品落地页卡片，落地页卡片链接指向各自落地页，落地页再链到真实产品；
 - 落地页之间不直接互链，必须经 bayjf 中转。
 
-## 导航水珠动效（2026-08-11，本次新增）
-- 新增 `src/components/NavTab.tsx`：导航标签组件，spring / goo 双模式水珠跟随动效。
-  - spring：Motion `useSpring` 物理弹簧光斑，随鼠标水平移动，有惯性滞后。
-  - goo：SVG `feGaussianBlur` + `feColorMatrix` 滤镜，多圆点粘连如水银。
-  - 两种模式共用 hover tooltip（Motion AnimatePresence，进出场动画）。
-  - `prefers-reduced-motion` 时降级为纯 CSS hover 颜色变化。
-- `Header.tsx` 引入 NavTab + 水滴切换按钮（Droplets 图标），`localStorage` 键名
-  `bayjf_nav_effect` 持久化用户偏好。
+## 导航水珠动效（2026-08-11，本次新增 + 修复）
+- 架构：水珠动效上移到**共享层**，跨导航标签连续流动，不再在单个标签内计算。
+  - 新增 `src/components/NavWaterTrail.tsx`：导航栏共享的"水珠流动"层，挂在 Header 的
+    桌面 nav 容器上。鼠标 X 由 `Header` 的 `onMouseMove` 以 px 写入共享 `pointerX`
+    `MotionValue`，`NavWaterTrail` 用 `useSpring` 驱动主水珠 + 3 颗刚度/阻尼递减的拖尾水珠，
+    通过 `motion.g` 的 `style.x`（支持 MotionValue）平移，形成滞后液体尾迹。
+    - spring：仅主水珠单颗弹簧光斑，跟手、有惯性滞后。
+    - goo：4 颗水珠重叠，经 Header 已有的 `#nav-goo-filter`（feGaussianBlur +
+      feColorMatrix）粘连成水银/水珠流动感。
+    - `prefers-reduced-motion` 时 `NavWaterTrail` 直接返回 `null` 完全降级。
+  - `NavTab.tsx`：只保留 hover tooltip（Motion AnimatePresence 进出场）+ 标签 + active 态，
+    不再渲染 per-tab 光斑、不再持有 `effectMode`。
+- 修复的严重 bug：旧版 `NavTab` 在条件渲染的 JSX 里调用 `useTransform`（违反 React
+  Rules of Hooks），hover 时直接崩溃（`Rendered more hooks than during the previous render`，
+  默认 spring 模式必崩）。现所有 Hook 都在 `NavWaterTrail` 顶层无条件调用，崩溃消失。
+- `Header.tsx`：`nav` 容器加 `ref` + `onMouseMove`/`onMouseEnter`/`onMouseLeave` 接入共享层，
+  保留 Droplets 切换按钮（Droplets 图标），`localStorage` 键名 `bayjf_nav_effect` 持久化偏好。
 - `translations.ts` 新增 `nav.tip.*` 中英双语 tooltip 文案（Home / Projects / Experience / Contact）。
-- 验证：`astro check` 0 错 0 警告；`npm test` 16 passed；`npm run build` 41 页。
+- 验证：`astro check` 0 错 0 警告（仅 1 个无关的 `FormEvent` 弃用提示，来自既有文件）；
+  `npm test` 16 passed；`npm run build` 41 页。
 
 ## 已完成（已推送，分支 feature/20260719）
 - `9042452` refactor(bayjf): remove project card hover overlay

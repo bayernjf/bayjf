@@ -22,7 +22,7 @@ export const OWNER_JOB_TITLE_EN = 'AI Native Developer & AI Agent Delivery';
 export const OWNER_JOB_TITLE_ZH = 'AI Native 开发者 · AI Agent 落地';
 export const OWNER_LOCATION_EN = 'Shenzhen, China · Remote / Global';
 export const OWNER_LOCATION_ZH = '深圳 · 远程 / 全球协作';
-export const OWNER_EMAIL = 'hello@bayjf.com';
+export const OWNER_EMAIL = 'b4yernjf@gmail.com';
 // sameAs 链接：让 AI 引擎交叉验证作者身份。仅放真实公开身份。
 export const OWNER_SAME_AS: string[] = [
   'https://github.com/bayernjf',
