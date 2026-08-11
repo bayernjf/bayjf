@@ -41,6 +41,7 @@ bayjf/
 │   ├── assets/              # 图片等静态资源（经 Astro 资源管线处理）
 │   ├── components/          # 页面与共享组件（含 SiteIsland）
 │   ├── context/             # Language、Toast context
+│   ├── data/                # 项目展示顺序等纯数据配置（projectOrder.ts）
 │   ├── i18n/                # 翻译字典与 URL 语言路由工具
 │   ├── layouts/             # Astro 布局（BaseLayout：SEO、主题防闪、埋点）
 │   ├── pages/               # Astro 路由：en 顶层 + [lang] 仅 zh
@@ -288,7 +289,8 @@ CLOUDFLARE_ACCOUNT_ID
 | `src/App.tsx` | 路由感知的屏幕切换、懒加载和全局页面访问埋点 |
 | `src/components/SiteIsland.tsx` | 挂载到各路由的 client:load 交互 island |
 | `src/components/IslandRoot.astro` | 在 Astro 层用 `astro:assets` 优化本地图片并下发 `agentImages` prop |
-| `src/context/LanguageContext.tsx` | 中英文内容、项目数据与全局搜索状态 |
+| `src/context/LanguageContext.tsx` | 中英文内容、项目数据（`PROJECTS_EN/ZH`、`PROJECT_DATES`）与全局搜索状态 |
+| `src/data/projectOrder.ts` | 项目卡片展示顺序单一来源；调整顺序只改本文件 |
 | `src/components/ContactScreen.tsx` | 联系表单 UI、校验和提交状态 |
 | `src/api/contact.ts` | 浏览器端联系 API client |
 | `src/utils/analytics.ts` | GA4 与 Clarity 初始化和事件上报 |

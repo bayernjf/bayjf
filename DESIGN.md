@@ -71,6 +71,22 @@ tab-manager 绿等）共享同一图标语法：**暗夜渐变底 + 渐变图案
 | Footer | `src/components/Footer.tsx`，18px `LogoMark` 置于版权行前 |
 | og 卡片 | `public/og.svg`（1200×630），左上 56px 图标 + `BAYJF · PORTFOLIO` |
 | 共享组件 | `src/components/LogoMark.tsx`，`useId` 隔离渐变 ID，可多处共存 |
+| NavTab | `src/components/NavTab.tsx`，导航标签水珠动效（spring/goo 双模式），hover tooltip |
+| 效果切换 | Header 水珠图标按钮，`localStorage` 持久化 `bayjf_nav_effect`，`prefers-reduced-motion` 降级 |
+
+## 导航动效
+
+导航栏标签（NavTab）使用 `motion/react` 提供两种水珠跟随动效，用户可通过 Header
+水滴按钮（Droplets 图标）切换，偏好持久化到 `localStorage`：
+
+| 模式 | 实现 | 说明 |
+|------|------|------|
+| spring | Motion `useSpring` 物理弹簧光斑，随鼠标水平移动，有惯性滞后 | 默认模式 |
+| goo | SVG `feGaussianBlur` + `feColorMatrix` 滤镜，多圆点粘连如水银 | 切换后生效 |
+
+两种模式在 `prefers-reduced-motion: reduce` 时自动降级为纯 CSS hover 颜色变化。
+水珠 accent 色跟随页面：`bg-sage`（light）/ `bg-mint`（dark），goo 模式通过
+CSS 变量 `var(--color-sage)` / `var(--color-mint)` 填充。
 
 ## 页面设计基线（既有，延续）
 

@@ -20,6 +20,10 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'nav.search': 'Search projects...',
     'nav.soundOn': 'Mute toggle sound',
     'nav.soundOff': 'Unmute toggle sound',
+    'nav.tip.home': 'Back to home',
+    'nav.tip.bayjf': 'View project cases',
+    'nav.tip.experience': 'Career experience',
+    'nav.tip.contact': 'Get in touch',
 
     // HomeScreen
     'home.hero.title1': 'AI Agent &',
@@ -116,6 +120,10 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'nav.search': '搜索项目...',
     'nav.soundOn': '静音开关提示音',
     'nav.soundOff': '开启开关提示音',
+    'nav.tip.home': '返回首页',
+    'nav.tip.bayjf': '查看项目案例',
+    'nav.tip.experience': '职业履历',
+    'nav.tip.contact': '联系我',
 
     // HomeScreen
     'home.hero.title1': 'AI Agent 与',
