@@ -4,8 +4,8 @@
  */
 
 import { useState } from 'react';
-import { motion } from 'motion/react';
-import { PenTool, Code, Cpu, Award, CheckCircle2 } from 'lucide-react';
+import { motion, type Variants } from 'motion/react';
+import { PenTool, Code, Cpu, Award, CheckCircle2, type LucideIcon } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 interface Skill {
@@ -16,7 +16,7 @@ interface Skill {
 interface SkillCategory {
   id: string;
   title: string;
-  icon: any;
+  icon: LucideIcon;
   description: string;
   skills: Skill[];
   tags: string[];
@@ -78,7 +78,7 @@ const SKILL_CATEGORIES: SkillCategory[] = [
 ];
 
 export default function SkillsGrid() {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [, setActiveCategory] = useState<string | null>(null);
   const { t, language } = useLanguage();
 
   const getTranslationId = (id: string) => id === 'creative-tech' ? 'creative' : id;
@@ -105,7 +105,7 @@ export default function SkillsGrid() {
     return language === 'zh' ? (map[name] || name) : name;
   };
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -115,26 +115,26 @@ export default function SkillsGrid() {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
+      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const }
     }
   };
 
   return (
-    <div className="mt-32 pt-20 border-t border-[#e4e2e0]/60 dark:border-white/5">
+    <div className="mt-32 pt-20 border-t border-hairline/60 dark:border-white/5">
       {/* Title block */}
       <div className="mb-16 text-center md:text-left">
-        <span className="font-sans text-xs uppercase tracking-widest text-[#54615b] dark:text-[#bbcac2] font-bold flex items-center justify-center md:justify-start gap-2">
+        <span className="font-sans text-xs uppercase tracking-widest text-sage dark:text-mint font-bold flex items-center justify-center md:justify-start gap-2">
           <CheckCircle2 size={14} /> {t('experience.skillsHeaderTag')}
         </span>
-        <h2 className="font-serif text-4xl md:text-5xl font-bold text-[#1b1c1b] dark:text-[#fbf9f7] mt-3 tracking-tight">
+        <h2 className="font-serif text-4xl md:text-5xl font-bold text-ink dark:text-paper mt-3 tracking-tight">
           {t('experience.skillsTitle')}
         </h2>
-        <p className="font-sans text-base text-[#444748] dark:text-[#c4c7c7] mt-4 max-w-xl leading-relaxed">
+        <p className="font-sans text-base text-ink-soft dark:text-mist mt-4 max-w-xl leading-relaxed">
           {t('experience.skillsDesc')}
         </p>
       </div>
@@ -149,7 +149,6 @@ export default function SkillsGrid() {
       >
         {SKILL_CATEGORIES.map((category) => {
           const Icon = category.icon;
-          const isHovered = activeCategory === category.id;
           const transId = getTranslationId(category.id);
 
           return (
@@ -158,21 +157,21 @@ export default function SkillsGrid() {
               variants={itemVariants}
               onMouseEnter={() => setActiveCategory(category.id)}
               onMouseLeave={() => setActiveCategory(null)}
-              className="group relative flex flex-col justify-between bg-[#fbf9f7] dark:bg-[#161716] p-6 md:p-8 rounded-2xl border border-[#e4e2e0] dark:border-white/5 shadow-md hover:shadow-xl hover:border-[#54615b]/20 dark:hover:border-white/10 transition-all duration-500 overflow-hidden"
+              className="group relative flex flex-col justify-between bg-paper dark:bg-night-raised p-6 md:p-8 rounded-2xl border border-hairline dark:border-white/5 shadow-md hover:shadow-xl hover:border-sage/20 dark:hover:border-white/10 transition-all duration-500 overflow-hidden"
             >
               <div>
                 {/* Header */}
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-[#54615b]/10 dark:bg-[#bbcac2]/10 flex items-center justify-center text-[#54615b] dark:text-[#bbcac2] group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-10 h-10 rounded-xl bg-sage/10 dark:bg-mint/10 flex items-center justify-center text-sage dark:text-mint group-hover:scale-110 transition-transform duration-300">
                     <Icon size={20} />
                   </div>
-                  <h3 className="font-serif text-2xl font-bold text-[#1b1c1b] dark:text-[#fbf9f7]">
+                  <h3 className="font-serif text-2xl font-bold text-ink dark:text-paper">
                     {t(`skills.${transId}.title`)}
                   </h3>
                 </div>
 
                 {/* Description */}
-                <p className="font-sans text-sm text-[#444748] dark:text-[#c4c7c7] mb-6 leading-relaxed">
+                <p className="font-sans text-sm text-ink-soft dark:text-mist mb-6 leading-relaxed">
                   {t(`skills.${transId}.desc`)}
                 </p>
 
@@ -181,30 +180,30 @@ export default function SkillsGrid() {
                   {category.skills.map((skill) => (
                     <div key={skill.name} className="space-y-1.5">
                       <div className="flex justify-between items-end">
-                        <span className="font-sans text-xs font-semibold text-[#1b1c1b] dark:text-[#fbf9f7]">
+                        <span className="font-sans text-xs font-semibold text-ink dark:text-paper">
                           {getSkillName(skill.name)}
                         </span>
-                        <span className="font-mono text-[11px] text-[#444748]/70 dark:text-[#c4c7c7]/70 font-semibold">
+                        <span className="font-mono text-[11px] text-ink-soft/70 dark:text-mist/70 font-semibold">
                           {language === 'en' ? skill.evidence : skill.evidence === 'Core' ? '核心' : '实践'}
                         </span>
                       </div>
                       
-                      <div className="w-full h-px bg-[#e4e2e0]/60 dark:bg-white/10" />
+                      <div className="w-full h-px bg-hairline/60 dark:bg-white/10" />
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Sub-skills/Tags List */}
-              <div className="pt-6 border-t border-[#e4e2e0]/40 dark:border-white/5">
-                <span className="block font-sans text-[10px] font-bold tracking-wider text-[#444748]/50 dark:text-[#c4c7c7]/50 uppercase mb-3">
+              <div className="pt-6 border-t border-hairline/40 dark:border-white/5">
+                <span className="block font-sans text-[10px] font-bold tracking-wider text-ink-soft/50 dark:text-mist/50 uppercase mb-3">
                   {t('experience.skillsTech')}
                 </span>
                 <div className="flex flex-wrap gap-1.5">
                   {category.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="font-sans text-[11px] font-semibold bg-[#e4e2e0]/40 dark:bg-white/5 text-[#444748] dark:text-[#c4c7c7] px-2.5 py-1 rounded-md transition-colors duration-300 group-hover:bg-[#54615b]/5 dark:group-hover:bg-[#bbcac2]/5 group-hover:text-[#54615b] dark:group-hover:text-[#bbcac2]"
+                      className="font-sans text-[11px] font-semibold bg-hairline/40 dark:bg-white/5 text-ink-soft dark:text-mist px-2.5 py-1 rounded-md transition-colors duration-300 group-hover:bg-sage/5 dark:group-hover:bg-mint/5 group-hover:text-sage dark:group-hover:text-mint"
                     >
                       {tag}
                     </span>

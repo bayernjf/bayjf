@@ -3,7 +3,7 @@
 The two applications deploy independently after changes are merged:
 
 - Vercel runs the Hono API as an Edge Function through `api/index.ts`.
-- Cloudflare Pages serves the static Vite frontend from `dist` and its Worker
+- Cloudflare Pages serves the static Astro frontend from `dist` and its Worker
   proxies same-origin `/api/*` requests to Vercel.
 - Supabase stores contact messages; only the Vercel API receives the service-role key.
 

@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const getStaticPaths = () => [{ params: { lang: 'zh' } }];
+const lang = 'zh';
+---
+
+<BaseLayout
+  lang={lang}
+  screen="home"
+  pathOverride="/zh/terms"
+  seoTitle="服务条款 | BayJF"
+  seoDescription="BayJF 服务条款：使用本作品集网站及其内容的相关约定。"
+>
+  <main class="mx-auto max-w-3xl px-6 py-20 md:py-28">
+    <a href="/zh" class="text-sm text-sage dark:text-mint hover:underline">← 返回首页</a>
+    <h1 class="mt-6 font-serif text-3xl font-bold md:text-4xl">服务条款</h1>
+    <p class="mt-2 text-sm text-ink-soft dark:text-mist">最后更新：2026 年 8 月 7 日</p>
+
+    <div class="mt-10 space-y-10 text-sm leading-7 text-ink-soft dark:text-mist">
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-ink dark:text-paper">1. 接受条款</h2>
+        <p class="mt-2">
+          欢迎访问 BayJF（bayjf.com）个人作品集网站。访问或使用本站即表示你同意受本条款约束；如不同意，请停止使用本站。
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-ink dark:text-paper">2. 站点内容</h2>
+        <p class="mt-2">
+          本站展示作品项目、职业经历与技能信息，仅供了解之用。内容按「现状」提供，可能随时更新，不作准确性或完整性的保证。
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-ink dark:text-paper">3. 知识产权</h2>
+        <p class="mt-2">
+          本站文案、设计与媒体内容归站长所有，另有注明的除外；开源项目以其仓库声明的许可证为准。未经许可，不得将本站内容用于商业用途。
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-ink dark:text-paper">4. 合理使用</h2>
+        <p class="mt-2">
+          请勿以损害或干扰本站运行、侵犯他人权益的方式使用本站或联系表单，包括发送垃圾信息、自动化滥用或冒充他人身份。
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-ink dark:text-paper">5. 责任限制</h2>
+        <p class="mt-2">
+          在法律允许的最大范围内，站长不对因使用或无法使用本站而产生的任何间接、附带或后果性损失承担责任。
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-serif text-xl font-semibold text-ink dark:text-paper">6. 变更与联系</h2>
+        <p class="mt-2">
+          本条款可能更新，变更将在本页发布。如有疑问，请致信
+          <a href="mailto:hello@bayjf.com" class="text-sage dark:text-mint hover:underline">hello@bayjf.com</a>。
+        </p>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

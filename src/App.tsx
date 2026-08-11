@@ -7,55 +7,73 @@ import { lazy, Suspense, useState, useEffect, useCallback } from 'react';
 import { ScreenType } from './types';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import CustomCursor from './components/CustomCursor';
 import ScrollProgress from './components/ScrollProgress';
-import SEOManager from './components/SEOManager';
 import BackToTop from './components/BackToTop';
-import { AnimatePresence, motion } from 'motion/react';
-import { useLanguage } from './context/LanguageContext';
+import { AnimatePresence, motion, type Variants } from 'motion/react';
+import { useLanguage, type Language } from './context/LanguageContext';
 import { playThemeToggleSound } from './utils/sound';
 import { trackPageView } from './utils/analytics';
+import type { AgentImage } from './components/SiteIsland';
 
 const HomeScreen = lazy(() => import('./components/HomeScreen'));
 const BayjfScreen = lazy(() => import('./components/BayjfScreen'));
 const ExperienceScreen = lazy(() => import('./components/ExperienceScreen'));
 const ContactScreen = lazy(() => import('./components/ContactScreen'));
 
-export default function App() {
-  const [currentScreen, setCurrentScreen] = useState<ScreenType>('home');
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+export default function App({ lang, initialScreen = 'home', agentImages = [], turnstileSiteKey = '' }: { lang: Language; initialScreen?: ScreenType; agentImages?: AgentImage[]; turnstileSiteKey?: string }) {
+  const [currentScreen, setCurrentScreen] = useState<ScreenType>(initialScreen);
+  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>(() => {
     try {
       const saved = localStorage.getItem('bayjf_theme');
-      if (saved === 'light' || saved === 'dark') {
+      if (saved === 'light' || saved === 'dark' || saved === 'system') {
         return saved;
       }
     } catch (e) {}
-    return 'dark';
+    return 'system';
   });
+  // 系统明暗偏好：仅在 theme === 'system' 时决定实际主题
+  const [systemDark, setSystemDark] = useState<boolean>(() => {
+    try {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    } catch (e) {
+      return false;
+    }
+  });
+  const isDark = theme === 'system' ? systemDark : theme === 'dark';
   const [transitionDirection, setTransitionDirection] = useState<'none' | 'push'>('none');
   const { soundEnabled } = useLanguage();
 
-  // Handle theme toggling
+  // Follow live system preference changes (only affects visual when in system mode)
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const onChange = (e: MediaQueryListEvent) => setSystemDark(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  // Handle theme toggling: light -> dark -> system -> light
   const toggleTheme = () => {
-    const nextTheme = theme === 'light' ? 'dark' : 'light';
+    const nextTheme = theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light';
     setTheme(nextTheme);
     try {
       localStorage.setItem('bayjf_theme', nextTheme);
     } catch (e) {}
     if (soundEnabled) {
-      playThemeToggleSound(nextTheme);
+      // system 模式按当前系统偏好播放对应主题音效，与视觉变化一致
+      const nextIsDark = nextTheme === 'system' ? systemDark : nextTheme === 'dark';
+      playThemeToggleSound(nextIsDark ? 'dark' : 'light');
     }
   };
 
-  // Sync theme with HTML class
+  // Sync effective theme with HTML class
   useEffect(() => {
     const root = window.document.documentElement;
-    if (theme === 'dark') {
+    if (isDark) {
       root.classList.add('dark');
     } else {
       root.classList.remove('dark');
     }
-  }, [theme]);
+  }, [isDark]);
 
   // Navigate function matching the transitions specified
   const handleNavigate = useCallback((screen: ScreenType, transitionType: 'none' | 'push' = 'none') => {
@@ -136,58 +154,49 @@ export default function App() {
   const renderScreen = () => {
     switch (currentScreen) {
       case 'home':
-        return <HomeScreen onNavigate={handleNavigate} />;
+        return <HomeScreen onNavigate={handleNavigate} agentImages={agentImages} lang={lang} />;
       case 'bayjf':
         return <BayjfScreen />;
       case 'experience':
         return <ExperienceScreen />;
       case 'contact':
-        return <ContactScreen />;
+        return <ContactScreen turnstileSiteKey={turnstileSiteKey} />;
       default:
-        return <HomeScreen onNavigate={handleNavigate} />;
+        return <HomeScreen onNavigate={handleNavigate} agentImages={agentImages} lang={lang} />;
     }
   };
 
   // Variants for push vs none transitions
-  const pageVariants = {
+  const pageVariants: Variants = {
     initial: (direction: 'none' | 'push') => ({
       opacity: 0,
-      x: direction === 'push' ? '100%' : 0,
-      filter: direction === 'push' ? 'blur(4px)' : 'none',
+      x: direction === 'push' ? 24 : 0,
     }),
     animate: {
       opacity: 1,
       x: 0,
-      filter: 'none',
       transition: {
-        duration: transitionDirection === 'push' ? 0.6 : 0.25,
-        ease: [0.22, 1, 0.36, 1],
+        duration: transitionDirection === 'push' ? 0.5 : 0.3,
+        ease: [0.22, 1, 0.36, 1] as const,
       },
     },
     exit: (direction: 'none' | 'push') => ({
       opacity: 0,
-      x: direction === 'push' ? '-100%' : 0,
-      filter: direction === 'push' ? 'blur(4px)' : 'none',
+      x: direction === 'push' ? -24 : 0,
       transition: {
-        duration: direction === 'push' ? 0.5 : 0.2,
-        ease: [0.22, 1, 0.36, 1],
+        duration: direction === 'push' ? 0.4 : 0.2,
+        ease: [0.22, 1, 0.36, 1] as const,
       },
     }),
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-500 bg-[#fbf9f7] text-[#1b1c1b] dark:bg-[#121212] dark:text-[#fbf9f7] selection:bg-[#54615b]/20 dark:selection:bg-[#bbcac2]/25`}>
+    <div className={`min-h-screen transition-colors duration-500 bg-paper text-ink dark:bg-night dark:text-paper selection:bg-sage/20 dark:selection:bg-mint/25`}>
       {/* Subtle Scroll Progress Bar */}
       <ScrollProgress currentScreen={currentScreen} />
 
-      {/* Dynamic SEO & Accessibility Head Manager */}
-      <SEOManager currentScreen={currentScreen} />
-
       {/* Floating Back to Top Button */}
       <BackToTop currentScreen={currentScreen} />
-
-      {/* Custom Mouse Follower */}
-      <CustomCursor />
 
       {/* Persistent Navigation Header */}
       <Header
@@ -195,6 +204,7 @@ export default function App() {
         onNavigate={handleNavigate}
         theme={theme}
         toggleTheme={toggleTheme}
+        lang={lang}
       />
 
       {/* Main Content Area with Page Transitions */}
@@ -212,7 +222,7 @@ export default function App() {
             <Suspense
               fallback={
                 <div className="min-h-screen grid place-items-center" role="status" aria-live="polite">
-                  <span className="text-sm text-[#444748] dark:text-[#c4c7c7]">Loading…</span>
+                  <span className="text-sm text-ink-soft dark:text-mist">Loading…</span>
                 </div>
               }
             >

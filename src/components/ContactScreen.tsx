@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useCallback, FormEvent, MouseEvent } from 'react';
+import { useState, useCallback, MouseEvent } from 'react';
 import { motion } from 'motion/react';
 import { Mail, Link, Code, ArrowRight, Copy, AlertCircle } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
@@ -12,7 +12,11 @@ import { submitContactMessage } from '../api/contact';
 import { trackEvent } from '../utils/analytics';
 import TurnstileWidget from './TurnstileWidget';
 
-export default function ContactScreen() {
+interface ContactScreenProps {
+  turnstileSiteKey?: string;
+}
+
+export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenProps) {
   const { t, language } = useLanguage();
   const { showToast } = useToast();
   const status = {
@@ -53,7 +57,6 @@ export default function ContactScreen() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [turnstileToken, setTurnstileToken] = useState('');
-  const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
   const handleTurnstileError = useCallback(() => setTurnstileToken(''), []);
 
   const validate = (): boolean => {
@@ -92,7 +95,7 @@ export default function ContactScreen() {
     }
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validate()) {
       showToast(
@@ -142,10 +145,7 @@ export default function ContactScreen() {
   };
 
   return (
-    <div className="relative pt-32 pb-24 min-h-screen px-6 md:px-16 max-w-7xl mx-auto flex items-center">
-      {/* Background radial glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#54615b]/10 via-transparent to-transparent pointer-events-none -z-10" />
-
+    <section aria-label="Contact" className="relative pt-32 pb-24 min-h-screen px-6 md:px-16 max-w-7xl mx-auto flex items-center">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-12 w-full items-center">
         {/* Left Column: Information */}
         <div className="md:col-span-5 flex flex-col justify-center pr-0 md:pr-12">
@@ -157,22 +157,22 @@ export default function ContactScreen() {
             {/* Live Availability Status Indicator */}
             <div className="inline-flex flex-col mb-8 gap-2">
               <div className="flex items-center gap-1">
-                <div className="flex items-center px-3 py-1.5 rounded-full bg-[#e4e2e0]/40 dark:bg-white/5 border border-[#e4e2e0]/60 dark:border-white/5 text-xs font-sans tracking-wide">
+                <div className="flex items-center px-3 py-1.5 rounded-full bg-paper-raised dark:bg-night-raised text-xs font-sans tracking-tight">
                   <span className="relative flex h-2 w-2 mr-2.5">
                     <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${status.available ? 'bg-emerald-400' : 'bg-amber-400'}`}></span>
                     <span className={`relative inline-flex rounded-full h-2 w-2 ${status.available ? 'bg-emerald-500' : 'bg-amber-500'}`}></span>
                   </span>
-                  <span className="font-semibold text-[#1b1c1b] dark:text-[#fbf9f7] mr-2">
+                  <span className="font-medium text-ink dark:text-paper mr-2">
                     {status.label}
                   </span>
                 </div>
               </div>
             </div>
 
-            <h1 className="font-serif text-5xl md:text-7xl font-bold text-[#1b1c1b] dark:text-[#fbf9f7] mb-8 leading-tight">
+            <h1 className="font-sans text-4xl md:text-6xl font-semibold text-ink dark:text-paper mb-8 leading-tight tracking-tight">
               {t('contact.title')}
             </h1>
-            <p className="font-sans text-lg text-[#444748] dark:text-[#c4c7c7] mb-12 max-w-md leading-relaxed">
+            <p className="font-sans text-lg text-ink-soft dark:text-mist mb-12 max-w-md leading-relaxed">
               {t('contact.desc')}
             </p>
           </motion.div>
@@ -189,17 +189,18 @@ export default function ContactScreen() {
                 <a
                   id={`contact-email-link-${index}`}
                   href={`mailto:${email}`}
-                  className="interactive inline-flex items-center gap-4 text-xl md:text-2xl font-serif text-[#1b1c1b] dark:text-[#fbf9f7] hover:text-[#54615b] dark:hover:text-[#bbcac2] transition-colors group"
+                  className="interactive inline-flex items-center gap-4 text-lg md:text-xl font-sans text-ink dark:text-paper hover:text-sage dark:hover:text-mint transition-colors group"
                 >
-                  <span className="p-3 bg-[#e4e2e0]/50 dark:bg-white/5 rounded-full text-[#54615b] dark:text-[#bbcac2] group-hover:scale-110 transition-transform duration-300">
-                    <Mail size={22} />
+                  <span className="p-3 bg-paper-raised dark:bg-night-raised rounded-full text-sage dark:text-mint group-hover:scale-105 transition-transform duration-200">
+                    <Mail size={20} />
                   </span>
                   {email}
                 </a>
                 <button
                   id={`contact-email-copy-btn-${index}`}
+                  type="button"
                   onClick={handleCopyEmail(email)}
-                  className="interactive p-2.5 bg-[#e4e2e0]/40 dark:bg-white/5 text-[#444748] dark:text-[#c4c7c7] hover:text-[#54615b] dark:hover:text-[#bbcac2] hover:bg-[#e4e2e0] dark:hover:bg-white/10 rounded-full transition-all duration-300 ml-2 shadow-sm hover:scale-110"
+                  className="interactive p-2.5 bg-paper-raised dark:bg-night-raised text-ink-soft dark:text-mist hover:text-sage dark:hover:text-mint rounded-full transition-all duration-200 ml-2 hover:scale-105 active:scale-[0.97]"
                   title={language === 'en' ? `Copy ${email}` : `复制 ${email}`}
                   aria-label={language === 'en' ? `Copy ${email}` : `复制 ${email}`}
                 >
@@ -215,16 +216,16 @@ export default function ContactScreen() {
                 href="https://github.com/bayernjf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 bg-[#e4e2e0]/40 dark:bg-white/5 text-[#444748] dark:text-[#c4c7c7] hover:text-[#54615b] dark:hover:text-[#bbcac2] hover:bg-[#e4e2e0] dark:hover:bg-white/10 rounded-full transition-all duration-300 scale-100 hover:scale-110"
+                className="p-3 bg-paper-raised dark:bg-night-raised text-ink-soft dark:text-mist hover:text-sage dark:hover:text-mint rounded-full transition-all duration-200 hover:scale-105 active:scale-[0.97]"
               >
                 <Link size={20} />
               </a>
               <a
                 id="social-link-code"
-                href="https://github.com"
+                href="https://github.com/bayernjf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 bg-[#e4e2e0]/40 dark:bg-white/5 text-[#444748] dark:text-[#c4c7c7] hover:text-[#54615b] dark:hover:text-[#bbcac2] hover:bg-[#e4e2e0] dark:hover:bg-white/10 rounded-full transition-all duration-300 scale-100 hover:scale-110"
+                className="p-3 bg-paper-raised dark:bg-night-raised text-ink-soft dark:text-mist hover:text-sage dark:hover:text-mint rounded-full transition-all duration-200 hover:scale-105 active:scale-[0.97]"
               >
                 <Code size={20} />
               </a>
@@ -234,14 +235,11 @@ export default function ContactScreen() {
 
         {/* Right Column: Contact Form */}
         <div className="md:col-span-6 md:col-start-7 relative">
-          {/* Subtle glow behind card */}
-          <div className="absolute -inset-4 bg-[#54615b]/5 dark:bg-[#54615b]/10 rounded-3xl blur-2xl -z-10" />
-
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="bg-[#fbf9f7] dark:bg-[#161716] p-8 md:p-12 rounded-3xl border border-[#e4e2e0] dark:border-white/5 shadow-2xl transition-all duration-500 hover:border-[#54615b]/20"
+            className="bg-paper-raised dark:bg-night-raised p-8 md:p-12 rounded-[28px] shadow-sm transition-shadow duration-300 hover:shadow-md"
           >
             {isSuccess ? (
               <motion.div
@@ -250,17 +248,17 @@ export default function ContactScreen() {
                 className="text-center py-12"
               >
                 <span className="text-4xl">✨</span>
-                <h3 className="font-serif text-2xl font-bold text-[#1b1c1b] dark:text-[#fbf9f7] mt-4 mb-2">
+                <h3 className="font-sans text-2xl font-semibold text-ink dark:text-paper mt-4 mb-2 tracking-tight">
                   {t('contact.form.successHeader')}
                 </h3>
-                <p className="font-sans text-sm text-[#444748] dark:text-[#c4c7c7] max-w-sm mx-auto">
+                <p className="font-sans text-sm text-ink-soft dark:text-mist max-w-sm mx-auto">
                   {t('contact.form.successSub')}
                 </p>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-8">
+              <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
                 {/* Inputs Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Name Input */}
                   <div className="flex flex-col">
                     <div className="relative group">
@@ -270,15 +268,15 @@ export default function ContactScreen() {
                         placeholder={t('contact.form.namePlaceholder')}
                         value={formData.name}
                         onChange={(e) => handleChange('name', e.target.value)}
-                        className={`contact-field w-full bg-transparent border-b py-3 text-sm text-[#1b1c1b] dark:text-[#fbf9f7] placeholder-[#444748]/60 dark:placeholder-[#c4c7c7]/75 focus:outline-none transition-colors duration-300 ${
+                        className={`contact-field w-full bg-paper dark:bg-night border rounded-xl py-3 px-4 text-sm text-ink dark:text-paper placeholder-ink-soft/70 dark:placeholder-mist/70 focus:outline-none focus:ring-2 transition-all duration-200 ${
                           errors.name
-                            ? 'border-rose-500 dark:border-rose-400 focus:border-rose-600 dark:focus:border-rose-400'
-                            : 'border-[#e4e2e0] dark:border-white/10 focus:border-[#54615b] dark:focus:border-[#bbcac2]'
+                            ? 'border-rose-500 dark:border-rose-400 focus:ring-rose-500/20'
+                            : 'border-hairline/30 dark:border-white/5 focus:ring-sage/20 focus:border-sage dark:focus:border-mint'
                         }`}
                       />
                     </div>
                     {errors.name && (
-                      <span className="text-[11px] font-sans text-rose-500 dark:text-rose-400 tracking-wide mt-1.5 transition-all animate-in fade-in slide-in-from-top-1">
+                      <span className="text-[12px] font-sans text-rose-500 dark:text-rose-400 tracking-tight mt-1.5 transition-all animate-in fade-in slide-in-from-top-1">
                         {errors.name}
                       </span>
                     )}
@@ -293,15 +291,15 @@ export default function ContactScreen() {
                         placeholder={t('contact.form.emailPlaceholder')}
                         value={formData.email}
                         onChange={(e) => handleChange('email', e.target.value)}
-                        className={`contact-field w-full bg-transparent border-b py-3 text-sm text-[#1b1c1b] dark:text-[#fbf9f7] placeholder-[#444748]/60 dark:placeholder-[#c4c7c7]/75 focus:outline-none transition-colors duration-300 ${
+                        className={`contact-field w-full bg-paper dark:bg-night border rounded-xl py-3 px-4 text-sm text-ink dark:text-paper placeholder-ink-soft/70 dark:placeholder-mist/70 focus:outline-none focus:ring-2 transition-all duration-200 ${
                           errors.email
-                            ? 'border-rose-500 dark:border-rose-400 focus:border-rose-600 dark:focus:border-rose-400'
-                            : 'border-[#e4e2e0] dark:border-white/10 focus:border-[#54615b] dark:focus:border-[#bbcac2]'
+                            ? 'border-rose-500 dark:border-rose-400 focus:ring-rose-500/20'
+                            : 'border-hairline/30 dark:border-white/5 focus:ring-sage/20 focus:border-sage dark:focus:border-mint'
                         }`}
                       />
                     </div>
                     {errors.email && (
-                      <span className="text-[11px] font-sans text-rose-500 dark:text-rose-400 tracking-wide mt-1.5 transition-all animate-in fade-in slide-in-from-top-1">
+                      <span className="text-[12px] font-sans text-rose-500 dark:text-rose-400 tracking-tight mt-1.5 transition-all animate-in fade-in slide-in-from-top-1">
                         {errors.email}
                       </span>
                     )}
@@ -317,15 +315,15 @@ export default function ContactScreen() {
                       placeholder={t('contact.form.subjectPlaceholder')}
                       value={formData.subject}
                       onChange={(e) => handleChange('subject', e.target.value)}
-                      className={`contact-field w-full bg-transparent border-b py-3 text-sm text-[#1b1c1b] dark:text-[#fbf9f7] placeholder-[#444748]/60 dark:placeholder-[#c4c7c7]/75 focus:outline-none transition-colors duration-300 ${
+                      className={`contact-field w-full bg-paper dark:bg-night border rounded-xl py-3 px-4 text-sm text-ink dark:text-paper placeholder-ink-soft/70 dark:placeholder-mist/70 focus:outline-none focus:ring-2 transition-all duration-200 ${
                         errors.subject
-                          ? 'border-rose-500 dark:border-rose-400 focus:border-rose-600 dark:focus:border-rose-400'
-                          : 'border-[#e4e2e0] dark:border-white/10 focus:border-[#54615b] dark:focus:border-[#bbcac2]'
+                          ? 'border-rose-500 dark:border-rose-400 focus:ring-rose-500/20'
+                          : 'border-hairline/30 dark:border-white/5 focus:ring-sage/20 focus:border-sage dark:focus:border-mint'
                       }`}
                     />
                   </div>
                   {errors.subject && (
-                    <span className="text-[11px] font-sans text-rose-500 dark:text-rose-400 tracking-wide mt-1.5 transition-all animate-in fade-in slide-in-from-top-1">
+                    <span className="text-[12px] font-sans text-rose-500 dark:text-rose-400 tracking-tight mt-1.5 transition-all animate-in fade-in slide-in-from-top-1">
                       {errors.subject}
                     </span>
                   )}
@@ -340,15 +338,15 @@ export default function ContactScreen() {
                       placeholder={t('contact.form.messagePlaceholder')}
                       value={formData.message}
                       onChange={(e) => handleChange('message', e.target.value)}
-                      className={`contact-field w-full bg-transparent border-b py-3 text-sm text-[#1b1c1b] dark:text-[#fbf9f7] placeholder-[#444748]/60 dark:placeholder-[#c4c7c7]/75 focus:outline-none transition-colors duration-300 resize-none ${
+                      className={`contact-field w-full bg-paper dark:bg-night border rounded-xl py-3 px-4 text-sm text-ink dark:text-paper placeholder-ink-soft/70 dark:placeholder-mist/70 focus:outline-none focus:ring-2 transition-all duration-200 resize-none ${
                         errors.message
-                          ? 'border-rose-500 dark:border-rose-400 focus:border-rose-600 dark:focus:border-rose-400'
-                          : 'border-[#e4e2e0] dark:border-white/10 focus:border-[#54615b] dark:focus:border-[#bbcac2]'
+                          ? 'border-rose-500 dark:border-rose-400 focus:ring-rose-500/20'
+                          : 'border-hairline/30 dark:border-white/5 focus:ring-sage/20 focus:border-sage dark:focus:border-mint'
                       }`}
                     />
                   </div>
                   {errors.message && (
-                    <span className="text-[11px] font-sans text-rose-500 dark:text-rose-400 tracking-wide mt-1.5 transition-all animate-in fade-in slide-in-from-top-1">
+                    <span className="text-[12px] font-sans text-rose-500 dark:text-rose-400 tracking-tight mt-1.5 transition-all animate-in fade-in slide-in-from-top-1">
                       {errors.message}
                     </span>
                   )}
@@ -378,10 +376,10 @@ export default function ContactScreen() {
                     id="form-submit-btn"
                     type="submit"
                     disabled={isSubmitting}
-                    className="interactive bg-[#1b1c1b] dark:bg-[#fbf9f7] hover:bg-[#54615b] dark:hover:bg-[#bbcac2] text-[#fbf9f7] dark:text-[#1b1c1b] disabled:opacity-50 font-sans text-xs uppercase font-bold tracking-widest px-8 py-4 rounded-full flex items-center gap-3 hover:scale-105 active:scale-95 hover:shadow-lg transition-all duration-300"
+                    className="interactive bg-sage dark:bg-mint hover:opacity-90 active:scale-[0.97] text-paper dark:text-night disabled:opacity-50 font-sans text-sm font-medium tracking-tight px-8 py-3.5 rounded-full flex items-center gap-3 transition-all duration-200"
                   >
                     {isSubmitting ? t('contact.form.sending') : t('contact.form.send')}
-                    <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
                   </button>
                 </div>
               </form>
@@ -389,6 +387,6 @@ export default function ContactScreen() {
           </motion.div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

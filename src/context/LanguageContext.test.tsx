@@ -12,7 +12,7 @@ describe('LanguageProvider', () => {
     const { result } = renderHook(() => useLanguage(), { wrapper });
 
     expect(result.current.language).toBe('en');
-    expect(result.current.projects).toHaveLength(3);
+    expect(result.current.projects).toHaveLength(14);
     expect(result.current.projects[0].title).toBe('SoftDesk');
     expect(result.current.t('footer.copyright', { year: 2026 })).toContain('2026');
     expect(result.current.t('unknown.translation')).toBe('unknown.translation');

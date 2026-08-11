@@ -1,0 +1,48 @@
+# BayJF — robots.txt
+# Site: https://bayjf.com
+# Sitemaps are declared per-locale at the bottom.
+
+# --- Traditional crawlers ---
+User-agent: *
+Allow: /
+Disallow: /api/
+# Astro i18n leaves empty /en/ prefix; avoid indexing the prefixed variant.
+Disallow: /en/
+
+# --- AI crawlers: explicit allowlist so generative engines can read the site ---
+# OpenAI / ChatGPT
+User-agent: GPTBot
+Allow: /
+
+# Anthropic / Claude
+User-agent: ClaudeBot
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+# Google Gemini (Search Grounding / Vertex extensions)
+User-agent: Google-Extended
+Allow: /
+
+# Common Crawl (open dataset used by many open LLMs)
+User-agent: CCBot
+Allow: /
+
+# Meta AI
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# Amazon Rufus / Alexa
+User-agent: Amazonbot
+Allow: /
+
+# ByteDance / Doubao
+User-agent: Bytespider
+Allow: /
+
+# --- Sitemaps (one per locale, plus the default) ---
+Sitemap: https://bayjf.com/sitemap-index.xml

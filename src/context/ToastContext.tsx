@@ -57,14 +57,14 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 transition={{ type: 'spring', damping: 25, stiffness: 350 }}
                 className={`pointer-events-auto flex items-start gap-3 p-4 rounded-xl border shadow-xl backdrop-blur-md transition-all duration-300 ${
                   isSuccess
-                    ? 'bg-[#fbf9f7]/95 dark:bg-[#1a1c1a]/95 text-[#1b1c1b] dark:text-[#fbf9f7] border-[#54615b]/20 dark:border-white/10 shadow-[#54615b]/5'
+                    ? 'bg-paper/95 dark:bg-night-soft/95 text-ink dark:text-paper border-sage/20 dark:border-white/10 shadow-sage/5'
                     : 'bg-rose-50/95 dark:bg-rose-950/20 text-rose-900 dark:text-rose-200 border-rose-200/50 dark:border-rose-500/10 shadow-rose-900/5'
                 }`}
               >
                 {/* Visual Icon */}
                 <div className="mt-0.5">
                   {isSuccess ? (
-                    <CheckCircle2 size={18} className="text-[#54615b] dark:text-[#bbcac2]" />
+                    <CheckCircle2 size={18} className="text-sage dark:text-mint" />
                   ) : (
                     <AlertCircle size={18} className="text-rose-500" />
                   )}
@@ -81,7 +81,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 <button
                   id={`dismiss-toast-${toast.id}`}
                   onClick={() => dismissToast(toast.id)}
-                  className="interactive p-0.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 text-[#444748]/50 dark:text-[#c4c7c7]/50 hover:text-[#1b1c1b] dark:hover:text-[#fbf9f7] transition-colors"
+                  className="interactive p-0.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 text-ink-soft/50 dark:text-mist/50 hover:text-ink dark:hover:text-paper transition-colors"
                 >
                   <X size={14} />
                 </button>

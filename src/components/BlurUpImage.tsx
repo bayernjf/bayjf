@@ -59,11 +59,11 @@ export default function BlurUpImage({ src, alt, className = '' }: BlurUpImagePro
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full overflow-hidden bg-[#f5f3f1] dark:bg-[#1a1b1a]"
+      className="relative w-full h-full overflow-hidden bg-paper-raised dark:bg-night-hover"
     >
       {/* Shimmer effect placeholder whilst not in view or not loaded */}
       {!isLoaded && (
-        <div className="absolute inset-0 z-20 flex items-center justify-center bg-gradient-to-r from-[#f5f3f1] via-[#eae8e5] to-[#f5f3f1] dark:from-[#1a1b1a] dark:via-[#242524] dark:to-[#1a1b1a] animate-pulse">
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-gradient-to-r from-paper-raised via-paper-muted to-paper-raised dark:from-night-hover dark:via-night-muted dark:to-night-hover animate-pulse">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-shimmer pointer-events-none" />
         </div>
       )}
