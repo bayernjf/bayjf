@@ -3,15 +3,25 @@ import { cors } from 'hono/cors';
 import { secureHeaders } from 'hono/secure-headers';
 import { validateContactMessage } from './contact';
 import { SupabaseContactRepository } from './supabase';
-import type { ContactRepository, Env } from './types';
+import { verifyTurnstile, hashIp } from './security';
+import {
+  SupabaseLikeRepository,
+  validateLikeInput,
+  isToggleCoolingDown,
+  markToggle,
+  composeVisitorHash,
+} from './likes';
+import type { ContactRepository, Env, LikeRepository } from './types';
 
 type Variables = { requestId: string };
 type AppBindings = { Bindings: Env; Variables: Variables };
 type RepositoryFactory = (env: Env) => ContactRepository;
+type LikesRepositoryFactory = (env: Env) => LikeRepository;
 const MAX_CONTACT_BODY_BYTES = 16 * 1024;
-const TURNSTILE_TIMEOUT_MS = 10_000;
 const CONTACT_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
 const CONTACT_RATE_LIMIT_MAX = 5;
+const LID_COOKIE = 'bayjf_lid';
+const LID_MAX_AGE = 365 * 24 * 60 * 60;
 const contactAttempts = new Map<string, { count: number; resetAt: number }>();
 
 function isContactRateLimited(ip: string | undefined): boolean {
@@ -35,34 +45,18 @@ function allowedOrigins(env: Env): string[] {
     .filter(Boolean);
 }
 
-async function hashIp(ip: string | undefined): Promise<string | undefined> {
-  if (!ip) return undefined;
-  const data = new TextEncoder().encode(ip);
-  const digest = await crypto.subtle.digest('SHA-256', data);
-  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, '0')).join('');
-}
-
-async function verifyTurnstile(token: string, env: Env, remoteIp?: string): Promise<boolean> {
-  if (!env.TURNSTILE_SECRET_KEY || !token) return false;
-  try {
-    const payload = new URLSearchParams({ secret: env.TURNSTILE_SECRET_KEY, response: token });
-    if (remoteIp) payload.set('remoteip', remoteIp);
-    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: payload,
-      signal: AbortSignal.timeout(TURNSTILE_TIMEOUT_MS),
-    });
-    if (!response.ok) return false;
-    const result = await response.json() as { success?: boolean };
-    return result.success === true;
-  } catch {
-    return false;
+function getCookie(header: string | undefined, name: string): string | undefined {
+  if (!header) return undefined;
+  for (const part of header.split(';')) {
+    const [key, ...rest] = part.trim().split('=');
+    if (key === name) return decodeURIComponent(rest.join('='));
   }
+  return undefined;
 }
 
 export function createApp(
   repositoryFactory: RepositoryFactory = (env) => new SupabaseContactRepository(env),
+  likesRepositoryFactory: LikesRepositoryFactory = (env) => new SupabaseLikeRepository(env),
 ) {
   const app = new Hono<AppBindings>();
 
@@ -74,7 +68,7 @@ export function createApp(
   });
   app.use('/api/*', cors({
     origin: (origin, c) => allowedOrigins(c.env).includes(origin) ? origin : '',
-    allowMethods: ['POST', 'OPTIONS'],
+    allowMethods: ['GET', 'POST', 'OPTIONS'],
     allowHeaders: ['Content-Type'],
     maxAge: 86400,
   }));
@@ -131,6 +125,103 @@ export function createApp(
     } catch (error) {
       console.error('Contact submission failed', c.get('requestId'), error);
       return c.json({ error: 'INTERNAL_ERROR', message: 'Unable to send message right now.' }, 500);
+    }
+  });
+
+  // ----- Project "like" toggle -----
+  app.post('/api/projects/like', async (c: Context<AppBindings>) => {
+    const remoteIp = c.req.header('CF-Connecting-IP');
+    const contentLength = Number(c.req.header('Content-Length'));
+    if (Number.isFinite(contentLength) && contentLength > MAX_CONTACT_BODY_BYTES) {
+      return c.json({ error: 'PAYLOAD_TOO_LARGE', message: 'Request body is too large.' }, 413);
+    }
+
+    let body: unknown;
+    try {
+      const rawBody = await c.req.text();
+      if (new TextEncoder().encode(rawBody).byteLength > MAX_CONTACT_BODY_BYTES) {
+        return c.json({ error: 'PAYLOAD_TOO_LARGE', message: 'Request body is too large.' }, 413);
+      }
+      body = JSON.parse(rawBody);
+    } catch {
+      return c.json({ error: 'INVALID_JSON', message: 'Request body must be valid JSON.' }, 400);
+    }
+
+    const result = validateLikeInput(body);
+    if (result.success === false) {
+      return c.json({ error: 'VALIDATION_ERROR', fields: result.errors }, 422);
+    }
+
+    const { projectId, source, action } = result.data;
+    const lid = getCookie(c.req.header('Cookie'), LID_COOKIE);
+    let newLid: string | undefined;
+    const effectiveLid = lid ?? (newLid = crypto.randomUUID());
+    const visitorHash = await composeVisitorHash(remoteIp, c.req.header('User-Agent'), effectiveLid);
+
+    // Per-visitor cooldown: dampens rapid "like/unlike/like" toggling.
+    if (isToggleCoolingDown(visitorHash)) {
+      return c.json({ error: 'RATE_LIMITED', message: 'Slow down a moment before toggling again.' }, 429);
+    }
+
+    if (action === 'like') {
+      const turnstileToken = typeof body === 'object' && body !== null && 'turnstileToken' in body
+        ? String((body as Record<string, unknown>).turnstileToken ?? '')
+        : '';
+      if (!await verifyTurnstile(turnstileToken, c.env, remoteIp)) {
+        return c.json({ error: 'VERIFICATION_FAILED', message: 'Human verification failed.' }, 403);
+      }
+    }
+
+    try {
+      await likesRepositoryFactory(c.env).upsert({
+        project_id: projectId,
+        visitor_hash: visitorHash,
+        source,
+        is_active: action === 'like',
+        ip_hash: await hashIp(remoteIp),
+        user_agent: c.req.header('User-Agent')?.slice(0, 500),
+      });
+    } catch (error) {
+      console.error('Like toggle failed', c.get('requestId'), error);
+      return c.json({ error: 'INTERNAL_ERROR', message: 'Unable to update like right now.' }, 500);
+    }
+
+    markToggle(visitorHash);
+    if (newLid) {
+      c.header(
+        'Set-Cookie',
+        `${LID_COOKIE}=${newLid}; Path=/; Max-Age=${LID_MAX_AGE}; SameSite=Lax; HttpOnly`,
+      );
+    }
+    return c.json({ ok: true, liked: action === 'like', projectId }, 200);
+  });
+
+  // ----- Current visitor's liked projects (initializes heart state) -----
+  app.get('/api/projects/likes/mine', async (c: Context<AppBindings>) => {
+    const remoteIp = c.req.header('CF-Connecting-IP');
+    const lid = getCookie(c.req.header('Cookie'), LID_COOKIE);
+    if (!lid) return c.json({ liked: [] }, 200);
+
+    const visitorHash = await composeVisitorHash(remoteIp, c.req.header('User-Agent'), lid);
+    try {
+      const ids = await likesRepositoryFactory(c.env).listActiveByVisitor(visitorHash);
+      return c.json({ liked: ids }, 200);
+    } catch (error) {
+      console.error('Like list failed', c.get('requestId'), error);
+      return c.json({ error: 'INTERNAL_ERROR', message: 'Unable to load likes right now.' }, 500);
+    }
+  });
+
+  // ----- Reserved per-project counts (not consumed by the frontend yet) -----
+  app.get('/api/projects/likes/counts', async (c: Context<AppBindings>) => {
+    const idsParam = c.req.query('ids');
+    const ids = idsParam ? idsParam.split(',').map((id) => id.trim()).filter(Boolean) : undefined;
+    try {
+      const counts = await likesRepositoryFactory(c.env).counts(ids);
+      return c.json({ counts }, 200);
+    } catch (error) {
+      console.error('Like counts failed', c.get('requestId'), error);
+      return c.json({ error: 'INTERNAL_ERROR', message: 'Unable to load counts right now.' }, 500);
     }
   });
 
