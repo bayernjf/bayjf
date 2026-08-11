@@ -12,6 +12,22 @@ BayJF 个人品牌站，是 14 个产品落地页的 hub（中枢）。Astro 7 +
 - bayjf 展示全部产品落地页卡片，落地页卡片链接指向各自落地页，落地页再链到真实产品；
 - 落地页之间不直接互链，必须经 bayjf 中转。
 
+## 项目卡喜欢（Like）功能设计（2026-08-07，待实现）
+- 需求：每个项目卡爱心按钮支持喜欢/取消（toggle）；防刷；记录来源；暂不展示
+  喜欢数但表结构和接口预留。
+- 防刷多层叠加：IP+UA+长效匿名 cookie `bayjf_lid` 合成 `visitor_hash`（SHA-256，
+  不存 PII）；Turnstile 仅在 like 时校验；IP 维度限流；DB `UNIQUE(project_id,
+  visitor_hash)` 兜底。
+- 数据：新增 `project_likes` 表（`is_active` 软删除，upsert toggle），RLS 全禁，
+  经 Hono service-role 代理；预留 `project_like_counts` 视图。
+- API：`POST /api/projects/like`（toggle）、`GET /api/projects/likes/mine`
+  （当前访客已喜欢列表）、预留 `GET /api/projects/likes/counts`。
+- 前端：LikeContext 管理 `likedIds`；LikeButton 乐观更新；source 记录
+  grid/timeline/blind_box/blind_box_open/detail_modal/search；盲盒封箱时不显示
+  爱心；`trackEvent('project_like_toggle', ...)` 埋点。
+- 完整方案见 `docs/LIKES_FEATURE_DESIGN.md`。尚未写代码，实现按该文档的原子 commit
+  拆分（db → api → 前端 context/button → 卡片集成 → 测试）。
+
 ## 导航水珠动效（2026-08-11，本次新增 + 修复）
 - 架构：水珠动效上移到**共享层**，跨导航标签连续流动，不再在单个标签内计算。
   - 新增 `src/components/NavWaterTrail.tsx`：导航栏共享的"水珠流动"层，挂在 Header 的

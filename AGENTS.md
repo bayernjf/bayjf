@@ -120,6 +120,10 @@ Playwright（或说明当前环境无法执行的原因）。任一必需检查�
 - API 路由统一放在 `/api/*` 下。
 - 联系表单端点为 `POST /api/contact`。
 - 健康检查端点为 `GET /api/health`。
+- 项目卡喜欢（like）功能尚在设计阶段，方案见
+  `docs/LIKES_FEATURE_DESIGN.md`：`POST /api/projects/like`（toggle）、
+  `GET /api/projects/likes/mine`，表 `project_likes` 与 contact 表共用相同的
+  RLS/哈希/service-role 模式。实现前先读该文档。
 - 浏览器只访问 Hono API，不允许使用 service-role key 直连 Supabase。
 - `contact_messages` 表启用 RLS，不向 `anon` 或 `authenticated` 开放策略。
 - 所有输入必须在服务端校验；数据库错误不得返回给浏览器。
@@ -309,6 +313,7 @@ CLOUDFLARE_ACCOUNT_ID
 | `wrangler.toml` | Cloudflare Pages 项目配置 |
 | `.github/workflows/` | CI 和双平台部署流程 |
 | `PULL_REQUEST_WORKFLOW.md` | 两阶段 PR、Actions 门禁、修复和分支回同步流程 |
+| `docs/LIKES_FEATURE_DESIGN.md` | 项目卡喜欢（like）功能设计：防刷、数据模型、API、前端 |
 
 ## 不要做的事
 
