@@ -10,6 +10,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useToast } from '../context/ToastContext';
 import { submitContactMessage } from '../api/contact';
 import { trackEvent } from '../utils/analytics';
+import { copyToClipboard } from '../utils/clipboard';
 import TurnstileWidget from './TurnstileWidget';
 
 interface ContactScreenProps {
@@ -24,44 +25,15 @@ export default function ContactScreen({ turnstileSiteKey = '' }: ContactScreenPr
     label: language === 'en' ? 'Currently Accepting Projects' : '当前接受项目合作'
   };
   
-  const copyEmail = async (email: string): Promise<void> => {
-    let ok = false;
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(email);
-        ok = true;
-      } else {
-        throw new Error('Clipboard API unavailable');
-      }
-    } catch {
-      // Fallback for non-secure contexts (HTTP) or older browsers where
-      // navigator.clipboard is undefined and would throw synchronously.
-      try {
-        const textarea = document.createElement('textarea');
-        textarea.value = email;
-        textarea.setAttribute('readonly', '');
-        textarea.style.position = 'fixed';
-        textarea.style.top = '-9999px';
-        textarea.style.opacity = '0';
-        document.body.appendChild(textarea);
-        textarea.select();
-        ok = document.execCommand('copy');
-        document.body.removeChild(textarea);
-      } catch {
-        ok = false;
-      }
-    }
+  const handleCopyEmail = (email: string) => async (e: MouseEvent) => {
+    e.preventDefault();
+    const ok = await copyToClipboard(email);
     showToast(
       ok
         ? (language === 'en' ? 'Email copied to clipboard!' : '邮箱已复制到剪贴板！')
         : (language === 'en' ? 'Failed to copy email.' : '复制邮箱失败。'),
       ok ? 'success' : 'error'
     );
-  };
-
-  const handleCopyEmail = (email: string) => (e: MouseEvent) => {
-    e.preventDefault();
-    void copyEmail(email);
   };
 
   const [formData, setFormData] = useState({

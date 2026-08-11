@@ -21,9 +21,22 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'nav.soundOn': 'Mute toggle sound',
     'nav.soundOff': 'Unmute toggle sound',
     'nav.tip.home': 'Back to home',
-    'nav.tip.bayjf': 'View project cases',
+    'nav.tip.bayjf': 'See what you like',
     'nav.tip.experience': 'Career experience',
     'nav.tip.contact': 'Get in touch',
+    'nav.tip.social': 'Open social links',
+    'nav.follow': 'Follow me',
+
+    // Likes
+    'like.liked': 'Liked',
+    'like.notLiked': 'Like',
+    'like.toggleError': 'Could not update like.',
+
+    // Social Tree Modal
+    'social.title': 'Find me elsewhere',
+    'social.subtitle': 'These are the places I hang out online.',
+    'social.backHome': 'Back to Home',
+    'social.copyEmail': 'Copy email',
 
     // HomeScreen
     'home.hero.title1': 'AI Agent &',
@@ -121,9 +134,22 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'nav.soundOn': '静音开关提示音',
     'nav.soundOff': '开启开关提示音',
     'nav.tip.home': '返回首页',
-    'nav.tip.bayjf': '查看项目案例',
+    'nav.tip.bayjf': '来点喜欢的',
     'nav.tip.experience': '职业履历',
     'nav.tip.contact': '联系我',
+    'nav.tip.social': '打开社交链接',
+    'nav.follow': '关注我',
+
+    // 喜欢
+    'like.liked': '已喜欢',
+    'like.notLiked': '喜欢',
+    'like.toggleError': '更新喜欢状态失败。',
+
+    // Social Tree Modal
+    'social.title': '在这些地方找到我',
+    'social.subtitle': '这是我在网上出没的地方。',
+    'social.backHome': '返回首页',
+    'social.copyEmail': '复制邮箱',
 
     // HomeScreen
     'home.hero.title1': 'AI Agent 与',

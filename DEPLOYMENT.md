@@ -5,7 +5,7 @@ The two applications deploy independently after changes are merged:
 - Vercel runs the Hono API as an Edge Function through `api/index.ts`.
 - Cloudflare Pages serves the static Astro frontend from `dist` and its Worker
   proxies same-origin `/api/*` requests to Vercel.
-- Supabase stores contact messages; only the Vercel API receives the service-role key.
+- Supabase stores contact messages and project likes; only the Vercel API receives the service-role key.
 
 Deployment stages:
 
@@ -73,7 +73,11 @@ Never create a `VITE_` variable containing a Supabase service-role key.
 
 ## Database and release
 
-1. Apply `supabase/migrations/20260719000000_create_contact_messages.sql`.
+1. Apply the Supabase migrations by running each `supabase/migrations/*.sql` in the
+   Supabase SQL editor, in filename (timestamp) order:
+   - `20260719000000_create_contact_messages.sql`
+   - `20260811000000_create_project_likes.sql` (project "like" feature: toggle endpoint
+     `POST /api/projects/like`, `GET /api/projects/likes/mine`, reserved `GET /api/projects/likes/counts`)
 2. Configure and deploy the Vercel API first.
 3. Put the Vercel API base URL without `/api` in Cloudflare Pages'
    `API_BASE_URL` runtime variable for each environment.
