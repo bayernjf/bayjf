@@ -24,6 +24,13 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'nav.tip.bayjf': 'View project cases',
     'nav.tip.experience': 'Career experience',
     'nav.tip.contact': 'Get in touch',
+    'nav.tip.social': 'Open social links',
+
+    // Social Tree Modal
+    'social.title': 'Find me elsewhere',
+    'social.subtitle': 'These are the places I hang out online.',
+    'social.backHome': 'Back to Home',
+    'social.copyEmail': 'Copy email',
 
     // HomeScreen
     'home.hero.title1': 'AI Agent &',
@@ -124,6 +131,13 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'nav.tip.bayjf': '查看项目案例',
     'nav.tip.experience': '职业履历',
     'nav.tip.contact': '联系我',
+    'nav.tip.social': '打开社交链接',
+
+    // Social Tree Modal
+    'social.title': '在这些地方找到我',
+    'social.subtitle': '这是我在网上出没的地方。',
+    'social.backHome': '返回首页',
+    'social.copyEmail': '复制邮箱',
 
     // HomeScreen
     'home.hero.title1': 'AI Agent 与',
