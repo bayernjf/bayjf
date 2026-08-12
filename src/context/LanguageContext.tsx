@@ -42,7 +42,7 @@ const RAW_PROJECTS_EN: Project[] = [
   },
   {
     id: 'word-base',
-    title: 'WordBase Ecosystem',
+    title: 'WordBase',
     category: 'LANGUAGE LEARNING PLATFORM',
     description: 'A contextual vocabulary-learning workspace spanning web, desktop, and mobile, paired with WordPicker for browser-based lookup and word collection.',
     image: 'https://word-base-landing.pages.dev/preview-en.png',
@@ -185,7 +185,7 @@ const RAW_PROJECTS_ZH: Project[] = [
   },
   {
     id: 'word-base',
-    title: 'WordBase 生态',
+    title: 'WordBase',
     category: '语言学习平台',
     description: '覆盖 Web、桌面端与移动端的语境化词汇学习工作台；搭配 WordPicker 浏览器扩展，完成浏览器查词与单词沉淀。',
     image: 'https://word-base-landing.pages.dev/preview-zh.png',
