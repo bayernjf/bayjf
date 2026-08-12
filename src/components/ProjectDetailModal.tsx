@@ -251,7 +251,7 @@ export default function ProjectDetailModal({ project, onClose }: ProjectDetailMo
                     href={project.link}
                     className="interactive flex items-center justify-center gap-2 py-2.5 px-4 w-full rounded-xl bg-sage hover:bg-ink dark:bg-mint dark:hover:bg-paper text-paper dark:text-ink font-sans text-xs font-bold tracking-wider transition-all duration-300 shadow-md"
                   >
-                    <span>{t('bayjf.launchDemo')}</span>
+                    <span>{t('bayjf.website')}</span>
                     <ExternalLink size={13} />
                   </a>
                 )}

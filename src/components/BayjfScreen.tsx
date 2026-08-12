@@ -22,6 +22,8 @@ import LikeButton from './LikeButton';
 import { useLanguage, Language } from '../context/LanguageContext';
 import { Project } from '../types';
 import ProjectDetailModal from './ProjectDetailModal';
+import ComingSoonModal from './ComingSoonModal';
+import { isComingSoon } from '../data/projectStatus';
 
 export default function BayjfScreen() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -810,10 +812,17 @@ export default function BayjfScreen() {
       {/* Modern Expandable Case Study Modal */}
       <AnimatePresence>
         {activeProject && (
-          <ProjectDetailModal
-            project={activeProject}
-            onClose={handleCloseProjectModal}
-          />
+          isComingSoon(activeProject.id) ? (
+            <ComingSoonModal
+              project={activeProject}
+              onClose={handleCloseProjectModal}
+            />
+          ) : (
+            <ProjectDetailModal
+              project={activeProject}
+              onClose={handleCloseProjectModal}
+            />
+          )
         )}
       </AnimatePresence>
     </section>
