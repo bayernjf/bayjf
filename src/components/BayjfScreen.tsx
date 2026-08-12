@@ -384,7 +384,7 @@ export default function BayjfScreen() {
         className="w-full mb-16 p-6 md:p-8 rounded-[28px] bg-paper-raised dark:bg-night-raised shadow-sm flex flex-col lg:flex-row gap-8 items-stretch overflow-hidden"
       >
         {/* Analytics Metadata Info */}
-        <div className="flex-1 flex flex-col justify-between">
+        <div className="flex-1 min-w-0 flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="p-1.5 rounded-lg bg-sage/10 dark:bg-white/5 text-sage dark:text-mint">
@@ -441,7 +441,7 @@ export default function BayjfScreen() {
         </div>
 
         {/* Visualized Recharts Graph */}
-        <div className="flex-1 min-h-[220px] bg-paper dark:bg-night border border-hairline/20 dark:border-white/5 rounded-2xl p-4 flex flex-col justify-between">
+        <div className="flex-1 min-w-0 min-h-[220px] bg-paper dark:bg-night border border-hairline/20 dark:border-white/5 rounded-2xl p-4 flex flex-col justify-between">
           <div className="flex items-center justify-between mb-4 border-b border-hairline/20 dark:border-white/5 pb-2">
             <span className="font-sans text-[13px] font-medium uppercase tracking-wider text-ink dark:text-paper">
               {localTxt.techDistribution}
@@ -465,8 +465,8 @@ export default function BayjfScreen() {
           </div>
 
           {/* Recharts Component */}
-          <div className="w-full h-[160px]">
-            <ResponsiveContainer width="100%" height="100%">
+          <div className="w-full min-w-0 h-[160px] recharts-host">
+            <ResponsiveContainer width="100%" height="100%" minWidth={280}>
               <BarChart data={processedChartData} margin={{ top: 5, right: 5, left: -25, bottom: 5 }}>
                 <XAxis
                   dataKey="name"
