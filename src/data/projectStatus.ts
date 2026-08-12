@@ -1,0 +1,26 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/**
+ * 项目状态标记：en / zh 共用，由我自己在本文件维护。
+ *
+ * 约定：
+ * 1. 'delist'：完全不出现在项目列表里（同时从技术栈图表、项目计数、深链里消失）。
+ * 2. 'soon'：正常展示卡片，但点击后弹出 “Coming soon...” 而不是项目详情。
+ * 3. 没写在本文件里的项目 = 普通项目，无需维护。
+ * 4. 改了项目 id 后本文件会失效，dev 期 console 会告警。
+ */
+export type ProjectStatus = 'delist' | 'soon';
+
+export const PROJECT_STATUS: Readonly<Record<string, ProjectStatus>> = {
+  'one-world': 'delist',
+  'splity': 'soon',
+  'one-code': 'soon',
+  'soft-desk': 'soon',
+};
+
+export const isDelisted = (id: string): boolean => PROJECT_STATUS[id] === 'delist';
+
+export const isComingSoon = (id: string): boolean => PROJECT_STATUS[id] === 'soon';
