@@ -110,7 +110,7 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
             <LogoMark size={26} />
             BayJF
 
-            {/* 呼吸箭头（指向左下 logo）+ “关注我”，二者吸附并同步呼吸，整体上移。弹窗打开时暂停；首次开关后连同光晕一起长时间暂停 */}
+            {/* 呼吸箭头（指向左下 logo）+ “更多”，二者吸附并同步呼吸，整体上移。弹窗打开时暂停；首次开关后连同光晕一起长时间暂停 */}
             <motion.span
               animate={
                 reduceMotion || socialOpen
@@ -139,7 +139,7 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
                 <path d="M7 23 L17 23" />
               </svg>
               <span className="font-sans text-[11px] font-medium tracking-tight text-ink-soft dark:text-mist -mt-1">
-                {t('nav.follow')}
+                {t('nav.more')}
               </span>
             </motion.span>
 

@@ -25,7 +25,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'nav.tip.experience': 'Career experience',
     'nav.tip.contact': 'Get in touch',
     'nav.tip.social': 'Open social links',
-    'nav.follow': 'Follow me',
+    'nav.more': 'More',
 
     // Likes
     'like.liked': 'Liked',
@@ -138,7 +138,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'nav.tip.experience': '职业履历',
     'nav.tip.contact': '联系我',
     'nav.tip.social': '打开社交链接',
-    'nav.follow': '关注我',
+    'nav.more': '更多',
 
     // 喜欢
     'like.liked': '已喜欢',
