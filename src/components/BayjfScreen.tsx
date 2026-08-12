@@ -150,7 +150,7 @@ export default function BayjfScreen() {
 
   // Map each project to a general filter category
   const getProjectFilterCategory = (project: Project) => {
-    const tags = project.tags.map((tag) => tag.toLowerCase());
+    const tags = (project.tags ?? []).map((tag) => tag.toLowerCase());
     if (project.id === 'tab-garden' || tags.some(tag => tag.includes('chrome') || tag.includes('manifest'))) {
       return 'Browser Tools';
     }
@@ -161,7 +161,7 @@ export default function BayjfScreen() {
   // Map projects to custom tag groups
   const matchesTagGroup = (project: Project, group: string) => {
     if (group === 'All') return true;
-    const projectTags = project.tags.map(t => t.toLowerCase());
+    const projectTags = (project.tags ?? []).map(t => t.toLowerCase());
     
     if (group === 'Product') {
       return project.id === 'soft-desk' || project.id === 'word-base';
@@ -181,6 +181,7 @@ export default function BayjfScreen() {
 
   // Perform full dual-filter logic
   const filteredProjects = projects.filter(project => {
+    const tags = project.tags ?? [];
     // 1. Category filter
     const categoryMatches = selectedCategory === 'All' || getProjectFilterCategory(project) === selectedCategory;
     if (!categoryMatches) return false;
@@ -193,7 +194,7 @@ export default function BayjfScreen() {
     if (!searchQuery.trim()) return true;
     const query = searchQuery.toLowerCase().trim();
     const titleMatches = project.title.toLowerCase().includes(query);
-    const tagsMatch = project.tags.some(tag => tag.toLowerCase().includes(query));
+    const tagsMatch = tags.some(tag => tag.toLowerCase().includes(query));
     return titleMatches || tagsMatch;
   });
 
@@ -203,7 +204,7 @@ export default function BayjfScreen() {
       // Top 6 technologies / tags frequency
       const tagCounts: Record<string, number> = {};
       projects.forEach(p => {
-        p.tags.forEach(t => {
+        (p.tags ?? []).forEach(t => {
           tagCounts[t] = (tagCounts[t] || 0) + 1;
         });
       });
@@ -498,12 +499,17 @@ export default function BayjfScreen() {
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   shape={(props: any) => {
                     const idx = typeof props.index === 'number' ? props.index : 0;
+                    const x = typeof props.x === 'number' ? props.x : 0;
+                    const y = typeof props.y === 'number' ? props.y : 0;
+                    const width = typeof props.width === 'number' ? props.width : 0;
+                    const height = typeof props.height === 'number' ? props.height : 0;
+                    if (width <= 0 || height <= 0) return null;
                     return (
                       <rect
-                        x={props.x}
-                        y={props.y}
-                        width={props.width}
-                        height={props.height}
+                        x={x}
+                        y={y}
+                        width={width}
+                        height={height}
                         rx={4}
                         ry={4}
                         fill={isDark ? 'var(--color-mint)' : 'var(--color-sage)'}
