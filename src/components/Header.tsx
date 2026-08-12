@@ -25,9 +25,23 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [socialOpen, setSocialOpen] = useState(false);
   const [logoHovered, setLogoHovered] = useState(false);
+  // Breathing glow runs on load to draw attention to the logo; once the user
+  // has opened (and closed) the social tree, pause it for the rest of the
+  // session. A page reload re-enables it. State resets because the header
+  // remounts on every full navigation.
+  const [breathing, setBreathing] = useState(true);
+  const openedOnceRef = useRef(false);
   const logoButtonRef = useRef<HTMLButtonElement>(null);
   const reduceMotion = useReducedMotion();
   const { language, t, searchQuery, setSearchQuery } = useLanguage();
+
+  useEffect(() => {
+    if (socialOpen) {
+      openedOnceRef.current = true;
+    } else if (openedOnceRef.current) {
+      setBreathing(false);
+    }
+  }, [socialOpen]);
 
   // 整页导航（如语言切换 = location.href 跳转）后，浏览器会把焦点恢复到
   // header 里的按钮上并显示焦点框。挂载时清掉这个恢复出来的焦点，避免难看的方框。
@@ -71,9 +85,15 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
                 ? { opacity: 0.4 }
                 : socialOpen
                   ? { opacity: 0.15 }
-                  : { opacity: [0.3, 1, 0.3], scale: [0.85, 1.55, 0.85] }
+                  : breathing
+                    ? { opacity: [0.3, 1, 0.3], scale: [0.85, 1.55, 0.85] }
+                    : { opacity: 0.4 }
             }
-            transition={reduceMotion || socialOpen ? { duration: 0.2 } : { duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            transition={
+              reduceMotion || socialOpen || !breathing
+                ? { duration: 0.2 }
+                : { duration: 3, repeat: Infinity, ease: 'easeInOut' }
+            }
           />
           <button
             id="nav-logo"
@@ -90,10 +110,16 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
             <LogoMark size={26} />
             BayJF
 
-            {/* 呼吸箭头（指向左下 logo）+ “关注我”，二者吸附并同步呼吸，整体上移。弹窗打开时暂停，避免遮罩 backdrop-blur 每帧重采样背景动画导致卡顿 */}
+            {/* 呼吸箭头（指向左下 logo）+ “关注我”，二者吸附并同步呼吸，整体上移。弹窗打开时暂停；首次开关后连同光晕一起长时间暂停 */}
             <motion.span
-              animate={reduceMotion || socialOpen ? { opacity: 0.6 } : { opacity: [0.35, 1, 0.35], scale: [0.8, 1.2, 0.8] }}
-              transition={reduceMotion || socialOpen ? { duration: 0.2 } : { duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+              animate={
+                reduceMotion || socialOpen
+                  ? { opacity: 0.6 }
+                  : breathing
+                    ? { opacity: [0.35, 1, 0.35], scale: [0.8, 1.2, 0.8] }
+                    : { opacity: 0.6 }
+              }
+              transition={reduceMotion || socialOpen || !breathing ? { duration: 0.2 } : { duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
               className="hidden sm:inline-flex items-start gap-0.5 ml-1 -translate-y-2"
             >
               <svg
