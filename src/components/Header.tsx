@@ -4,7 +4,7 @@
  */
 
 import { ScreenType } from '../types';
-import { Sun, Moon, Monitor, Menu, X, Search } from 'lucide-react';
+import { Sun, Moon, Monitor, Menu, X, Search, Github } from 'lucide-react';
 import { useState, useRef, useEffect, MouseEvent } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { useLanguage, type Language } from '../context/LanguageContext';
@@ -224,6 +224,20 @@ export default function Header({ currentScreen, onNavigate, theme, toggleTheme, 
               中
             </button>
           </div>
+
+          <a
+            id="nav-github"
+            href="https://github.com/bayernjf/bayjf"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Star on GitHub"
+            className="interactive group inline-flex items-center gap-1.5 pl-2.5 pr-3 py-1.5 rounded-full bg-paper-raised dark:bg-night-raised text-ink dark:text-paper hover:bg-sage hover:text-paper dark:hover:bg-mint dark:hover:text-ink transition-all duration-200 hover:scale-105 active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-sage/40 dark:focus-visible:ring-mint/40 focus-visible:ring-offset-1 focus-visible:ring-offset-paper dark:focus-visible:ring-offset-night"
+          >
+            <Github size={15} />
+            <span className="hidden sm:inline font-sans text-[11px] font-medium tracking-tight whitespace-nowrap">
+              Star on GitHub
+            </span>
+          </a>
 
           <button
             id="theme-toggle-btn"
