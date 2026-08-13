@@ -71,3 +71,11 @@ body {
   box-shadow: 0 0 0 1000px var(--color-night-raised) inset;
   caret-color: var(--color-paper);
 }
+
+/* Recharts ResponsiveContainer intermediate wrapper can render 0x0 during
+   initial mount / AnimatePresence transitions, which crashes the custom bar
+   shape with NaN geometry and blanks the island. Force it to fill host. */
+.recharts-host .recharts-responsive-container > div {
+  width: 100% !important;
+  height: 100% !important;
+}

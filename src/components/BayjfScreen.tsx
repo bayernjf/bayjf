@@ -22,6 +22,8 @@ import LikeButton from './LikeButton';
 import { useLanguage, Language } from '../context/LanguageContext';
 import { Project } from '../types';
 import ProjectDetailModal from './ProjectDetailModal';
+import ComingSoonModal from './ComingSoonModal';
+import { isComingSoon } from '../data/projectStatus';
 
 export default function BayjfScreen() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -150,7 +152,7 @@ export default function BayjfScreen() {
 
   // Map each project to a general filter category
   const getProjectFilterCategory = (project: Project) => {
-    const tags = project.tags.map((tag) => tag.toLowerCase());
+    const tags = (project.tags ?? []).map((tag) => tag.toLowerCase());
     if (project.id === 'tab-garden' || tags.some(tag => tag.includes('chrome') || tag.includes('manifest'))) {
       return 'Browser Tools';
     }
@@ -161,7 +163,7 @@ export default function BayjfScreen() {
   // Map projects to custom tag groups
   const matchesTagGroup = (project: Project, group: string) => {
     if (group === 'All') return true;
-    const projectTags = project.tags.map(t => t.toLowerCase());
+    const projectTags = (project.tags ?? []).map(t => t.toLowerCase());
     
     if (group === 'Product') {
       return project.id === 'soft-desk' || project.id === 'word-base';
@@ -181,6 +183,7 @@ export default function BayjfScreen() {
 
   // Perform full dual-filter logic
   const filteredProjects = projects.filter(project => {
+    const tags = project.tags ?? [];
     // 1. Category filter
     const categoryMatches = selectedCategory === 'All' || getProjectFilterCategory(project) === selectedCategory;
     if (!categoryMatches) return false;
@@ -193,7 +196,7 @@ export default function BayjfScreen() {
     if (!searchQuery.trim()) return true;
     const query = searchQuery.toLowerCase().trim();
     const titleMatches = project.title.toLowerCase().includes(query);
-    const tagsMatch = project.tags.some(tag => tag.toLowerCase().includes(query));
+    const tagsMatch = tags.some(tag => tag.toLowerCase().includes(query));
     return titleMatches || tagsMatch;
   });
 
@@ -203,7 +206,7 @@ export default function BayjfScreen() {
       // Top 6 technologies / tags frequency
       const tagCounts: Record<string, number> = {};
       projects.forEach(p => {
-        p.tags.forEach(t => {
+        (p.tags ?? []).forEach(t => {
           tagCounts[t] = (tagCounts[t] || 0) + 1;
         });
       });
@@ -383,7 +386,7 @@ export default function BayjfScreen() {
         className="w-full mb-16 p-6 md:p-8 rounded-[28px] bg-paper-raised dark:bg-night-raised shadow-sm flex flex-col lg:flex-row gap-8 items-stretch overflow-hidden"
       >
         {/* Analytics Metadata Info */}
-        <div className="flex-1 flex flex-col justify-between">
+        <div className="flex-1 min-w-0 flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="p-1.5 rounded-lg bg-sage/10 dark:bg-white/5 text-sage dark:text-mint">
@@ -440,7 +443,7 @@ export default function BayjfScreen() {
         </div>
 
         {/* Visualized Recharts Graph */}
-        <div className="flex-1 min-h-[220px] bg-paper dark:bg-night border border-hairline/20 dark:border-white/5 rounded-2xl p-4 flex flex-col justify-between">
+        <div className="flex-1 min-w-0 min-h-[220px] bg-paper dark:bg-night border border-hairline/20 dark:border-white/5 rounded-2xl p-4 flex flex-col justify-between">
           <div className="flex items-center justify-between mb-4 border-b border-hairline/20 dark:border-white/5 pb-2">
             <span className="font-sans text-[13px] font-medium uppercase tracking-wider text-ink dark:text-paper">
               {localTxt.techDistribution}
@@ -464,8 +467,8 @@ export default function BayjfScreen() {
           </div>
 
           {/* Recharts Component */}
-          <div className="w-full h-[160px]">
-            <ResponsiveContainer width="100%" height="100%">
+          <div className="w-full min-w-0 h-[160px] recharts-host">
+            <ResponsiveContainer width="100%" height="100%" minWidth={280}>
               <BarChart data={processedChartData} margin={{ top: 5, right: 5, left: -25, bottom: 5 }}>
                 <XAxis
                   dataKey="name"
@@ -498,12 +501,17 @@ export default function BayjfScreen() {
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   shape={(props: any) => {
                     const idx = typeof props.index === 'number' ? props.index : 0;
+                    const x = typeof props.x === 'number' ? props.x : 0;
+                    const y = typeof props.y === 'number' ? props.y : 0;
+                    const width = typeof props.width === 'number' ? props.width : 0;
+                    const height = typeof props.height === 'number' ? props.height : 0;
+                    if (width <= 0 || height <= 0) return null;
                     return (
                       <rect
-                        x={props.x}
-                        y={props.y}
-                        width={props.width}
-                        height={props.height}
+                        x={x}
+                        y={y}
+                        width={width}
+                        height={height}
                         rx={4}
                         ry={4}
                         fill={isDark ? 'var(--color-mint)' : 'var(--color-sage)'}
@@ -804,10 +812,17 @@ export default function BayjfScreen() {
       {/* Modern Expandable Case Study Modal */}
       <AnimatePresence>
         {activeProject && (
-          <ProjectDetailModal
-            project={activeProject}
-            onClose={handleCloseProjectModal}
-          />
+          isComingSoon(activeProject.id) ? (
+            <ComingSoonModal
+              project={activeProject}
+              onClose={handleCloseProjectModal}
+            />
+          ) : (
+            <ProjectDetailModal
+              project={activeProject}
+              onClose={handleCloseProjectModal}
+            />
+          )
         )}
       </AnimatePresence>
     </section>

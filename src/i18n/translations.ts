@@ -25,7 +25,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'nav.tip.experience': 'Career experience',
     'nav.tip.contact': 'Get in touch',
     'nav.tip.social': 'Open social links',
-    'nav.follow': 'Follow me',
+    'nav.more': 'More',
 
     // Likes
     'like.liked': 'Liked',
@@ -63,8 +63,9 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'bayjf.overview': 'Overview',
     'bayjf.techUsed': 'Technologies Used',
     'bayjf.close': 'Close',
-    'bayjf.externalLink': 'Visit Live Project',
-    'bayjf.launchDemo': 'Launch Demo',
+    'bayjf.website': 'Website',
+    'bayjf.comingSoon': 'Coming soon...',
+    'bayjf.comingSoonDesc': 'This project is still in the works. Details will land here once it ships.',
 
     // ExperienceScreen
     'experience.headerTag': 'Career Experience',
@@ -138,7 +139,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'nav.tip.experience': '职业履历',
     'nav.tip.contact': '联系我',
     'nav.tip.social': '打开社交链接',
-    'nav.follow': '关注我',
+    'nav.more': '更多',
 
     // 喜欢
     'like.liked': '已喜欢',
@@ -174,8 +175,9 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'bayjf.overview': '项目概述',
     'bayjf.techUsed': '所用技术',
     'bayjf.close': '关闭',
-    'bayjf.externalLink': '访问线上项目',
-    'bayjf.launchDemo': '启动演示',
+    'bayjf.website': '官网',
+    'bayjf.comingSoon': 'Coming soon...',
+    'bayjf.comingSoonDesc': '这个项目还在打磨中，上线后详情会补充到这里。',
 
     // ExperienceScreen
     'experience.headerTag': '职业经历',
