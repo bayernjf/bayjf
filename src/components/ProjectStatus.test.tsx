@@ -12,7 +12,7 @@ vi.mock('../data/projectStatus', () => ({
   isComingSoon: (id: string) => id === 'splity',
 }));
 
-import { LanguageProvider } from '../context/LanguageContext';
+import { LanguageProvider, PROJECTS_EN } from '../context/LanguageContext';
 import { ToastProvider } from '../context/ToastContext';
 import { LikeProvider } from '../context/LikeContext';
 import BayjfScreen from './BayjfScreen';
@@ -29,36 +29,69 @@ function renderScreen() {
   );
 }
 
+// 卡片正面标题是 h3，背面是 span —— 用 heading 角色锁定卡片正面。
+const cardTitle = (name: string) => screen.getByRole('heading', { name });
+
+const flipContainer = () => document.getElementById('card-flip-splity') as HTMLElement;
+const backWebsiteLink = () =>
+  document.getElementById('coming-soon-external-link-splity-card') as HTMLElement;
+const isFlipped = () => flipContainer().className.includes('rotate-y-180');
+
 describe('project status markers', () => {
-  // 详情弹窗与 URL hash 双向同步，不清掉会让上一个用例的 #project-xxx 直接开弹窗。
+  // 详情弹窗与 URL hash 双向同步，不清掉会让上一个用例的 #project-xxx 漏进来。
   beforeEach(() => {
     window.location.hash = '';
   });
 
   it('hides delisted projects from the list', () => {
     renderScreen();
-    expect(screen.queryByText('One World')).toBeNull();
-    expect(screen.getByText('Splity')).toBeTruthy();
+    expect(screen.queryByRole('heading', { name: 'One World' })).toBeNull();
+    expect(cardTitle('Splity')).toBeTruthy();
   });
 
-  it('opens the coming-soon modal instead of the detail modal for soon projects', () => {
+  it('renders the coming-soon panel on the back of soon cards', () => {
     renderScreen();
-    fireEvent.click(screen.getByText('Splity'));
-    expect(screen.getByText('Coming soon...')).toBeTruthy();
+    expect(backWebsiteLink()).toBeTruthy();
+    expect(isFlipped()).toBe(false);
+  });
+
+  it('toggles the flip on click and never opens a modal', () => {
+    renderScreen();
+    fireEvent.click(cardTitle('Splity'));
+    expect(isFlipped()).toBe(true);
+    expect(screen.queryByText('Overview')).toBeNull();
+
+    fireEvent.click(cardTitle('Splity'));
+    expect(isFlipped()).toBe(false);
     expect(screen.queryByText('Overview')).toBeNull();
   });
 
-  it('offers a website link in the coming-soon modal', () => {
+  it('keeps the card flipped when the website link on the back is clicked', () => {
     renderScreen();
-    fireEvent.click(screen.getByText('Splity'));
-    const link = screen.getByText('Website').closest('a');
-    expect(link?.getAttribute('href')).toBe('https://splity.bayjf.com/');
+    fireEvent.click(cardTitle('Splity'));
+
+    fireEvent.click(backWebsiteLink());
+    expect(isFlipped()).toBe(true);
+    expect(screen.queryByText('Overview')).toBeNull();
+  });
+
+  it('points the back website link at the project link', () => {
+    renderScreen();
+    expect(backWebsiteLink().getAttribute('href')).toBe(
+      PROJECTS_EN.find((p) => p.id === 'splity')?.link
+    );
+  });
+
+  it('flips the card instead of opening a modal for a deep-linked soon project', () => {
+    window.location.hash = '#project-splity';
+    renderScreen();
+    expect(isFlipped()).toBe(true);
+    expect(screen.queryByText('Overview')).toBeNull();
   });
 
   it('opens the regular detail modal for unmarked projects', () => {
     renderScreen();
-    fireEvent.click(screen.getByText('Termana'));
+    fireEvent.click(cardTitle('Termana'));
     expect(screen.getByText('Overview')).toBeTruthy();
-    expect(screen.queryByText('Coming soon...')).toBeNull();
   });
 });

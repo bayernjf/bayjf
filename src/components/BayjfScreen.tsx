@@ -22,13 +22,14 @@ import LikeButton from './LikeButton';
 import { useLanguage, Language } from '../context/LanguageContext';
 import { Project } from '../types';
 import ProjectDetailModal from './ProjectDetailModal';
-import ComingSoonModal from './ComingSoonModal';
+import ComingSoonFlipCard from './ComingSoonFlipCard';
 import { isComingSoon } from '../data/projectStatus';
 
 export default function BayjfScreen() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedTagGroup, setSelectedTagGroup] = useState<string>('All');
   const [activeProject, setActiveProject] = useState<Project | null>(null);
+  const [flippedProjectId, setFlippedProjectId] = useState<string | null>(null);
   const [displayMode, setDisplayMode] = useState<'grid' | 'timeline'>('grid');
   const [chartMetric, setChartMetric] = useState<'tech' | 'category'>('tech');
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
@@ -47,7 +48,13 @@ export default function BayjfScreen() {
       if (projectId) {
         const found = projects.find(p => p.id === projectId);
         if (found) {
-          setActiveProject(found);
+          // soon 项目没有详情弹窗，深链进来就把卡片翻到背面。
+          if (isComingSoon(found.id)) {
+            setActiveProject(null);
+            setFlippedProjectId(found.id);
+          } else {
+            setActiveProject(found);
+          }
         } else {
           setActiveProject(null);
         }
@@ -68,8 +75,18 @@ export default function BayjfScreen() {
     window.location.hash = `project-${project.id}`;
   };
 
+  // soon 项目：点击只在正反面之间翻转，不开详情弹窗。
+  const handleCardClick = (project: Project) => {
+    if (isComingSoon(project.id)) {
+      setFlippedProjectId((current) => (current === project.id ? null : project.id));
+      return;
+    }
+    handleSelectProject(project);
+  };
+
   const handleCloseProjectModal = () => {
     setActiveProject(null);
+    setFlippedProjectId(null);
     if (window.location.hash.startsWith('#project-')) {
       history.replaceState(null, '', window.location.pathname + window.location.search);
     }
@@ -662,24 +679,8 @@ export default function BayjfScreen() {
         >
           <AnimatePresence mode="sync">
             {filteredProjects.map((project) => {
-              const card = (
-              <TiltCard
-                layout
-                variants={cardVariants}
-                initial="hidden"
-                animate="visible"
-                whileHover="hover"
-                whileTap="tap"
-                exit={{ opacity: 0, scale: 0.9, y: 15 }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 350,
-                  damping: 32,
-                  layout: { type: 'spring', stiffness: 350, damping: 32 }
-                }}
-                onClick={() => handleSelectProject(project)}
-                className="group flex flex-col h-full bg-paper-raised dark:bg-night-raised rounded-[28px] shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden cursor-pointer"
-              >
+              const cardFace = (
+                <>
                 {/* Hover-effect thumbnail container */}
                 <div className="relative aspect-[16/10] overflow-hidden bg-paper dark:bg-night border-b border-hairline/20 dark:border-white/5">
                   <BlurUpImage
@@ -712,6 +713,37 @@ export default function BayjfScreen() {
                     {project.description}
                   </p>
                 </div>
+                </>
+              );
+
+              const card = (
+              <TiltCard
+                layout
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                whileHover="hover"
+                whileTap="tap"
+                exit={{ opacity: 0, scale: 0.9, y: 15 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 350,
+                  damping: 32,
+                  layout: { type: 'spring', stiffness: 350, damping: 32 }
+                }}
+                onClick={() => handleCardClick(project)}
+                className="group flex flex-col h-full bg-paper-raised dark:bg-night-raised rounded-[28px] shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden cursor-pointer"
+              >
+                {isComingSoon(project.id) ? (
+                  <ComingSoonFlipCard
+                    project={project}
+                    flipped={flippedProjectId === project.id}
+                    className="flex-1"
+                    faceClassName="flex flex-col h-full"
+                  >
+                    {cardFace}
+                  </ComingSoonFlipCard>
+                ) : cardFace}
               </TiltCard>
               );
               return <Fragment key={project.id}>{card}</Fragment>;
@@ -727,42 +759,8 @@ export default function BayjfScreen() {
           <AnimatePresence mode="popLayout">
             {timelineProjects.map((project, index) => {
               const isEven = index % 2 === 0;
-              return (
-                <motion.div
-                  layout
-                  key={`timeline-${project.id}`}
-                  initial={{ opacity: 0, x: isEven ? -60 : 60, y: 30 }}
-                  whileInView={{ opacity: 1, x: 0, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  exit={{ opacity: 0, scale: 0.9, y: 15 }}
-                  transition={{ duration: 0.7, ease: [0.215, 0.610, 0.355, 1.000] }}
-                  className={`timeline-item relative w-full md:w-[calc(50%-2rem)] flex flex-col ${
-                    isEven ? 'md:self-start md:pr-8' : 'md:self-end md:pl-8'
-                  } pl-12 md:pl-0`}
-                >
-                  {/* Decorative connecting lines (connector physically connecting marker to card) */}
-                  {/* Mobile connector: from marker to card */}
-                  <div className="absolute left-4 md:hidden top-1/2 -translate-y-1/2 w-8 h-0.5 bg-hairline dark:bg-white/10 z-0" />
-                  
-                  {/* Desktop connector: from center timeline line to card */}
-                  {isEven ? (
-                    <div className="hidden md:block absolute -right-8 top-1/2 -translate-y-1/2 w-8 h-0.5 bg-hairline dark:bg-white/10 z-0" />
-                  ) : (
-                    <div className="hidden md:block absolute -left-8 top-1/2 -translate-y-1/2 w-8 h-0.5 bg-hairline dark:bg-white/10 z-0" />
-                  )}
-
-                  {/* Centered Timeline Node Circle with Year */}
-                  <div className={`absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-ink dark:bg-paper text-paper dark:text-ink border-4 border-hairline/60 dark:border-white/10 flex items-center justify-center transform -translate-x-1/2 md:translate-x-0 font-mono text-[10px] font-bold z-10 shadow-sm ${
-                    isEven ? 'md:left-auto md:right-0 md:-right-12' : 'md:left-0 md:-left-12'
-                  }`}>
-                    {getProjectYear(project)}
-                  </div>
-
-                  {/* Card Content */}
-                  <div
-                    onClick={() => handleSelectProject(project)}
-                    className="w-full bg-paper-raised dark:bg-night-raised rounded-[28px] shadow-sm p-6 hover:shadow-lg transition-shadow duration-300 flex flex-col md:flex-row gap-6 cursor-pointer group relative z-10"
-                  >
+              const timelineFace = (
+                <>
                     <div className="w-full md:w-2/5 aspect-[16/11] rounded-2xl overflow-hidden bg-paper dark:bg-night flex-shrink-0">
                       <BlurUpImage src={project.image} alt={project.title} className="transition-transform duration-700 ease-out group-hover:scale-105" />
                     </div>
@@ -801,6 +799,53 @@ export default function BayjfScreen() {
                         </a>
                       </div>
                     </div>
+                </>
+              );
+              return (
+                <motion.div
+                  layout
+                  key={`timeline-${project.id}`}
+                  initial={{ opacity: 0, x: isEven ? -60 : 60, y: 30 }}
+                  whileInView={{ opacity: 1, x: 0, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  exit={{ opacity: 0, scale: 0.9, y: 15 }}
+                  transition={{ duration: 0.7, ease: [0.215, 0.610, 0.355, 1.000] }}
+                  className={`timeline-item relative w-full md:w-[calc(50%-2rem)] flex flex-col ${
+                    isEven ? 'md:self-start md:pr-8' : 'md:self-end md:pl-8'
+                  } pl-12 md:pl-0`}
+                >
+                  {/* Decorative connecting lines (connector physically connecting marker to card) */}
+                  {/* Mobile connector: from marker to card */}
+                  <div className="absolute left-4 md:hidden top-1/2 -translate-y-1/2 w-8 h-0.5 bg-hairline dark:bg-white/10 z-0" />
+                  
+                  {/* Desktop connector: from center timeline line to card */}
+                  {isEven ? (
+                    <div className="hidden md:block absolute -right-8 top-1/2 -translate-y-1/2 w-8 h-0.5 bg-hairline dark:bg-white/10 z-0" />
+                  ) : (
+                    <div className="hidden md:block absolute -left-8 top-1/2 -translate-y-1/2 w-8 h-0.5 bg-hairline dark:bg-white/10 z-0" />
+                  )}
+
+                  {/* Centered Timeline Node Circle with Year */}
+                  <div className={`absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-ink dark:bg-paper text-paper dark:text-ink border-4 border-hairline/60 dark:border-white/10 flex items-center justify-center transform -translate-x-1/2 md:translate-x-0 font-mono text-[10px] font-bold z-10 shadow-sm ${
+                    isEven ? 'md:left-auto md:right-0 md:-right-12' : 'md:left-0 md:-left-12'
+                  }`}>
+                    {getProjectYear(project)}
+                  </div>
+
+                  {/* Card Content */}
+                  <div
+                    onClick={() => handleCardClick(project)}
+                    className="w-full bg-paper-raised dark:bg-night-raised rounded-[28px] shadow-sm p-6 hover:shadow-lg transition-shadow duration-300 flex flex-col md:flex-row gap-6 cursor-pointer group relative z-10"
+                  >
+                    {isComingSoon(project.id) ? (
+                      <ComingSoonFlipCard
+                        project={project}
+                        flipped={flippedProjectId === project.id}
+                        faceClassName="flex flex-col md:flex-row gap-6 w-full"
+                      >
+                        {timelineFace}
+                      </ComingSoonFlipCard>
+                    ) : timelineFace}
                   </div>
                 </motion.div>
               );
@@ -812,17 +857,10 @@ export default function BayjfScreen() {
       {/* Modern Expandable Case Study Modal */}
       <AnimatePresence>
         {activeProject && (
-          isComingSoon(activeProject.id) ? (
-            <ComingSoonModal
-              project={activeProject}
-              onClose={handleCloseProjectModal}
-            />
-          ) : (
-            <ProjectDetailModal
-              project={activeProject}
-              onClose={handleCloseProjectModal}
-            />
-          )
+          <ProjectDetailModal
+            project={activeProject}
+            onClose={handleCloseProjectModal}
+          />
         )}
       </AnimatePresence>
     </section>
