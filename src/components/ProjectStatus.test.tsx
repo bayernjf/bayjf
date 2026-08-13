@@ -52,7 +52,7 @@ describe('project status markers', () => {
     renderScreen();
     fireEvent.click(screen.getByText('Splity'));
     const link = screen.getByText('Website').closest('a');
-    expect(link?.getAttribute('href')).toBe('https://splity-landing.pages.dev/');
+    expect(link?.getAttribute('href')).toBe('https://splity.bayjf.com/');
   });
 
   it('opens the regular detail modal for unmarked projects', () => {

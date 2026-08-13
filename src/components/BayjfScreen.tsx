@@ -153,7 +153,7 @@ export default function BayjfScreen() {
   // Map each project to a general filter category
   const getProjectFilterCategory = (project: Project) => {
     const tags = (project.tags ?? []).map((tag) => tag.toLowerCase());
-    if (project.id === 'tab-garden' || tags.some(tag => tag.includes('chrome') || tag.includes('manifest'))) {
+    if (project.id === 'tab-manager' || tags.some(tag => tag.includes('chrome') || tag.includes('manifest'))) {
       return 'Browser Tools';
     }
     if (project.id === 'word-base') return 'Learning';
@@ -175,7 +175,7 @@ export default function BayjfScreen() {
     }
     
     if (group === 'Browser') {
-      return project.id === 'tab-garden';
+      return project.id === 'tab-manager';
     }
     
     return true;

@@ -18,7 +18,7 @@ export const PROJECT_ORDER: readonly string[] = [
   
   'agent-dev',
   'pr-helper',
-  'tab-garden',
+  'tab-manager',
   
   'termana',
   'vfx-todo',

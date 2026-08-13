@@ -21,7 +21,7 @@ export const PROJECT_STATUS: Readonly<Record<string, ProjectStatus>> = {
   'word-base': 'launch',
   'agent-dev': 'soon',
   'pr-helper': 'launch',
-  'tab-garden': 'launch',
+  'tab-manager': 'launch',
   'termana': 'launch',
   'vfx-todo': 'launch',
   'toclick': 'soon',
