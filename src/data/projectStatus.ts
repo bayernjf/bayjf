@@ -15,10 +15,13 @@
 export type ProjectStatus = 'delist' | 'soon';
 
 export const PROJECT_STATUS: Readonly<Record<string, ProjectStatus>> = {
-  'one-world': 'delist',
-  'splity': 'soon',
+  'agent-dev': 'soon',
+  'toclick': 'soon',
+  'know-collect': 'soon',
   'one-code': 'soon',
-  'soft-desk': 'soon',
+  'one-world': 'soon',
+  'shareit': 'soon',
+  'splity': 'soon',
 };
 
 export const isDelisted = (id: string): boolean => PROJECT_STATUS[id] === 'delist';
