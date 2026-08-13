@@ -2,6 +2,10 @@ import { act, renderHook } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { describe, expect, it } from 'vitest';
 import { LanguageProvider, useLanguage } from './LanguageContext';
+import { PROJECT_ORDER } from '../data/projectOrder';
+import { isDelisted } from '../data/projectStatus';
+
+const LISTED_COUNT = PROJECT_ORDER.filter((id) => !isDelisted(id)).length;
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <LanguageProvider>{children}</LanguageProvider>
@@ -12,7 +16,7 @@ describe('LanguageProvider', () => {
     const { result } = renderHook(() => useLanguage(), { wrapper });
 
     expect(result.current.language).toBe('en');
-    expect(result.current.projects).toHaveLength(14);
+    expect(result.current.projects).toHaveLength(LISTED_COUNT);
     expect(result.current.projects[0].title).toBe('SoftDesk');
     expect(result.current.t('footer.copyright', { year: 2026 })).toContain('2026');
     expect(result.current.t('unknown.translation')).toBe('unknown.translation');

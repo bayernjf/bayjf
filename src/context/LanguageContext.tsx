@@ -7,6 +7,7 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 import { Project, ExperienceItem } from '../types';
 import { TRANSLATIONS, type Language } from '../i18n/translations';
 import { sortProjectsByOrder, PROJECT_ORDER } from '../data/projectOrder';
+import { PROJECT_STATUS, isDelisted } from '../data/projectStatus';
 
 export type { Language };
 
@@ -42,7 +43,7 @@ const RAW_PROJECTS_EN: Project[] = [
   },
   {
     id: 'word-base',
-    title: 'WordBase Ecosystem',
+    title: 'WordBase',
     category: 'LANGUAGE LEARNING PLATFORM',
     description: 'A contextual vocabulary-learning workspace spanning web, desktop, and mobile, paired with WordPicker for browser-based lookup and word collection.',
     image: 'https://word-base-landing.pages.dev/preview-en.png',
@@ -185,7 +186,7 @@ const RAW_PROJECTS_ZH: Project[] = [
   },
   {
     id: 'word-base',
-    title: 'WordBase 生态',
+    title: 'WordBase',
     category: '语言学习平台',
     description: '覆盖 Web、桌面端与移动端的语境化词汇学习工作台；搭配 WordPicker 浏览器扩展，完成浏览器查词与单词沉淀。',
     image: 'https://word-base-landing.pages.dev/preview-zh.png',
@@ -316,8 +317,9 @@ const RAW_PROJECTS_ZH: Project[] = [
 ];
 
 // 展示顺序由 src/data/projectOrder.ts 统一控制；原数据数组里写啥顺序无所谓。
-export const PROJECTS_EN: Project[] = sortProjectsByOrder(RAW_PROJECTS_EN);
-export const PROJECTS_ZH: Project[] = sortProjectsByOrder(RAW_PROJECTS_ZH);
+// delist 标记的项目在此处剔除，下游（列表、图表、计数、深链）一律看不到。
+export const PROJECTS_EN: Project[] = sortProjectsByOrder(RAW_PROJECTS_EN).filter((p) => !isDelisted(p.id));
+export const PROJECTS_ZH: Project[] = sortProjectsByOrder(RAW_PROJECTS_ZH).filter((p) => !isDelisted(p.id));
 
 // 开发期 sanity check：PROJECT_ORDER 漏配 / 多配都会在 console 告警。
 // Vite 会在 prod 构建时把 import.meta.env.DEV 静态替换为 false，整段被消除。
@@ -332,6 +334,10 @@ if (import.meta.env.DEV) {
   };
   checkDrift(RAW_PROJECTS_EN, 'en');
   checkDrift(RAW_PROJECTS_ZH, 'zh');
+
+  const knownIds = new Set(RAW_PROJECTS_EN.map((p) => p.id));
+  const staleStatus = Object.keys(PROJECT_STATUS).filter((id) => !knownIds.has(id));
+  if (staleStatus.length) console.warn('[projectStatus] unknown project ids:', staleStatus);
 }
 
 const EXPERIENCE_EN: ExperienceItem[] = [

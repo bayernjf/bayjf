@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import ScrollProgress from './components/ScrollProgress';
 import BackToTop from './components/BackToTop';
 import BottomNav from './components/BottomNav';
+import ErrorBoundary from './components/ErrorBoundary';
 import { AnimatePresence, motion, type Variants } from 'motion/react';
 import { useLanguage, type Language } from './context/LanguageContext';
 import { LikeProvider } from './context/LikeContext';
@@ -223,15 +224,17 @@ export default function App({ lang, initialScreen = 'home', agentImages = [], tu
             exit="exit"
             className="w-full"
           >
-            <Suspense
-              fallback={
-                <div className="min-h-screen grid place-items-center" role="status" aria-live="polite">
-                  <span className="text-sm text-ink-soft dark:text-mist">Loading…</span>
-                </div>
-              }
-            >
-              {renderScreen()}
-            </Suspense>
+            <ErrorBoundary>
+              <Suspense
+                fallback={
+                  <div className="min-h-screen grid place-items-center" role="status" aria-live="polite">
+                    <span className="text-sm text-ink-soft dark:text-mist">Loading…</span>
+                  </div>
+                }
+              >
+                {renderScreen()}
+              </Suspense>
+            </ErrorBoundary>
           </motion.div>
         </AnimatePresence>
       </main>
