@@ -32,7 +32,7 @@ const CUSTOM_CASE_STUDIES: Record<Language, Record<string, CustomCaseStudy>> = {
       challenge: 'Vocabulary capture and deliberate practice often happen in separate tools and lose the original reading context.',
       solution: 'WordBase connects word books, contextual practice, cloud sync, and AI-assisted learning across web, desktop, and mobile; WordPicker captures words and source context directly in the browser.'
     },
-    'tab-garden': {
+    'tab-manager': {
       challenge: 'Large tab collections become difficult to navigate, while automatic organization must not overwrite intentional user grouping.',
       solution: 'The extension groups eligible tabs by normalized hostname, preserves native and custom groups, and provides controls for pausing, thresholds, and manual organization.'
     }
@@ -46,7 +46,7 @@ const CUSTOM_CASE_STUDIES: Record<Language, Record<string, CustomCaseStudy>> = {
       challenge: '词汇采集与刻意练习常发生在不同工具中，原始阅读语境也容易丢失。',
       solution: 'WordBase 在 Web、桌面端和移动端连接单词本、语境练习、云同步与 AI 辅助学习；WordPicker 则直接在浏览器中采集单词及来源语境。'
     },
-    'tab-garden': {
+    'tab-manager': {
       challenge: '标签页数量增多后难以浏览，而自动整理又不能覆盖用户主动创建的分组。',
       solution: '该扩展按标准化 hostname 为符合条件的标签页分组，保留原生与自定义分组，并提供暂停、阈值和手动整理控制。'
     }
