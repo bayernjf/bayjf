@@ -16,7 +16,7 @@ export type { Language };
 export const PROJECT_DATES: Record<string, string> = {
   'soft-desk':    '2026-06-22',
   'word-base':    '2026-06-04',
-  'tab-garden':   '2026-07-19',
+  'tab-manager':   '2026-07-19',
   'pr-helper':    '2026-07-22',
   'vfx-todo':     '2026-07-29',
   'toclick':      '2026-07-29',
@@ -52,14 +52,14 @@ const RAW_PROJECTS_EN: Project[] = [
     date: PROJECT_DATES['word-base']
   },
   {
-    id: 'tab-garden',
+    id: 'tab-manager',
     title: 'Tab Garden',
     category: 'BROWSER PRODUCTIVITY EXTENSION',
     description: 'A Chrome and Edge Manifest V3 extension that groups tabs by hostname, preserves user-created groups, and syncs grouping preferences after sign-in.',
     image: 'https://tab-manager-landing.pages.dev/preview-en.png',
     tags: ['Chrome Extension', 'TypeScript', 'Manifest V3', 'Supabase'],
     link: 'https://tab-manager-landing.pages.dev/',
-    date: PROJECT_DATES['tab-garden']
+    date: PROJECT_DATES['tab-manager']
   },
   {
     id: 'agent-dev',
@@ -195,14 +195,14 @@ const RAW_PROJECTS_ZH: Project[] = [
     date: PROJECT_DATES['word-base']
   },
   {
-    id: 'tab-garden',
+    id: 'tab-manager',
     title: 'Tab Garden',
     category: '浏览器效率扩展',
     description: '面向 Chrome 与 Edge 的 Manifest V3 扩展，按站点自动分组标签页、保留用户自定义分组，并在登录后同步分组偏好。',
     image: 'https://tab-manager-landing.pages.dev/preview-zh.png',
     tags: ['Chrome 扩展', 'TypeScript', 'Manifest V3', 'Supabase'],
     link: 'https://tab-manager-landing.pages.dev/',
-    date: PROJECT_DATES['tab-garden']
+    date: PROJECT_DATES['tab-manager']
   },
   {
     id: 'agent-dev',
