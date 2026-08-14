@@ -21,6 +21,7 @@ taste-skill/
 
 # Installed AI design/design-engineering skills (local-only, not committed)
 .codebuddy/
+.claude/
 skills-lock.json
 .github/agents/
 .github/hooks/
