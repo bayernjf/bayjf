@@ -27,7 +27,8 @@ export const PROJECT_DATES: Record<string, string> = {
   'splity':       '2026-08-01',
   'agent-dev':    '2026-08-02',
   'termana':      '2026-08-02',
-  'word-picker':  '2026-06-02'
+  'word-picker':  '2026-06-02',
+  'work-learn':   '2026-08-16'
 };
 
 const RAW_PROJECTS_EN: Project[] = [
@@ -170,6 +171,16 @@ const RAW_PROJECTS_EN: Project[] = [
     tags: ['Chrome Extension', 'TypeScript', 'Astro', 'Tailwind CSS'],
     link: 'https://word-picker.bayjf.com/',
     date: PROJECT_DATES['word-picker']
+  },
+  {
+    id: 'work-learn',
+    title: 'Work Learn',
+    category: 'LEARNING LAYER FOR AI WORKFLOWS',
+    description: 'A learning layer that turns the English you already use with AI into a personal course. Captures reusable expressions from real conversations through a skill, MCP tools, or the CLI, then rebuilds them as practice shaped around your own work.',
+    image: 'https://work-learn.bayjf.com/preview-en.png',
+    tags: ['AI', 'MCP', 'Astro', 'TypeScript', 'Tailwind CSS'],
+    link: 'https://work-learn.bayjf.com/',
+    date: PROJECT_DATES['work-learn']
   }
 ];
 
@@ -313,6 +324,16 @@ const RAW_PROJECTS_ZH: Project[] = [
     tags: ['Chrome 扩展', 'TypeScript', 'Astro', 'Tailwind CSS'],
     link: 'https://word-picker.bayjf.com/',
     date: PROJECT_DATES['word-picker']
+  },
+  {
+    id: 'work-learn',
+    title: 'Work Learn',
+    category: '面向 AI 工作流的学习层',
+    description: '把你和 AI 协作时已经在用的英语，变成一门属于自己的课程。通过 skill、MCP 工具或 CLI 从真实对话里沉淀可复用的表达，再结合你自己的工作场景重组为练习。',
+    image: 'https://work-learn.bayjf.com/preview-zh.png',
+    tags: ['AI', 'MCP', 'Astro', 'TypeScript', 'Tailwind CSS'],
+    link: 'https://work-learn.bayjf.com/',
+    date: PROJECT_DATES['work-learn']
   }
 ];
 
