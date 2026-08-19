@@ -30,6 +30,7 @@ export const PROJECT_STATUS: Readonly<Record<string, ProjectStatus>> = {
   'one-world': 'soon',
   'shareit': 'soon',
   'splity': 'soon',
+  'work-learn': 'soon',
 };
 
 export const isDelisted = (id: string): boolean => PROJECT_STATUS[id] === 'delist';
