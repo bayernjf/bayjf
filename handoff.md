@@ -101,3 +101,14 @@ BayJF 个人品牌站，是 14 个产品落地页的 hub（中枢）。Astro 7 +
 - 验证：`astro check` 0 错 0 警告；`npm test` 16 passed；`npm run build` 41 页。
 - 提交：`9042452` refactor(bayjf): remove project card hover overlay；
   `019c637` refactor(projects): centralize dates and display order。已推送 origin。
+
+## 简历 / CV 公网下载（2026-08-20，待办）
+- 当前状态：bayjf 仓库内没有任何 `.pdf` / `.docx` 简历文件，`public/` 下也没有 CV 资源；代码中没有简历下载入口。现有中文简历和英文简历仅在本地：
+  - 中文：`/Users/jiangfeng/000AAA-姜峰工作文件/姜峰简历202608版.docx`
+  - 英文：`/Users/jiangfeng/000AAA-姜峰工作文件/JiangFeng_Resume_202608_EN.docx`
+- 待确认：是否公开发布简历。简历包含手机号和邮箱；若放入公开仓库或 `public/`，即使页面不挂链接也可能被访问和抓取。
+- 联系方式需先统一：网站社交弹窗当前使用 `b4yernjf@gmail.com`，简历中使用 `2467055074@qq.com` 和手机号；发布前确认最终公开邮箱/电话。
+- 推荐方案：不要直接提供 `.docx`，将中英文简历各自导出为 PDF，放入 `public/cv/`，例如 `public/cv/jiang-feng-cv-zh.pdf`、`public/cv/jiang-feng-cv-en.pdf`；部署后通过 `https://bayjf.com/cv/jiang-feng-cv-zh.pdf` 和 `https://bayjf.com/cv/jiang-feng-cv-en.pdf` 下载。
+- 页面改动：在社交弹窗/联系区域增加中英双语“下载简历 / Download CV”入口；外部或静态文件链接使用安全属性，增加埋点但不记录 PII。
+- GEO/SEO：若公开，更新 `public/llms.txt`、`public/zh/llms.txt`，可直接列出简历 PDF 链接和一句话说明；确认 `robots.txt` 不拦截 `/cv/`。
+- 发布前检查：PDF 排版预览、中英文数字口径一致（当前为 15 个产品/原型，其中 7 个已发布、8 个持续迭代），并运行 `npm run lint && npm test && npm run build`。
