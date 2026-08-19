@@ -30,6 +30,8 @@ export const PROJECT_ORDER: readonly string[] = [
   
   'shareit',
   'splity',
+
+  'work-learn',
 ];
 
 /**
