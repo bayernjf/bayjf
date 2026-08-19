@@ -11,8 +11,8 @@ import { PROJECT_STATUS, isDelisted } from '../data/projectStatus';
 
 export type { Language };
 
-// 14 个产品的 GitHub 仓库创建日期查找表；PROJECTS_EN / PROJECTS_ZH 中
-// 每个项目的 date 字段通过 id 引用本表，避免 28 处字面量分散。
+// 产品的 GitHub 仓库创建日期查找表；PROJECTS_EN / PROJECTS_ZH 中
+// 每个项目的 date 字段通过 id 引用本表，避免字面量分散。
 export const PROJECT_DATES: Record<string, string> = {
   'soft-desk':    '2026-06-22',
   'word-base':    '2026-06-04',
@@ -386,7 +386,7 @@ const EXPERIENCE_EN: ExperienceItem[] = [
     bullets: ['Delivered business modules, dashboards, workflow coordination, permissions, and query optimizations.', 'Supported maintenance, testing, and iterative feature delivery.']
   },
   {
-    id: 'changliang', role: 'Java Engineer', company: 'Beijing Changan Hedo Information Technology',
+    id: 'changliang', role: 'Java Engineer / Project Manager', company: 'Beijing Changan Hedo Information Technology',
     companyDescription: 'Budget management system development for a rural commercial bank.', location: 'Remote', period: '2021.03 - 2022.08',
     bullets: ['Contributed to budget planning, reporting, permissions, data processing, and system maintenance.', 'Supported project acceptance and coordinated delivery with business and engineering teams.']
   }
@@ -415,7 +415,7 @@ const EXPERIENCE_ZH: ExperienceItem[] = [
     bullets: ['负责业务模块、数据看板、流程协同、权限控制与查询优化。', '参与系统维护、测试和持续功能迭代。']
   },
   {
-    id: 'changliang', role: 'Java 工程师', company: '北京长亮合度信息技术有限公司', companyDescription: '农商行全面预算管理系统开发。', location: '苏州', period: '2021.03 - 2022.08',
+    id: 'changliang', role: 'Java 工程师 / 项目经理', company: '北京长亮合度信息技术有限公司', companyDescription: '农商行全面预算管理系统开发。', location: '苏州', period: '2021.03 - 2022.08',
     bullets: ['参与预算编制、报表、权限、数据加工和系统维护功能。', '参与项目验收，并协助业务与研发团队完成交付。']
   }
 ];
