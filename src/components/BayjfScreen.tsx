@@ -23,7 +23,7 @@ import { useLanguage, Language } from '../context/LanguageContext';
 import { Project } from '../types';
 import ProjectDetailModal from './ProjectDetailModal';
 import ComingSoonFlipCard from './ComingSoonFlipCard';
-import { isComingSoon } from '../data/projectStatus';
+import { isComingSoon } from '../data/projectCatalog';
 
 export default function BayjfScreen() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
