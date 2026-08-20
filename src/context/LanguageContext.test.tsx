@@ -2,10 +2,9 @@ import { act, renderHook } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { describe, expect, it } from 'vitest';
 import { LanguageProvider, useLanguage } from './LanguageContext';
-import { PROJECT_ORDER } from '../data/projectOrder';
-import { isDelisted } from '../data/projectStatus';
+import { PROJECT_IDS, isDelisted } from '../data/projectCatalog';
 
-const LISTED_COUNT = PROJECT_ORDER.filter((id) => !isDelisted(id)).length;
+const LISTED_COUNT = PROJECT_IDS.filter((id) => !isDelisted(id)).length;
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <LanguageProvider>{children}</LanguageProvider>

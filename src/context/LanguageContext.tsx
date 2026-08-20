@@ -6,8 +6,7 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 import { Project, ExperienceItem } from '../types';
 import { TRANSLATIONS, type Language } from '../i18n/translations';
-import { sortProjectsByOrder, PROJECT_ORDER } from '../data/projectOrder';
-import { PROJECT_STATUS, isDelisted } from '../data/projectStatus';
+import { sortProjectsByOrder, PROJECT_IDS, isDelisted } from '../data/projectCatalog';
 
 export type { Language };
 
@@ -337,28 +336,24 @@ const RAW_PROJECTS_ZH: Project[] = [
   }
 ];
 
-// 展示顺序由 src/data/projectOrder.ts 统一控制；原数据数组里写啥顺序无所谓。
+// 展示顺序由 src/data/projectCatalog.ts 统一控制；原数据数组里写啥顺序无所谓。
 // delist 标记的项目在此处剔除，下游（列表、图表、计数、深链）一律看不到。
 export const PROJECTS_EN: Project[] = sortProjectsByOrder(RAW_PROJECTS_EN).filter((p) => !isDelisted(p.id));
 export const PROJECTS_ZH: Project[] = sortProjectsByOrder(RAW_PROJECTS_ZH).filter((p) => !isDelisted(p.id));
 
-// 开发期 sanity check：PROJECT_ORDER 漏配 / 多配都会在 console 告警。
+// 开发期 sanity check：PROJECT_IDS 漏配 / 多配都会在 console 告警。
 // Vite 会在 prod 构建时把 import.meta.env.DEV 静态替换为 false，整段被消除。
 if (import.meta.env.DEV) {
-  const declared = new Set<string>(PROJECT_ORDER);
+  const declared = new Set<string>(PROJECT_IDS);
   const checkDrift = (raw: Project[], lang: 'en' | 'zh') => {
     const present = new Set(raw.map((p) => p.id));
     const missing = [...declared].filter((id) => !present.has(id));
     const extra = [...present].filter((id) => !declared.has(id));
-    if (missing.length) console.warn(`[projectOrder] PROJECTS_${lang.toUpperCase()} missing:`, missing);
-    if (extra.length) console.warn(`[projectOrder] PROJECTS_${lang.toUpperCase()} extra:`, extra);
+    if (missing.length) console.warn(`[projectCatalog] PROJECTS_${lang.toUpperCase()} missing:`, missing);
+    if (extra.length) console.warn(`[projectCatalog] PROJECTS_${lang.toUpperCase()} extra:`, extra);
   };
   checkDrift(RAW_PROJECTS_EN, 'en');
   checkDrift(RAW_PROJECTS_ZH, 'zh');
-
-  const knownIds = new Set(RAW_PROJECTS_EN.map((p) => p.id));
-  const staleStatus = Object.keys(PROJECT_STATUS).filter((id) => !knownIds.has(id));
-  if (staleStatus.length) console.warn('[projectStatus] unknown project ids:', staleStatus);
 }
 
 const EXPERIENCE_EN: ExperienceItem[] = [

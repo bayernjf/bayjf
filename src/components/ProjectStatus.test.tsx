@@ -6,11 +6,14 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('../data/projectStatus', () => ({
-  PROJECT_STATUS: { 'one-world': 'delist', splity: 'soon' },
-  isDelisted: (id: string) => id === 'one-world',
-  isComingSoon: (id: string) => id === 'splity',
-}));
+vi.mock('../data/projectCatalog', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../data/projectCatalog')>();
+  return {
+    ...actual,
+    isDelisted: (id: string) => id === 'one-world',
+    isComingSoon: (id: string) => id === 'splity',
+  };
+});
 
 import { LanguageProvider, PROJECTS_EN } from '../context/LanguageContext';
 import { ToastProvider } from '../context/ToastContext';
