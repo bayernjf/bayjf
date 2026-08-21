@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { verifyPassword, createSessionCookie, verifySession, clearSessionCookie } from './admin';
 import { validateCatalogInput } from './catalog';
+import { mergeCatalog } from '../src/data/projectCatalog';
 import type { Env } from './types';
 
 const env: Env = {
@@ -80,5 +81,12 @@ describe('catalog validation', () => {
     expect(validateCatalogInput({ order: [], status: {} }).success).toBe(false);
     expect(validateCatalogInput({ order: ['a'], status: { a: 'bogus' } }).success).toBe(false);
     expect(validateCatalogInput(null).success).toBe(false);
+  });
+});
+
+describe('catalog merge', () => {
+  it('lets an explicit launch status override a built-in soon default', () => {
+    const catalog = mergeCatalog({ order: ['toclick'], status: { toclick: 'launch' } });
+    expect(catalog.status.toclick).toBe('launch');
   });
 });

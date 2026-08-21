@@ -105,10 +105,7 @@ export default function AdminApp() {
     setMessage('');
     const payload: CatalogState = {
       order: rows.map((row) => row.id),
-      status: rows.reduce<Record<string, ProjectStatus>>((acc, row) => {
-        if (row.status !== 'launch') acc[row.id] = row.status;
-        return acc;
-      }, {}),
+      status: Object.fromEntries(rows.map((row) => [row.id, row.status])),
     };
     try {
       const response = await fetch('/api/admin/catalog', {
@@ -117,8 +114,8 @@ export default function AdminApp() {
         body: JSON.stringify(payload),
       });
       if (response.ok) {
-        setMessage('已保存，刷新公开页面即可生效（约 1 分钟缓存）。');
-        setDirty(false);
+        await loadCatalog();
+        setMessage('已保存，刷新公开页面即可生效。');
       } else {
         const body = await response.json().catch(() => ({}));
         setMessage(body.message || '保存失败');
