@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { PROJECTS_EN } from '../context/LanguageContext';
 import type { ProjectStatus } from '../data/projectCatalog';
+import LogoMark from './LogoMark';
 
 interface CatalogState {
   order: string[];
@@ -157,7 +158,10 @@ export default function AdminApp() {
   if (!authed) {
     return (
       <div className="mx-auto flex min-h-screen max-w-sm flex-col justify-center px-6 py-16 text-paper dark:text-paper">
-        <h1 className="mb-1 text-2xl font-semibold">BayJF Admin</h1>
+        <a href="/" className="mb-6 inline-flex items-center gap-2 self-start" aria-label="返回首页">
+          <LogoMark size={32} />
+          <span className="text-lg font-semibold">BayJF Admin</span>
+        </a>
         <p className="mb-8 text-sm opacity-70">仅管理员登录，不开放注册。</p>
         <form onSubmit={login} className="flex flex-col gap-4">
           <label className="flex flex-col gap-1 text-sm">
@@ -195,11 +199,16 @@ export default function AdminApp() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-12 text-paper dark:text-paper">
       <div className="mb-8 flex items-center justify-between">
-        <div>
+        <div className="flex items-center gap-3">
+          <a href="/" className="shrink-0" aria-label="返回首页" title="返回首页">
+            <LogoMark size={36} />
+          </a>
+          <div>
           <h1 className="text-2xl font-semibold">项目目录管理</h1>
           <p className="mt-1 text-sm opacity-70">
             共 {rows.length} 个 · 上线 {counts.launch} · 即将上线 {counts.soon} · 下架 {counts.delist}
           </p>
+          </div>
         </div>
         <button onClick={logout} className="rounded-lg border border-white/20 px-4 py-2 text-sm hover:bg-white/5">
           退出
