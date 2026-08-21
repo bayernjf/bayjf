@@ -3,6 +3,9 @@ export interface Env {
   SUPABASE_SERVICE_ROLE_KEY: string;
   ALLOWED_ORIGINS?: string;
   TURNSTILE_SECRET_KEY?: string;
+  ADMIN_USERNAME?: string;
+  ADMIN_PASSWORD_HASH?: string;
+  ADMIN_SESSION_SECRET?: string;
 }
 
 export interface ContactMessageInput {

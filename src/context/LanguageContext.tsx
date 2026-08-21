@@ -3,10 +3,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState, ReactNode } from 'react';
 import { Project, ExperienceItem } from '../types';
 import { TRANSLATIONS, type Language } from '../i18n/translations';
-import { sortProjectsByOrder, PROJECT_IDS, isDelisted } from '../data/projectCatalog';
+import {
+  applyCatalog,
+  DEFAULT_CATALOG,
+  mergeCatalog,
+  PROJECT_IDS,
+  type CatalogState,
+} from '../data/projectCatalog';
 
 export type { Language };
 
@@ -336,10 +342,9 @@ const RAW_PROJECTS_ZH: Project[] = [
   }
 ];
 
-// 展示顺序由 src/data/projectCatalog.ts 统一控制；原数据数组里写啥顺序无所谓。
-// delist 标记的项目在此处剔除，下游（列表、图表、计数、深链）一律看不到。
-export const PROJECTS_EN: Project[] = sortProjectsByOrder(RAW_PROJECTS_EN).filter((p) => !isDelisted(p.id));
-export const PROJECTS_ZH: Project[] = sortProjectsByOrder(RAW_PROJECTS_ZH).filter((p) => !isDelisted(p.id));
+// 默认目录（编译期）：运行时会在 LanguageProvider 中拉取 /api/catalog 覆盖。
+export const PROJECTS_EN: Project[] = applyCatalog(RAW_PROJECTS_EN, DEFAULT_CATALOG);
+export const PROJECTS_ZH: Project[] = applyCatalog(RAW_PROJECTS_ZH, DEFAULT_CATALOG);
 
 // 开发期 sanity check：PROJECT_IDS 漏配 / 多配都会在 console 告警。
 // Vite 会在 prod 构建时把 import.meta.env.DEV 静态替换为 false，整段被消除。
@@ -423,10 +428,12 @@ interface LanguageContextProps {
   t: (key: string, variables?: Record<string, any>) => string;
   projects: Project[];
   experienceItems: ExperienceItem[];
+  isProjectComingSoon: (id: string) => boolean;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   soundEnabled: boolean;
   setSoundEnabled: (enabled: boolean) => void;
+  refreshCatalog: () => Promise<void>;
 }
 
 export function LanguageProvider({
@@ -475,6 +482,21 @@ export function LanguageProvider({
   };
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [catalog, setCatalog] = useState<CatalogState>(DEFAULT_CATALOG);
+
+  const refreshCatalog = async () => {
+    try {
+      const response = await fetch('/api/catalog');
+      if (!response.ok) return;
+      setCatalog(mergeCatalog(await response.json()));
+    } catch {
+      // Keep the default catalog when the API is unavailable (offline/dev).
+    }
+  };
+
+  useEffect(() => {
+    void refreshCatalog();
+  }, []);
 
   const t = (key: string, variables?: Record<string, any>): string => {
     const dictionary = TRANSLATIONS[language];
@@ -489,11 +511,15 @@ export function LanguageProvider({
     return template;
   };
 
-  const projects = language === 'en' ? PROJECTS_EN : PROJECTS_ZH;
+  const projects = useMemo(
+    () => applyCatalog(language === 'en' ? RAW_PROJECTS_EN : RAW_PROJECTS_ZH, catalog),
+    [language, catalog],
+  );
   const experienceItems = language === 'en' ? EXPERIENCE_EN : EXPERIENCE_ZH;
+  const isProjectComingSoon = (id: string): boolean => catalog.status[id] === 'soon';
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t, projects, experienceItems, searchQuery, setSearchQuery, soundEnabled, setSoundEnabled }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, projects, experienceItems, isProjectComingSoon, searchQuery, setSearchQuery, soundEnabled, setSoundEnabled, refreshCatalog }}>
       {children}
     </LanguageContext.Provider>
   );

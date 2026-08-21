@@ -20,6 +20,11 @@
  */
 export type ProjectStatus = 'delist' | 'soon' | 'launch';
 
+export interface CatalogState {
+  order: readonly string[];
+  status: Record<string, ProjectStatus>;
+}
+
 type CatalogEntry = string | { id: string; s: ProjectStatus };
 
 const CATALOG: readonly CatalogEntry[] = [
@@ -77,3 +82,56 @@ export const sortProjectsByOrder = <T extends { id: string }>(list: T[]): T[] =>
     return ai - bi;
   });
 };
+
+/** 内置默认目录：顺序来自 CATALOG，状态只显式记录非 launch 的项目。 */
+export const DEFAULT_CATALOG: CatalogState = {
+  order: PROJECT_IDS,
+  status: CATALOG.reduce<Record<string, ProjectStatus>>((acc, entry) => {
+    if (typeof entry !== 'string') acc[entry.id] = entry.s;
+    return acc;
+  }, {}),
+};
+
+const STATUSES: readonly ProjectStatus[] = ['delist', 'soon', 'launch'];
+
+/**
+ * 把远端（Supabase / API）拿到的目录与默认值合并：
+ * - 顺序里保留远端顺序，未出现的已知 id 追加到末尾，未知 id 丢弃。
+ * - 状态以远端为准，缺失的项目回退到默认/launch。
+ */
+export function mergeCatalog(remote: unknown): CatalogState {
+  if (!remote || typeof remote !== 'object') return DEFAULT_CATALOG;
+  const remoteOrder = Array.isArray((remote as CatalogState).order)
+    ? (remote as CatalogState).order.filter((id): id is string => typeof id === 'string')
+    : [];
+  const remoteStatus =
+    (remote as CatalogState).status && typeof (remote as CatalogState).status === 'object'
+      ? (remote as CatalogState).status
+      : {};
+
+  const known = new Set(PROJECT_IDS);
+  const order = [...new Set(remoteOrder.filter((id) => known.has(id)))];
+  for (const id of PROJECT_IDS) if (!order.includes(id)) order.push(id);
+
+  const status: Record<string, ProjectStatus> = { ...DEFAULT_CATALOG.status };
+  for (const [id, value] of Object.entries(remoteStatus)) {
+    if (known.has(id) && STATUSES.includes(value as ProjectStatus)) {
+      status[id] = value as ProjectStatus;
+    }
+  }
+  return { order, status };
+}
+
+/** 按目录状态过滤（剔除 delist）并排序。 */
+export function applyCatalog<T extends { id: string }>(list: T[], catalog: CatalogState): T[] {
+  const index = new Map(catalog.order.map((id, i) => [id, i]));
+  const tail = catalog.order.length;
+  return list
+    .filter((item) => catalog.status[item.id] !== 'delist')
+    .sort((a, b) => (index.get(a.id) ?? tail) - (index.get(b.id) ?? tail));
+}
+
+export const isComingSoonFor = (id: string, catalog: CatalogState): boolean =>
+  catalog.status[id] === 'soon';
+export const isDelistedFor = (id: string, catalog: CatalogState): boolean =>
+  catalog.status[id] === 'delist';
