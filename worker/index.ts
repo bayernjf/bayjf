@@ -38,9 +38,14 @@ function proxyRequestHeaders(request: Request): Headers {
   return headers;
 }
 
-function proxyResponseHeaders(response: Response): Headers {
+function proxyResponseHeaders(response: Response, requestPath: string): Headers {
   const headers = new Headers(response.headers);
-  RESPONSE_HEADERS_TO_REMOVE.forEach((header) => headers.delete(header));
+  // Admin login/logout needs to set the session cookie through the same-origin proxy.
+  const preserveSetCookie = requestPath.startsWith('/api/admin');
+  RESPONSE_HEADERS_TO_REMOVE.forEach((header) => {
+    if (header === 'set-cookie' && preserveSetCookie) return;
+    headers.delete(header);
+  });
   return headers;
 }
 
@@ -64,7 +69,7 @@ export async function handleRequest(request: Request, env: PagesEnv): Promise<Re
     return new Response(upstream.body, {
       status: upstream.status,
       statusText: upstream.statusText,
-      headers: proxyResponseHeaders(upstream),
+      headers: proxyResponseHeaders(upstream, url.pathname),
     });
   } catch {
     return unavailable();

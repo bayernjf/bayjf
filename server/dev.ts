@@ -20,6 +20,9 @@ const env: Env = {
   SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY ?? '',
   ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS,
   TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY,
+  ADMIN_USERNAME: process.env.ADMIN_USERNAME,
+  ADMIN_PASSWORD_HASH: process.env.ADMIN_PASSWORD_HASH,
+  ADMIN_SESSION_SECRET: process.env.ADMIN_SESSION_SECRET,
 };
 
 const server = createServer(async (nodeRequest, nodeResponse) => {

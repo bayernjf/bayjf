@@ -112,3 +112,11 @@ BayJF 个人品牌站，是 14 个产品落地页的 hub（中枢）。Astro 7 +
 - 页面改动：在社交弹窗/联系区域增加中英双语“下载简历 / Download CV”入口；外部或静态文件链接使用安全属性，增加埋点但不记录 PII。
 - GEO/SEO：若公开，更新 `public/llms.txt`、`public/zh/llms.txt`，可直接列出简历 PDF 链接和一句话说明；确认 `robots.txt` 不拦截 `/cv/`。
 - 发布前检查：PDF 排版预览、中英文数字口径一致（当前为 15 个产品/原型，其中 7 个已发布、8 个持续迭代），并运行 `npm run lint && npm test && npm run build`。
+
+## 项目目录 /admin 管理（2026-08-21）
+- 顺序与状态从「改代码 + 部署」改为「代码兜底 + Supabase 覆盖层」：日常排序/上下架在 `/admin` 页面完成，秒级生效（`Cache-Control: no-store`），无需部署。
+- 新增项目仍需先在 `RAW_PROJECTS_EN/ZH` 加内容、在 `src/data/projectCatalog.ts` 的 `CATALOG` 加占位条目并部署；之后在 admin 里调顺序、改状态。
+- 完整流程、合并/兜底规则、管理员环境变量与本地联调见 `docs/PROJECT_CATALOG_AND_ADMIN.md`。
+- 后端：`server/catalog.ts`（Supabase 存取）、`server/admin.ts`（PBKDF2 + HMAC session）、`server/app.ts`（`/api/catalog`、`/api/admin/*`）；前端：`src/pages/admin.astro`、`src/components/AdminApp.tsx`、`LanguageContext` 运行时拉取 catalog。
+- 迁移：`supabase/migrations/20260821000000_create_app_settings.sql`（app_settings 表，RLS 全禁，仅 service-role 访问）。
+- 验证：`npm run lint` 0 errors、`npm test` 52 passed、`npm run build` 44 页。

@@ -4,14 +4,20 @@
  */
 
 import { fireEvent, render, screen } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('../data/projectCatalog', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../data/projectCatalog')>();
   return {
     ...actual,
-    isDelisted: (id: string) => id === 'one-world',
-    isComingSoon: (id: string) => id === 'splity',
+    DEFAULT_CATALOG: {
+      order: actual.PROJECT_IDS,
+      status: {
+        ...actual.DEFAULT_CATALOG.status,
+        'one-world': 'delist',
+        splity: 'soon',
+      },
+    },
   };
 });
 
@@ -41,9 +47,14 @@ const backWebsiteLink = () =>
 const isFlipped = () => flipContainer().className.includes('rotate-y-180');
 
 describe('project status markers', () => {
-  // 详情弹窗与 URL hash 双向同步，不清掉会让上一个用例的 #project-xxx 漏进来。
+  // Provider 挂载时拉取 /api/catalog；测试里静默失败，回退到被 mock 的默认目录。
   beforeEach(() => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('{}', { status: 500 }));
     window.location.hash = '';
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('hides delisted projects from the list', () => {

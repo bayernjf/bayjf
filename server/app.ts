@@ -5,6 +5,19 @@ import { validateContactMessage } from './contact';
 import { SupabaseContactRepository } from './supabase';
 import { verifyTurnstile, hashIp } from './security';
 import {
+  SupabaseCatalogRepository,
+  validateCatalogInput,
+  type CatalogRepository,
+} from './catalog';
+import {
+  verifyPassword,
+  verifySession,
+  createSessionCookie,
+  clearSessionCookie,
+  isAdminConfigured,
+} from './admin';
+import { DEFAULT_CATALOG, mergeCatalog } from '../src/data/projectCatalog';
+import {
   SupabaseLikeRepository,
   validateLikeInput,
   isToggleCoolingDown,
@@ -17,11 +30,13 @@ type Variables = { requestId: string };
 type AppBindings = { Bindings: Env; Variables: Variables };
 type RepositoryFactory = (env: Env) => ContactRepository;
 type LikesRepositoryFactory = (env: Env) => LikeRepository;
+type CatalogRepositoryFactory = (env: Env) => CatalogRepository;
 const MAX_CONTACT_BODY_BYTES = 16 * 1024;
 const CONTACT_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
 const CONTACT_RATE_LIMIT_MAX = 5;
 const LID_COOKIE = 'bayjf_lid';
 const LID_MAX_AGE = 365 * 24 * 60 * 60;
+const MAX_CATALOG_BODY_BYTES = 64 * 1024;
 const contactAttempts = new Map<string, { count: number; resetAt: number }>();
 
 function isContactRateLimited(ip: string | undefined): boolean {
@@ -57,6 +72,7 @@ function getCookie(header: string | undefined, name: string): string | undefined
 export function createApp(
   repositoryFactory: RepositoryFactory = (env) => new SupabaseContactRepository(env),
   likesRepositoryFactory: LikesRepositoryFactory = (env) => new SupabaseLikeRepository(env),
+  catalogRepositoryFactory: CatalogRepositoryFactory = (env) => new SupabaseCatalogRepository(env),
 ) {
   const app = new Hono<AppBindings>();
 
@@ -213,6 +229,89 @@ export function createApp(
     } catch (error) {
       console.error('Like counts failed', c.get('requestId'), error);
       return c.json({ error: 'INTERNAL_ERROR', message: 'Unable to load counts right now.' }, 500);
+    }
+  });
+
+  // ----- Project catalog (order + status), admin-managed at /admin -----
+  app.get('/api/catalog', async (c: Context<AppBindings>) => {
+    try {
+      const stored = await catalogRepositoryFactory(c.env).get();
+      const catalog = stored ? mergeCatalog(stored) : DEFAULT_CATALOG;
+      return c.json(
+        { order: catalog.order, status: catalog.status },
+        200,
+        // No store: admin changes at /admin must take effect immediately for every visitor.
+        { 'Cache-Control': 'no-store' },
+      );
+    } catch (error) {
+      console.error('Catalog get failed', c.get('requestId'), error);
+      return c.json(
+        { order: DEFAULT_CATALOG.order, status: DEFAULT_CATALOG.status },
+        200,
+      );
+    }
+  });
+
+  app.post('/api/admin/login', async (c: Context<AppBindings>) => {
+    if (!await isAdminConfigured(c.env)) {
+      return c.json({ error: 'NOT_CONFIGURED', message: 'Admin login is not configured.' }, 503);
+    }
+    let body: unknown;
+    try {
+      body = await c.req.json();
+    } catch {
+      return c.json({ error: 'INVALID_JSON', message: 'Request body must be valid JSON.' }, 400);
+    }
+    const username = (body as Record<string, unknown>).username;
+    const password = (body as Record<string, unknown>).password;
+    if (typeof username !== 'string' || typeof password !== 'string') {
+      return c.json({ error: 'INVALID_CREDENTIALS', message: 'Invalid username or password.' }, 401);
+    }
+    const usernameOk = username === c.env.ADMIN_USERNAME;
+    const passwordOk = await verifyPassword(password, c.env.ADMIN_PASSWORD_HASH ?? '');
+    if (!usernameOk || !passwordOk) {
+      return c.json({ error: 'INVALID_CREDENTIALS', message: 'Invalid username or password.' }, 401);
+    }
+    c.header('Set-Cookie', await createSessionCookie(c.env, username));
+    return c.json({ ok: true, username }, 200);
+  });
+
+  app.get('/api/admin/session', async (c: Context<AppBindings>) => {
+    const session = await verifySession(c.env, c.req.header('Cookie'));
+    return session ? c.json({ authenticated: true, username: session.username }, 200) : c.json({ authenticated: false }, 200);
+  });
+
+  app.post('/api/admin/logout', async (c: Context<AppBindings>) => {
+    c.header('Set-Cookie', clearSessionCookie());
+    return c.json({ ok: true }, 200);
+  });
+
+  app.post('/api/admin/catalog', async (c: Context<AppBindings>) => {
+    const session = await verifySession(c.env, c.req.header('Cookie'));
+    if (!session) {
+      return c.json({ error: 'UNAUTHORIZED', message: 'Admin sign-in required.' }, 401);
+    }
+    const contentLength = Number(c.req.header('Content-Length'));
+    if (Number.isFinite(contentLength) && contentLength > MAX_CATALOG_BODY_BYTES) {
+      return c.json({ error: 'PAYLOAD_TOO_LARGE', message: 'Request body is too large.' }, 413);
+    }
+    let body: unknown;
+    try {
+      body = await c.req.json();
+    } catch {
+      return c.json({ error: 'INVALID_JSON', message: 'Request body must be valid JSON.' }, 400);
+    }
+    const result = validateCatalogInput(body);
+    if (result.success === false) {
+      return c.json({ error: 'VALIDATION_ERROR', message: result.message }, 422);
+    }
+    try {
+      const merged = mergeCatalog(result.data);
+      await catalogRepositoryFactory(c.env).put(merged);
+      return c.json({ order: merged.order, status: merged.status }, 200);
+    } catch (error) {
+      console.error('Catalog put failed', c.get('requestId'), error);
+      return c.json({ error: 'INTERNAL_ERROR', message: 'Unable to save catalog right now.' }, 500);
     }
   });
 

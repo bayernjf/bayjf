@@ -23,7 +23,6 @@ import { useLanguage, Language } from '../context/LanguageContext';
 import { Project } from '../types';
 import ProjectDetailModal from './ProjectDetailModal';
 import ComingSoonFlipCard from './ComingSoonFlipCard';
-import { isComingSoon } from '../data/projectCatalog';
 
 export default function BayjfScreen() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -36,7 +35,7 @@ export default function BayjfScreen() {
   const [isDark, setIsDark] = useState(false);
   const [isOverflowing, setIsOverflowing] = useState(false);
 
-  const { t, projects, language, searchQuery } = useLanguage();
+  const { t, projects, language, searchQuery, isProjectComingSoon } = useLanguage();
 
   // Sync active project with URL
   useEffect(() => {
@@ -49,7 +48,7 @@ export default function BayjfScreen() {
         const found = projects.find(p => p.id === projectId);
         if (found) {
           // soon 项目没有详情弹窗，深链进来就把卡片翻到背面。
-          if (isComingSoon(found.id)) {
+          if (isProjectComingSoon(found.id)) {
             setActiveProject(null);
             setFlippedProjectId(found.id);
           } else {
@@ -77,7 +76,7 @@ export default function BayjfScreen() {
 
   // soon 项目：点击只在正反面之间翻转，不开详情弹窗。
   const handleCardClick = (project: Project) => {
-    if (isComingSoon(project.id)) {
+    if (isProjectComingSoon(project.id)) {
       setFlippedProjectId((current) => (current === project.id ? null : project.id));
       return;
     }
@@ -734,7 +733,7 @@ export default function BayjfScreen() {
                 onClick={() => handleCardClick(project)}
                 className="group flex flex-col h-full bg-paper-raised dark:bg-night-raised rounded-[28px] shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden cursor-pointer"
               >
-                {isComingSoon(project.id) ? (
+                {isProjectComingSoon(project.id) ? (
                   <ComingSoonFlipCard
                     project={project}
                     flipped={flippedProjectId === project.id}
@@ -837,7 +836,7 @@ export default function BayjfScreen() {
                     onClick={() => handleCardClick(project)}
                     className="w-full bg-paper-raised dark:bg-night-raised rounded-[28px] shadow-sm p-6 hover:shadow-lg transition-shadow duration-300 flex flex-col md:flex-row gap-6 cursor-pointer group relative z-10"
                   >
-                    {isComingSoon(project.id) ? (
+                    {isProjectComingSoon(project.id) ? (
                       <ComingSoonFlipCard
                         project={project}
                         flipped={flippedProjectId === project.id}
