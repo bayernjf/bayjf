@@ -78,3 +78,41 @@ npm run dev:api    # 本地 API :8787（需要 .env.local 里的 ADMIN_* 与 Sup
 - `server/catalog.ts`、`server/admin.ts`：目录存取与鉴权。
 - `worker/index.ts`：为 `/api/admin/*` 保留 `Set-Cookie`。
 - `supabase/migrations/20260821000000_create_app_settings.sql`：建表迁移。
+
+## 使用方法（日常速查）
+
+### 登录
+
+- 线上地址：`https://bayjf.com/admin/`（注意末尾带 `/`，`/admin` 会 308 跳转到 `/admin/`）。
+- 本地：同时启动 `npm run dev`（前端 :3000）和 `npm run dev:api`（API :8787，需 `.env.local` 配置 `ADMIN_*`），访问 `http://localhost:3000/admin/`。
+- 用户名：`ADMIN_USERNAME` 的值（当前为 `bayjf`）。
+- 登录成功后下发 HttpOnly + HMAC 签名的会话 cookie，有效期 7 天；到期需重新登录。点“退出”会立即清除 cookie。
+
+### 调整项目
+
+1. 登录后看到项目列表，每行显示序号、标题、id、状态和上/下移按钮。
+2. 排序：点 ↑ / ↓ 逐行移动（也可后续扩展为拖拽）。
+3. 状态：用下拉框切换：
+   - `已上线 (launch)`：正常展示，点击打开项目详情。
+   - `即将上线 (soon)`：展示卡片，点击只翻转到 “Coming soon...” 面板。
+   - `已下架 (delist)`：从列表/图表/计数/深链完全隐藏。
+4. 点“保存”写入 Supabase，`/api/catalog` 为 `no-store`，保存后任何新访问立即生效；已经打开页面的访客刷新一次即可看到。
+5. 页面顶部显示 `上线 / 即将上线 / 下架` 的数量统计，底部“有未保存的改动”提示在保存前不要离开。
+
+### 忘记密码 / 修改密码
+
+服务端只存 PBKDF2 哈希，无法找回原密码，只能重置：
+
+1. 用以下命令生成新密码和哈希（bundled Node 即可）：
+   ```bash
+   node -e "const c=crypto;(async()=>{const p='新密码';const s=c.getRandomValues(new Uint8Array(16));const k=await c.subtle.importKey('raw',new TextEncoder().encode(p),{name:'PBKDF2'},false,['deriveBits']);const b=new Uint8Array(await c.subtle.deriveBits({name:'PBKDF2',salt:s,iterations:100000,hash:'SHA-256'},k,256));console.log('pbkdf2-sha256$100000$'+Buffer.from(s).toString('base64')+'$'+Buffer.from(b).toString('base64'))})()"
+   ```
+   也可以让 Codex 生成随机强密码并只显示一次。
+2. Vercel → bayjf → Settings → Environment Variables，把 `ADMIN_PASSWORD_HASH` 更新为新哈希（Production 与 Preview 都改）。
+3. 保存后重新部署（Vercel 会自动部署，或在 Deployments 手动 Redeploy）。
+4. 用新密码登录；旧 cookie 会因签名密钥不变而仍有效到自然过期，想强制所有会话失效，同步轮换 `ADMIN_SESSION_SECRET`。
+
+### 重置为代码默认顺序
+
+- 方法一：在 Supabase Table Editor 删除 `app_settings` 表中 `key = 'project_catalog'` 的行，下次访问即回退到 `projectCatalog.ts` 的默认目录。
+- 方法二（推荐后续补充）：在 `/admin` 增加“重置为默认”按钮，调用删除覆盖层的接口。
