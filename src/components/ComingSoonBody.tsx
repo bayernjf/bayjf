@@ -52,6 +52,8 @@ export default function ComingSoonBody({ project, compact = false }: ComingSoonB
         <a
           id={`coming-soon-external-link-${project.id}${compact ? '-card' : ''}`}
           href={project.link}
+          target="_blank"
+          rel="noopener noreferrer"
           // 卡片背面：链接嵌在可点击的卡片里，不拦住冒泡会同时弹出 Coming soon 弹窗。
           onClick={(event: MouseEvent) => event.stopPropagation()}
           className={`interactive flex items-center justify-center gap-2 rounded-full bg-sage hover:bg-ink dark:bg-mint dark:hover:bg-paper text-paper dark:text-ink font-sans uppercase tracking-widest font-semibold transition-all duration-300 shadow-md ${
