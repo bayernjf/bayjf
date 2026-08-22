@@ -62,7 +62,37 @@ export default function AdminApp() {
   const [message, setMessage] = useState('');
   const [dirty, setDirty] = useState(false);
   const [dragId, setDragId] = useState<string | null>(null);
+  const [overIndex, setOverIndex] = useState<number | null>(null);
+  const [overAfter, setOverAfter] = useState(false);
   const [indexDrafts, setIndexDrafts] = useState<Record<string, string>>({});
+
+  const handleDragOver = (event: React.DragEvent<HTMLLIElement>, index: number) => {
+    event.preventDefault();
+    if (!dragId) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const after = event.clientY > rect.top + rect.height / 2;
+    if (overIndex !== index || overAfter !== after) {
+      setOverIndex(index);
+      setOverAfter(after);
+    }
+    const desiredIndex = after ? index + 1 : index;
+    setRows((current) => {
+      const from = current.findIndex((row) => row.id === dragId);
+      if (from === -1) return current;
+      let target = desiredIndex;
+      if (from < desiredIndex) target -= 1;
+      if (from === target) return current;
+      const moved = moveRow(current, from, target);
+      return moved;
+    });
+  };
+
+  const endDrag = () => {
+    if (dragId) setDirty(true);
+    setDragId(null);
+    setOverIndex(null);
+    setOverAfter(false);
+  };
 
   const move = (index: number, delta: number) => {
     setRows((current) => moveRow(current, index, index + delta));
@@ -260,19 +290,20 @@ export default function AdminApp() {
           {rows.map((row, index) => (
             <li
               key={row.id}
-              draggable
+              draggable={!saving}
               onDragStart={() => setDragId(row.id)}
-              onDragEnd={() => setDragId(null)}
-              onDragOver={(event) => event.preventDefault()}
+              onDragEnd={endDrag}
+              onDragOver={(event) => handleDragOver(event, index)}
               onDrop={(event) => {
                 event.preventDefault();
-                if (!dragId || dragId === row.id) return;
-                const from = rows.findIndex((item) => item.id === dragId);
-                updateRows(moveRow(rows, from, index));
-                setDragId(null);
+                endDrag();
               }}
-              className={`flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 transition ${
-                dragId === row.id ? 'opacity-50' : 'hover:border-white/25 hover:bg-white/10'
+              className={`relative flex items-center gap-3 rounded-xl border bg-white/5 px-4 py-3 transition ${
+                dragId === row.id
+                  ? 'border-sky-400/60 opacity-60 shadow-lg shadow-sky-500/10'
+                  : 'border-white/10 hover:border-white/25 hover:bg-white/10'
+              } ${overIndex === index && overAfter ? 'border-b-2 border-b-sky-400' : ''} ${
+                overIndex === index && !overAfter ? 'border-t-2 border-t-sky-400' : ''
               }`}
             >
               <span className="cursor-grab select-none text-sm opacity-40 active:cursor-grabbing" aria-hidden="true">
