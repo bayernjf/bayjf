@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { PROJECTS_EN } from '../context/LanguageContext';
-import type { ProjectStatus } from '../data/projectCatalog';
+import { DEFAULT_CATALOG, type ProjectStatus } from '../data/projectCatalog';
 import LogoMark from './LogoMark';
 
 interface CatalogState {
-  order: string[];
+  order: readonly string[];
   status: Record<string, ProjectStatus>;
 }
 
@@ -14,6 +14,8 @@ interface Row {
   status: ProjectStatus;
 }
 
+type RowsUpdater = Row[] | ((current: Row[]) => Row[]);
+
 const STATUSES: ProjectStatus[] = ['launch', 'soon', 'delist'];
 const STATUS_LABEL: Record<ProjectStatus, string> = {
   launch: '已上线',
@@ -22,6 +24,30 @@ const STATUS_LABEL: Record<ProjectStatus, string> = {
 };
 
 const TITLE_BY_ID = Object.fromEntries(PROJECTS_EN.map((p) => [p.id, p.title]));
+
+const DEFAULT_ROWS: Row[] = DEFAULT_CATALOG.order.map((id) => ({
+  id,
+  title: TITLE_BY_ID[id] ?? id,
+  status: DEFAULT_CATALOG.status[id] ?? 'launch',
+}));
+
+function rowsFromCatalog(catalog: CatalogState): Row[] {
+  const statusMap: Record<string, ProjectStatus> = {};
+  for (const [id, status] of Object.entries(catalog.status)) statusMap[id] = status;
+  return catalog.order.map((id) => ({
+    id,
+    title: TITLE_BY_ID[id] ?? id,
+    status: statusMap[id] ?? 'launch',
+  }));
+}
+
+function moveRow(rows: Row[], from: number, to: number): Row[] {
+  if (from === to || from < 0 || to < 0 || from >= rows.length || to >= rows.length) return rows;
+  const next = [...rows];
+  const [row] = next.splice(from, 1);
+  next.splice(to, 0, row);
+  return next;
+}
 
 export default function AdminApp() {
   const [authed, setAuthed] = useState(false);
@@ -35,36 +61,42 @@ export default function AdminApp() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
   const [dirty, setDirty] = useState(false);
+  const [dragId, setDragId] = useState<string | null>(null);
+  const [indexDrafts, setIndexDrafts] = useState<Record<string, string>>({});
 
   const move = (index: number, delta: number) => {
-    setRows((current) => {
-      const next = [...current];
-      const target = index + delta;
-      if (target < 0 || target >= next.length) return current;
-      [next[index], next[target]] = [next[target], next[index]];
+    setRows((current) => moveRow(current, index, index + delta));
+    setDirty(true);
+  };
+
+  const updateRows = (updater: RowsUpdater) => {
+    setRows(updater);
+    setMessage('');
+    setDirty(true);
+  };
+
+  const moveToPosition = (id: string, value: string) => {
+    const target = Number(value.trim()) - 1;
+    setIndexDrafts((current) => {
+      const next = { ...current };
+      delete next[id];
       return next;
     });
+    if (!Number.isInteger(target)) return;
+    setRows((current) => moveRow(current, current.findIndex((row) => row.id === id), target));
     setDirty(true);
   };
 
   const setStatus = (id: string, status: ProjectStatus) => {
-    setRows((current) => current.map((row) => (row.id === id ? { ...row, status } : row)));
-    setDirty(true);
+    updateRows((current) => current.map((row) => (row.id === id ? { ...row, status } : row)));
   };
 
   const loadCatalog = async () => {
     const response = await fetch('/api/catalog', { cache: 'no-store' });
     if (!response.ok) throw new Error('Failed to load catalog');
     const catalog = (await response.json()) as CatalogState;
-    const statusMap: Record<string, ProjectStatus> = {};
-    for (const [id, status] of Object.entries(catalog.status)) statusMap[id] = status;
-    setRows(
-      catalog.order.map((id) => ({
-        id,
-        title: TITLE_BY_ID[id] ?? id,
-        status: statusMap[id] ?? 'launch',
-      })),
-    );
+    setRows(rowsFromCatalog(catalog));
+    setIndexDrafts({});
     setLoaded(true);
     setDirty(false);
   };
@@ -100,10 +132,18 @@ export default function AdminApp() {
     setPassword('');
   };
 
+  const resetToDefault = () => {
+    if (!window.confirm('确认重置为 projectCatalog.ts 中的默认顺序和状态吗？未保存的 Admin 改动会丢失。')) return;
+    setRows(DEFAULT_ROWS);
+    setIndexDrafts({});
+    setMessage('已重置为 projectCatalog.ts 默认配置，点击保存后生效。');
+    setDirty(true);
+  };
+
   const save = async () => {
     setSaving(true);
     setMessage('');
-    const payload: CatalogState = {
+    const payload = {
       order: rows.map((row) => row.id),
       status: Object.fromEntries(rows.map((row) => [row.id, row.status])),
     };
@@ -116,6 +156,7 @@ export default function AdminApp() {
       if (response.ok) {
         await loadCatalog();
         setMessage('已保存，刷新公开页面即可生效。');
+        setDirty(false);
       } else {
         const body = await response.json().catch(() => ({}));
         setMessage(body.message || '保存失败');
@@ -219,9 +260,39 @@ export default function AdminApp() {
           {rows.map((row, index) => (
             <li
               key={row.id}
-              className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3"
+              draggable
+              onDragStart={() => setDragId(row.id)}
+              onDragEnd={() => setDragId(null)}
+              onDragOver={(event) => event.preventDefault()}
+              onDrop={(event) => {
+                event.preventDefault();
+                if (!dragId || dragId === row.id) return;
+                const from = rows.findIndex((item) => item.id === dragId);
+                updateRows(moveRow(rows, from, index));
+                setDragId(null);
+              }}
+              className={`flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 transition ${
+                dragId === row.id ? 'opacity-50' : 'hover:border-white/25 hover:bg-white/10'
+              }`}
             >
-              <span className="w-6 text-center text-sm opacity-50">{index + 1}</span>
+              <span className="cursor-grab select-none text-sm opacity-40 active:cursor-grabbing" aria-hidden="true">
+                ⋮⋮
+              </span>
+              <input
+                value={indexDrafts[row.id] ?? String(index + 1)}
+                onChange={(event) => setIndexDrafts((current) => ({ ...current, [row.id]: event.target.value }))}
+                onBlur={(event) => moveToPosition(row.id, event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') {
+                    event.preventDefault();
+                    moveToPosition(row.id, event.currentTarget.value);
+                  }
+                }}
+                aria-label={`${row.title} 序号`}
+                title="输入序号后按回车或失焦生效"
+                inputMode="numeric"
+                className="w-14 rounded-lg border border-white/20 bg-night px-2 py-1.5 text-center text-sm outline-none focus:border-white/50"
+              />
               <div className="min-w-0 flex-1">
                 <p className="truncate font-medium">{row.title}</p>
                 <p className="truncate text-xs opacity-50">{row.id}</p>
@@ -260,7 +331,20 @@ export default function AdminApp() {
         </ul>
       )}
 
-      <div className="mt-8 flex items-center gap-4">
+      <div className="mt-8 flex flex-wrap items-center gap-4">
+        <div className="group relative inline-flex">
+          <button
+            type="button"
+            onClick={resetToDefault}
+            disabled={saving}
+            className="rounded-lg border border-white/20 px-5 py-2.5 font-medium transition hover:bg-white/5 disabled:opacity-40"
+          >
+            重置
+          </button>
+          <span className="pointer-events-none absolute bottom-full left-0 z-10 mb-2 hidden w-72 rounded-lg border border-white/10 bg-night px-3 py-2 text-xs leading-relaxed text-paper shadow-xl group-hover:block">
+            重置为 projectCatalog.ts 配置状态：恢复代码中的默认项目顺序和上线状态，不会自动保存。
+          </span>
+        </div>
         <button
           onClick={save}
           disabled={saving || !dirty}
