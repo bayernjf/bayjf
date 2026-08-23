@@ -29,24 +29,20 @@ type CatalogEntry = string | { id: string; s: ProjectStatus };
 
 const CATALOG: readonly CatalogEntry[] = [
   { id: 'pr-helper', s: 'launch' },
-  'work-learn',
   'agent-dev',
+  'work-learn',
 
-  'tab-manager',
-  'termana',
-  'vfx-todo',
+  'termana', 'one-code', 'tab-manager',
 
-  'soft-desk',
-  'word-picker',
+  'word-picker', 'soft-desk', 'vfx-todo',
+
   'word-base',
-
   { id: 'know-collect', s: 'soon' },
-  { id: 'one-code', s: 'soon' },
-  { id: 'one-world', s: 'soon' },
-
-  { id: 'toclick', s: 'soon' },
-  { id: 'shareit', s: 'soon' },
   { id: 'splity', s: 'soon' },
+
+  { id: 'shareit', s: 'soon' },
+  { id: 'one-world', s: 'soon' },
+  { id: 'toclick', s: 'soon' },
 ];
 
 const entryId = (entry: CatalogEntry): string =>
