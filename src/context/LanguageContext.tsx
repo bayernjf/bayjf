@@ -31,6 +31,7 @@ export const PROJECT_DATES: Record<string, string> = {
   'shareit':      '2026-08-01',
   'splity':       '2026-08-01',
   'agent-dev':    '2026-08-02',
+  'agent-world':  '2026-08-24',
   'termana':      '2026-08-02',
   'word-picker':  '2026-06-02',
   'work-learn':   '2026-08-16'
@@ -76,6 +77,16 @@ const RAW_PROJECTS_EN: Project[] = [
     tags: ['AI Agent', 'Astro', 'TypeScript', 'Tailwind CSS'],
     link: 'https://agent-dev.bayjf.com/',
     date: PROJECT_DATES['agent-dev']
+  },
+  {
+    id: 'agent-world',
+    title: 'Agent World',
+    category: 'GAMIFIED MULTI-AGENT ORCHESTRATION WORKBENCH',
+    description: 'A multi-agent orchestration workbench built like a real-time strategy game: every agent is a factory, tokens are the power supply, and output travels downstream through pipelines. Lay out your agent production line, unlock skill cards, and schedule AI capacity by intuition.',
+    image: 'https://agent-world.bayjf.com/preview-en.png',
+    tags: ['AI Agent', 'Astro', 'React', 'TypeScript'],
+    link: 'https://agent-world.bayjf.com/',
+    date: PROJECT_DATES['agent-world']
   },
   {
     id: 'know-collect',
@@ -229,6 +240,16 @@ const RAW_PROJECTS_ZH: Project[] = [
     tags: ['AI Agent', 'Astro', 'TypeScript', 'Tailwind CSS'],
     link: 'https://agent-dev.bayjf.com/',
     date: PROJECT_DATES['agent-dev']
+  },
+  {
+    id: 'agent-world',
+    title: 'Agent World',
+    category: '游戏化的多智能体编排工作台',
+    description: '把多智能体编排做成一场即时战略游戏：每个 Agent 是一座厂房，token 是电力，产出通过管道运往下游。搭建你的智能体流水线，解锁技能卡，用 RTS 的直觉调度 AI 生产力。',
+    image: 'https://agent-world.bayjf.com/preview-zh.png',
+    tags: ['AI Agent', 'Astro', 'React', 'TypeScript'],
+    link: 'https://agent-world.bayjf.com/',
+    date: PROJECT_DATES['agent-world']
   },
   {
     id: 'know-collect',
