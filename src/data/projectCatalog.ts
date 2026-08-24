@@ -30,6 +30,7 @@ type CatalogEntry = string | { id: string; s: ProjectStatus };
 const CATALOG: readonly CatalogEntry[] = [
   { id: 'pr-helper', s: 'launch' },
   'agent-dev',
+  'agent-world',
   'work-learn',
 
   'termana', 'one-code', 'tab-manager',
