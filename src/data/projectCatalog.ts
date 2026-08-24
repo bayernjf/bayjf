@@ -28,21 +28,20 @@ export interface CatalogState {
 type CatalogEntry = string | { id: string; s: ProjectStatus };
 
 const CATALOG: readonly CatalogEntry[] = [
-  { id: 'pr-helper', s: 'launch' },
-  'agent-dev',
-  'work-learn',
+  'agent-dev', 'agent-world', 'work-learn',
 
-  'termana', 'one-code', 'tab-manager',
+  'pr-helper', 'one-code', 'termana',
+  
+  'tab-manager', 'soft-desk', 'vfx-todo',
 
-  'word-picker', 'soft-desk', 'vfx-todo',
-
-  'word-base',
+  'word-picker', 'word-base',
   { id: 'know-collect', s: 'soon' },
-  { id: 'splity', s: 'soon' },
-
-  { id: 'shareit', s: 'soon' },
+  
   { id: 'one-world', s: 'soon' },
-  { id: 'toclick', s: 'soon' },
+  { id: 'splity', s: 'soon' },
+  { id: 'shareit', s: 'soon' },
+
+{ id: 'toclick', s: 'soon' },
 ];
 
 const entryId = (entry: CatalogEntry): string =>
