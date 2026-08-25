@@ -15,6 +15,10 @@
  *   soon    展示卡片，点击弹 “Coming soon...”
  *   delist  完全不出现在列表/图表/计数/深链
  *
+ * f: true 把该项目设为明星项目：置顶渲染一块大图长文的 hero，不再出现在下方网格里。
+ * 最多一个；多写只认第一个。非明星项目不写 f（写 f: false 也可以）。
+ * soon / delist 的项目忽略 f，没有任何项目写 f 时就不渲染 hero。
+ *
  * 改顺序直接挪位置；改状态把字符串换成对象即可。
  * 加新项目后，记得在 PROJECTS_EN / PROJECTS_ZH 里补上对应数据。
  */
@@ -25,10 +29,10 @@ export interface CatalogState {
   status: Record<string, ProjectStatus>;
 }
 
-type CatalogEntry = string | { id: string; s: ProjectStatus };
+type CatalogEntry = string | { id: string; s: ProjectStatus; f?: boolean };
 
 const CATALOG: readonly CatalogEntry[] = [
-  'agent-dev', 'agent-world', 'work-learn',
+  'agent-dev', { id: 'agent-world', s: 'launch', f: true }, 'work-learn',
 
   'pr-helper', 'one-code', 'termana',
   
@@ -62,6 +66,28 @@ export const getProjectStatus = (id: string): ProjectStatus =>
 export const isDelisted = (id: string): boolean => getProjectStatus(id) === 'delist';
 
 export const isComingSoon = (id: string): boolean => getProjectStatus(id) === 'soon';
+
+/**
+ * 明星项目 id，没有就是 null。只认第一个 f: true，且状态必须是 launch。
+ */
+export const FEATURED_PROJECT_ID: string | null = (() => {
+  const flagged = CATALOG.filter(
+    (entry): entry is { id: string; s: ProjectStatus; f?: boolean } =>
+      typeof entry !== 'string' && entry.f === true,
+  );
+  if (flagged.length > 1) {
+    console.warn(
+      `[projectCatalog] 多个项目写了 f: true（${flagged.map((e) => e.id).join(', ')}），只用第一个。`,
+    );
+  }
+  const first = flagged[0];
+  if (!first) return null;
+  if (first.s !== 'launch') {
+    console.warn(`[projectCatalog] ${first.id} 状态是 ${first.s}，忽略 f: true。`);
+    return null;
+  }
+  return first.id;
+})();
 
 /**
  * 按目录顺序排序。列表里没写的 id 排到末尾（防御性，避免漏维护导致丢项目），
