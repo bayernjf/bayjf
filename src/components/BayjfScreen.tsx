@@ -23,6 +23,8 @@ import { useLanguage, Language } from '../context/LanguageContext';
 import { Project } from '../types';
 import ProjectDetailModal from './ProjectDetailModal';
 import ComingSoonFlipCard from './ComingSoonFlipCard';
+import FeaturedProject from './FeaturedProject';
+import { FEATURED_PROJECT_ID } from '../data/projectCatalog';
 
 export default function BayjfScreen() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -216,6 +218,18 @@ export default function BayjfScreen() {
     return titleMatches || tagsMatch;
   });
 
+  // 明星项目：置顶单独渲染一块 hero，网格/时间线里就不再重复它。
+  // 跟着筛选走——搜别的项目时 hero 也会让位。
+  const featuredProject = FEATURED_PROJECT_ID
+    ? filteredProjects.find(
+        (project) => project.id === FEATURED_PROJECT_ID && !isProjectComingSoon(project.id)
+      ) ?? null
+    : null;
+
+  const listProjects = featuredProject
+    ? filteredProjects.filter((project) => project.id !== featuredProject.id)
+    : filteredProjects;
+
   // Recharts Data Processing
   const processedChartData = (() => {
     if (chartMetric === 'tech') {
@@ -248,7 +262,7 @@ export default function BayjfScreen() {
   const getProjectYear = (project: Project) => getProjectDate(project).slice(0, 4);
 
   // Sort project timeline list descending by GitHub feature date
-  const timelineProjects = [...filteredProjects].sort((a, b) => {
+  const timelineProjects = [...listProjects].sort((a, b) => {
     const dateA = Date.parse(a.date || '') || a.year || 0;
     const dateB = Date.parse(b.date || '') || b.year || 0;
     return dateB - dateA;
@@ -372,6 +386,9 @@ export default function BayjfScreen() {
           </div>
         </motion.div>
       </div>
+
+      {/* Featured project hero (projectCatalog 里 f: true 的那个) */}
+      {featuredProject && <FeaturedProject project={featuredProject} />}
 
       {/* Subtle Scroll Down Indicator Anchor at the bottom of the header */}
       <AnimatePresence>
@@ -677,7 +694,7 @@ export default function BayjfScreen() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10"
         >
           <AnimatePresence mode="sync">
-            {filteredProjects.map((project) => {
+            {listProjects.map((project) => {
               const cardFace = (
                 <>
                 {/* Hover-effect thumbnail container */}
