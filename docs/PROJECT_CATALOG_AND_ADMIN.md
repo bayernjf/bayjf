@@ -77,7 +77,7 @@ npm run dev:api    # 本地 API :8787（需要 .env.local 里的 ADMIN_* 与 Sup
 - `server/app.ts`：`/api/catalog`、`/api/admin/*` 路由。
 - `server/catalog.ts`、`server/admin.ts`：目录存取与鉴权。
 - `worker/index.ts`：为 `/api/admin/*` 保留 `Set-Cookie`。
-- `supabase/migrations/20260821000000_create_app_settings.sql`：建表迁移。
+- `supabase/migrations/003_create_app_settings.sql`：建表迁移。
 
 ## 使用方法（日常速查）
 

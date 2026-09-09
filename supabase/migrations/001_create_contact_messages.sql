@@ -1,3 +1,15 @@
+-- =====================================================
+-- Migration 001: Create contact messages table
+-- File: 001_create_contact_messages.sql
+-- Date: 2026-07-19 17:30
+-- Run: Supabase SQL Editor, execute once
+-- =====================================================
+-- Note: Stores contact form submissions with length-check
+--       constraints and audit fields (ip_hash, user_agent).
+--       RLS is enabled and all access is revoked from
+--       anon/authenticated; inserts go through the Worker
+--       with the service-role key.
+-- -----------------------------------------------------
 create extension if not exists pgcrypto;
 
 create table if not exists public.contact_messages (
