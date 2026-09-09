@@ -75,8 +75,8 @@ Never create a `VITE_` variable containing a Supabase service-role key.
 
 1. Apply the Supabase migrations by running each `supabase/migrations/*.sql` in the
    Supabase SQL editor, in filename (timestamp) order:
-   - `20260719000000_create_contact_messages.sql`
-   - `20260811000000_create_project_likes.sql` (project "like" feature: toggle endpoint
+   - `001_create_contact_messages.sql`
+   - `002_create_project_likes.sql` (project "like" feature: toggle endpoint
      `POST /api/projects/like`, `GET /api/projects/likes/mine`, reserved `GET /api/projects/likes/counts`)
 2. Configure and deploy the Vercel API first.
 3. Put the Vercel API base URL without `/api` in Cloudflare Pages'

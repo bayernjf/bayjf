@@ -28,7 +28,7 @@ In another terminal:
 npm run dev
 ```
 
-Apply [the Supabase migration](supabase/migrations/20260719000000_create_contact_messages.sql)
+Apply [the Supabase migration](supabase/migrations/001_create_contact_messages.sql)
 before submitting the contact form. The frontend runs at `http://localhost:3000`
 and proxies `/api` to the local Vercel API at `http://localhost:8787`.
 

@@ -118,5 +118,5 @@ BayJF 个人品牌站，是 14 个产品落地页的 hub（中枢）。Astro 7 +
 - 新增项目仍需先在 `RAW_PROJECTS_EN/ZH` 加内容、在 `src/data/projectCatalog.ts` 的 `CATALOG` 加占位条目并部署；之后在 admin 里调顺序、改状态。
 - 完整流程、合并/兜底规则、管理员环境变量与本地联调见 `docs/PROJECT_CATALOG_AND_ADMIN.md`。
 - 后端：`server/catalog.ts`（Supabase 存取）、`server/admin.ts`（PBKDF2 + HMAC session）、`server/app.ts`（`/api/catalog`、`/api/admin/*`）；前端：`src/pages/admin.astro`、`src/components/AdminApp.tsx`、`LanguageContext` 运行时拉取 catalog。
-- 迁移：`supabase/migrations/20260821000000_create_app_settings.sql`（app_settings 表，RLS 全禁，仅 service-role 访问）。
+- 迁移：`supabase/migrations/003_create_app_settings.sql`（app_settings 表，RLS 全禁，仅 service-role 访问）。
 - 验证：`npm run lint` 0 errors、`npm test` 52 passed、`npm run build` 44 页。
