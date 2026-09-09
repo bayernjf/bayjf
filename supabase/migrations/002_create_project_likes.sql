@@ -1,3 +1,17 @@
+-- =====================================================
+-- Migration 002: Create project likes table
+-- File: 002_create_project_likes.sql
+-- Date: 2026-08-12 01:07
+-- Run: Supabase SQL Editor, execute once
+-- =====================================================
+-- Note: One like record per project per visitor
+--       (unique project_id + visitor_hash) with soft
+--       delete via is_active. RLS is enabled and access
+--       is revoked from anon/authenticated; writes go
+--       through the Hono service-role proxy. Includes a
+--       reserved count view project_like_counts for
+--       future use without a migration.
+-- -----------------------------------------------------
 create extension if not exists pgcrypto;
 
 -- 项目卡「喜欢」：一人一项目一条记录，is_active 软删除（取消喜欢置 false）。
