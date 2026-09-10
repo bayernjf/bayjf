@@ -34,7 +34,8 @@ export const PROJECT_DATES: Record<string, string> = {
   'agent-world':  '2026-08-24',
   'termana':      '2026-08-02',
   'word-picker':  '2026-06-02',
-  'work-learn':   '2026-08-16'
+  'work-learn':   '2026-08-16',
+  'job-agent':    '2026-09-10'
 };
 
 const RAW_PROJECTS_EN: Project[] = [
@@ -197,6 +198,16 @@ const RAW_PROJECTS_EN: Project[] = [
     tags: ['AI', 'MCP', 'Astro', 'TypeScript', 'Tailwind CSS'],
     link: 'https://work-learn.bayjf.com/',
     date: PROJECT_DATES['work-learn']
+  },
+  {
+    id: 'job-agent',
+    title: 'JobAgent',
+    category: 'GITHUB-BRIDGE AI RECRUITING PLATFORM',
+    description: 'Resumes lie, code does not. JobAgent turns real GitHub repos into verifiable skill profiles from commits, PRs and collaboration records, and flags AI-generated repos so companies hire people who have actually shipped.',
+    image: 'https://job-agent.bayjf.com/preview-en.png',
+    tags: ['AI', 'GitHub', 'Recruiting', 'Astro'],
+    link: 'https://job-agent.bayjf.com/',
+    date: PROJECT_DATES['job-agent']
   }
 ];
 
@@ -360,6 +371,16 @@ const RAW_PROJECTS_ZH: Project[] = [
     tags: ['AI', 'MCP', 'Astro', 'TypeScript', 'Tailwind CSS'],
     link: 'https://work-learn.bayjf.com/',
     date: PROJECT_DATES['work-learn']
+  },
+  {
+    id: 'job-agent',
+    title: 'JobAgent',
+    category: '以 GitHub 为桥梁的智能招聘平台',
+    description: '简历会说谎，代码不会。JobAgent 把真实 GitHub 仓库分析成可验证的能力画像：结合 commit、PR 协作记录并识别 AI 生成的假仓库，让企业招到真正做过的人，让求职者用作品证明自己。',
+    image: 'https://job-agent.bayjf.com/preview-zh.png',
+    tags: ['AI', 'GitHub', '招聘', 'Astro'],
+    link: 'https://job-agent.bayjf.com/',
+    date: PROJECT_DATES['job-agent']
   }
 ];
 
