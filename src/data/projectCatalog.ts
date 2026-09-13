@@ -37,7 +37,7 @@ const CATALOG: readonly CatalogEntry[] = [
   'atlas', 'loom', 'job-agent',
   
   'agent-dev', 'pr-helper', 'work-learn',
-   
+
   'tab-manager', 'one-code', 'termana',
   
   'soft-desk', 'word-picker', 'word-base',
