@@ -215,9 +215,9 @@ const RAW_PROJECTS_EN: Project[] = [
     title: 'Loom',
     category: 'PRIVATE CONTENT PRODUCTION WHITELIST PLATFORM',
     description: 'A 13-stage content production chain that turns product information into publishable content. AI drafts candidates only, human gates decide, final_id is the single publishable exit, and feedback flows back into knowledge.',
-    image: 'https://loom-landing-7b0.pages.dev/preview-en.png',
+    image: 'https://loom.bayjf.com/preview-en.png',
     tags: ['AI', 'SaaS', 'Astro', 'TypeScript', 'React'],
-    link: 'https://loom-landing-7b0.pages.dev/',
+    link: 'https://loom.bayjf.com/',
     date: PROJECT_DATES['loom']
   }
 ];
@@ -398,9 +398,9 @@ const RAW_PROJECTS_ZH: Project[] = [
     title: 'Loom',
     category: '私域内容生产白名单平台',
     description: '私域内容生产白名单平台：把产品信息变成可发布内容，走一条可编排、可审计、可质量拦截的 13 段生产链。AI 只产候选、人工 Gate 裁决、final_id 唯一出口、反馈回流反哺知识。',
-    image: 'https://loom-landing-7b0.pages.dev/preview-zh.png',
+    image: 'https://loom.bayjf.com/preview-zh.png',
     tags: ['AI', 'SaaS', 'Astro', 'TypeScript', 'React'],
-    link: 'https://loom-landing-7b0.pages.dev/',
+    link: 'https://loom.bayjf.com/',
     date: PROJECT_DATES['loom']
   }
 ];
