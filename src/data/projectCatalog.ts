@@ -32,23 +32,22 @@ export interface CatalogState {
 type CatalogEntry = string | { id: string; s: ProjectStatus; f?: boolean };
 
 const CATALOG: readonly CatalogEntry[] = [
-  { id: 'agent-world', s: 'launch', f: true }, 'work-learn',
-  'agent-dev', 
-  'pr-helper', 'one-code', 'termana',
+  { id: 'agent-world', s: 'launch', f: true },
   
-  { id: 'job-agent',
-  { id: 'atlas', s: 'soon' },
-  { id: 'loom', s: 'soon' },
+  'atlas', 'loom', 'job-agent',
+  
+  'agent-dev', 'pr-helper', 'work-learn',
+   
+  'tab-manager', 'one-code', 'termana',
+  
+  'soft-desk', 'word-picker', 'word-base',
+  
+  'vfx-todo',
 
-  'tab-manager', 'soft-desk', 'vfx-todo',
-
-  'word-picker', 'word-base',
   { id: 'know-collect', s: 'soon' },
-  
   { id: 'one-world', s: 'soon' },
   { id: 'splity', s: 'soon' },
   { id: 'shareit', s: 'soon' },
-  
   { id: 'toclick', s: 'soon' },
 ];
 
