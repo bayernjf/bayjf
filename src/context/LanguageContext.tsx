@@ -35,7 +35,8 @@ export const PROJECT_DATES: Record<string, string> = {
   'termana':      '2026-08-02',
   'word-picker':  '2026-06-02',
   'work-learn':   '2026-08-16',
-  'job-agent':    '2026-09-10'
+  'job-agent':    '2026-09-10',
+  'loom':         '2026-09-13'
 };
 
 const RAW_PROJECTS_EN: Project[] = [
@@ -208,6 +209,16 @@ const RAW_PROJECTS_EN: Project[] = [
     tags: ['AI', 'GitHub', 'Recruiting', 'Astro'],
     link: 'https://job-agent.bayjf.com/',
     date: PROJECT_DATES['job-agent']
+  },
+  {
+    id: 'loom',
+    title: 'Loom',
+    category: 'PRIVATE CONTENT PRODUCTION WHITELIST PLATFORM',
+    description: 'A 13-stage content production chain that turns product information into publishable content. AI drafts candidates only, human gates decide, final_id is the single publishable exit, and feedback flows back into knowledge.',
+    image: 'https://loom-landing-7b0.pages.dev/preview-en.png',
+    tags: ['AI', 'SaaS', 'Astro', 'TypeScript', 'React'],
+    link: 'https://loom-landing-7b0.pages.dev/',
+    date: PROJECT_DATES['loom']
   }
 ];
 
@@ -381,6 +392,16 @@ const RAW_PROJECTS_ZH: Project[] = [
     tags: ['AI', 'GitHub', '招聘', 'Astro'],
     link: 'https://job-agent.bayjf.com/',
     date: PROJECT_DATES['job-agent']
+  },
+  {
+    id: 'loom',
+    title: 'Loom',
+    category: '私域内容生产白名单平台',
+    description: '私域内容生产白名单平台：把产品信息变成可发布内容，走一条可编排、可审计、可质量拦截的 13 段生产链。AI 只产候选、人工 Gate 裁决、final_id 唯一出口、反馈回流反哺知识。',
+    image: 'https://loom-landing-7b0.pages.dev/preview-zh.png',
+    tags: ['AI', 'SaaS', 'Astro', 'TypeScript', 'React'],
+    link: 'https://loom-landing-7b0.pages.dev/',
+    date: PROJECT_DATES['loom']
   }
 ];
 
