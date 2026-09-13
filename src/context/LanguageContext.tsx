@@ -36,6 +36,7 @@ export const PROJECT_DATES: Record<string, string> = {
   'word-picker':  '2026-06-02',
   'work-learn':   '2026-08-16',
   'job-agent':    '2026-09-10',
+  'atlas':        '2026-09-13',
   'loom':         '2026-09-13'
 };
 
@@ -209,6 +210,16 @@ const RAW_PROJECTS_EN: Project[] = [
     tags: ['AI', 'GitHub', 'Recruiting', 'Astro'],
     link: 'https://job-agent.bayjf.com/',
     date: PROJECT_DATES['job-agent']
+  },
+  {
+    id: 'atlas',
+    title: 'Atlas',
+    category: 'AI AGENT ORCHESTRATION PLATFORM',
+    description: 'An AI operations-agent orchestration platform built on Harness (capability integration), Graph (executable causal graph) and Loop (OODA main loop), letting non-technical users define business processes with natural language or drag-and-drop while agents execute, self-heal and evolve.',
+    image: 'https://atlas.bayjf.com/preview-en.png',
+    tags: ['AI Agent', 'Graph', 'Astro', 'React', 'TypeScript'],
+    link: 'https://atlas.bayjf.com/',
+    date: PROJECT_DATES['atlas']
   },
   {
     id: 'loom',
@@ -392,6 +403,16 @@ const RAW_PROJECTS_ZH: Project[] = [
     tags: ['AI', 'GitHub', '招聘', 'Astro'],
     link: 'https://job-agent.bayjf.com/',
     date: PROJECT_DATES['job-agent']
+  },
+  {
+    id: 'atlas',
+    title: 'Atlas',
+    category: 'AI 运营体编排平台',
+    description: 'AI 运营体（Agent）编排平台：以 Harness（能力接入）、Graph（可执行因果图）、Loop（OODA 主循环）三位一体为内核，让非技术人员通过自然语言或拖拽定义业务流程，由运营体自动执行、自愈与进化。首个目标场景：企业内部 OA 审批。',
+    image: 'https://atlas.bayjf.com/preview-zh.png',
+    tags: ['AI Agent', 'Graph', 'Astro', 'React', 'TypeScript'],
+    link: 'https://atlas.bayjf.com/',
+    date: PROJECT_DATES['atlas']
   },
   {
     id: 'loom',
