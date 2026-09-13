@@ -37,15 +37,15 @@ const CATALOG: readonly CatalogEntry[] = [
   'atlas', 'loom', 'job-agent',
   
   'agent-dev', 'pr-helper', 'work-learn',
-   
+
   'tab-manager', 'one-code', 'termana',
   
   'soft-desk', 'word-picker', 'word-base',
   
   'vfx-todo',
 
-  { id: 'know-collect', s: 'soon' },
   { id: 'one-world', s: 'soon' },
+  { id: 'know-collect', s: 'soon' },
   { id: 'splity', s: 'soon' },
   { id: 'shareit', s: 'soon' },
   { id: 'toclick', s: 'soon' },
