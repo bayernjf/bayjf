@@ -48,6 +48,7 @@ const CATALOG: readonly CatalogEntry[] = [
 { id: 'toclick', s: 'soon' },
 
   { id: 'job-agent', s: 'soon' },
+  'loom',
 ];
 
 const entryId = (entry: CatalogEntry): string =>
